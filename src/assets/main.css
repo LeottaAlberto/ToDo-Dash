@@ -1,10 +1,14 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+}
+
+main {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 a,
@@ -12,7 +16,60 @@ a,
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
-  padding: 3px;
+  /* padding: 3px; */
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  stroke: none;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.p-1 {
+  padding: 1vw;
+}
+.p-2 {
+  padding: 2vw;
+}
+.p-3 {
+  padding: 3vw;
+}
+
+.px-1 {
+  padding-inline: 1vw;
+}
+.px-2 {
+  padding-inline: 2vw;
+}
+.px-3 {
+  padding-inline: 3vw;
+}
+
+.btn:hover {
+  transform: scale(1.02, 1.02);
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  -webkit-transform: scale(1.02, 1.02);
+  -moz-transform: scale(1.02, 1.02);
+  -ms-transform: scale(1.02, 1.02);
+  -o-transform: scale(1.02, 1.02);
+
+  font-size: x-large;
+  font-weight: 530;
 }
 
 @media (hover: hover) {
@@ -30,6 +87,6 @@ a,
   #app {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
   }
 }
