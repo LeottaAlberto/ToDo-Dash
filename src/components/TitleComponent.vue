@@ -12,7 +12,7 @@
 
   function addActivityClicked() {
     // alert('aggingi activity');
-    emit('clicked', true);
+    emit('clicked');
   }
 </script>
 

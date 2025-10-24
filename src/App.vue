@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+// import { RouterLink } from 'vue-router'
 </script>
 
 <template>
@@ -13,5 +13,9 @@ import { RouterLink } from 'vue-router'
 </template>
 
 <style scoped>
-
+  main {
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow-x: hidden;
+  }
 </style>

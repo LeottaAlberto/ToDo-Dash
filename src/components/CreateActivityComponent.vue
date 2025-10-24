@@ -1,5 +1,12 @@
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { handleError, onMounted, onUnmounted, ref } from 'vue'
+
+    interface Activity {
+        priority: string
+        title: string
+        duration: number
+        type: string
+    }
 
     const optionStored = ref();
 
@@ -7,10 +14,11 @@
     const category = ref('');
     const priority = ref('');
     const note = ref('');
+
     
     const formRef = ref<HTMLFormElement | null>(null);
 
-    const emit = defineEmits(['submit']);
+    const emit = defineEmits(['submit', 'closed']);
 
     optionStored.value = JSON.parse(localStorage.getItem('priority-option') || '{}');
 
@@ -23,7 +31,7 @@
     }
 
     function closeCreateActivity() {
-
+        emit('closed');
     }
 
     function submit() {
@@ -33,15 +41,35 @@
             return;
         }
 
-        const obj = [];
-        obj.push(title.value, category.value, priority.value, note.value);
-        emit('submit', obj);
+        const activity: Activity = {
+            title: title.value,
+            type: category.value,
+            priority: priority.value,
+            duration: 0
+        };
+        emit('submit', activity);
     }
+
+    onMounted(()=>{
+        const handlerEscape = (event: KeyboardEvent) => {
+            if(event.key === 'Escape') closeCreateActivity();
+        }
+
+        window.addEventListener('keydown', handlerEscape);
+
+        onUnmounted(()=>window.removeEventListener('keydown', handlerEscape));
+    });
+
+    addEventListener('keypress', (key)=>{
+        console.log(key.key);
+        
+        if(key.key == 'escape') closeCreateActivity();
+    })
 </script>
 <template>
     <div class="create-activity-container flex">
         <div class="flex field-container">
-            <form class="w-100" ref="" @submit.prevent="submit">
+            <form class="w-100 flex" ref="formRef" @submit.prevent="submit">
                 <h1>Dettaglio attivita'</h1>
                 <div class="w-100">
                     <h3>Titolo*</h3>
@@ -64,19 +92,27 @@
                 <p>* campi obbligatori</p>
                 <div class="w-100 px-2" style="display: flex; justify-content: space-between; gap: 10vw; margin-top: 1vw;">
                     <input type="button" value="Annulla" class="btn" @click="closeCreateActivity()">
-                    <input type="submit" value="Aggiungi" class="btn" @click="submit()">
+                    <input type="submit" value="Aggiungi" class="btn">
                 </div>
             </form>
         </div>
     </div>
 </template>
 <style scoped>
+    form {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     .create-activity-container {
         width: 100%;
         height: 100%;
         position: absolute;
         background-color: rgba(0, 0, 0, 0.7);
         z-index: 999;
+        top: 0;
+        left: 0;
     }
 
     .create-activity-container input {
