@@ -79,10 +79,15 @@
                     <h3>Categoria*</h3>
                     <h3>Priorita'*</h3>
                     <input type="text" v-model="category" required>
-                    <select class="w-100 btn select" v-model="priority" required>
+                    <select v-if="optionsArray" class="w-100 btn select" v-model="priority" required>
                         <option v-for="opt in optionsArray" :value="opt" :key="opt">
                             {{ opt }} 
                         </option>
+                    </select>
+                    <select v-else>
+                        <option>Lower</option>
+                        <option>Medium</option>
+                        <option>Higher</option>
                     </select>
                 </div>
                 <div class="txt-area-container w-100">
