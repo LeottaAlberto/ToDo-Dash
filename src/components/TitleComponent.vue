@@ -29,7 +29,8 @@
     padding: 0.5vw;
     padding-inline: 2vw;
     flex-direction: row;
-    background-color: #4D4D4D;
+    background-color: transparent;
+    border: 2px solid #4D4D4D;
     display: flex;
     justify-content: space-between;
     align-items: center;

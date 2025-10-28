@@ -5,6 +5,7 @@ import Title from '../components/TitleComponent.vue'
 import ActivityComponent from '@/components/ActivityComponent.vue'
 import CreateActivityComponent from '@/components/CreateActivityComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
+import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
 
 interface Activity {
   priority: string
@@ -14,9 +15,15 @@ interface Activity {
 }
 const isClicked = ref(false)
 
-const todo: Ref<Activity[]> = ref([])
+const todo: Ref<Activity[]> = ref([]);
+const filters = ref<string[]>([]);
 
 onMounted(() => {
+  loadActivity();
+  loadFilters();
+});
+
+function loadActivity(){
   try {
     const stored = localStorage.getItem('user-activity');
     if (stored) {
@@ -33,7 +40,24 @@ onMounted(() => {
     console.error('Error loading activities:', error)
     todo.value = [];
   }
-})
+}
+
+function loadFilters(){
+    try {
+      const stored = localStorage.getItem('user-filters');
+    if (stored) {
+      const parsedData = JSON.parse(stored);
+      if (Array.isArray(parsedData)) {
+        filters.value = parsedData;
+      } else {
+        filters.value = [parsedData];
+      }
+    }
+  } catch (error) {
+    console.error('Error loading activities:', error)
+    filters.value = [];
+  }
+}
 
 function createActivity(v: Activity) {
   console.log(v)
@@ -47,8 +71,9 @@ function createActivity(v: Activity) {
   <div class="container flex">
     <Title @clicked="() => (isClicked = true)"></Title>
     <div class="w-100 flex main-container">
-      <DashboardComponent/>
+      <FiltersGroupComponent/>
       <ActivityComponent :activity="todo" />
+      <DashboardComponent/>
       <CreateActivityComponent
         v-if="isClicked"
         @submit="
@@ -62,7 +87,6 @@ function createActivity(v: Activity) {
           }
         "
       />
-      <DashboardComponent/>
     </div>
   </div>
 </template>
@@ -74,6 +98,9 @@ function createActivity(v: Activity) {
 }
 
 .main-container {
-  width: 100%;
+  justify-content: center;
+  gap: 0vw;
+  padding: 0;
+  margin: 0;
 }
 </style>
