@@ -1,13 +1,20 @@
 <script setup lang="ts">
-    // import { ref } from 'vue'
+// import { onMounted } from 'vue';
+
+    import { ref } from 'vue'
     const props = defineProps({
         name_filter: String
     });
+
+    const isClicked = ref(false);
 </script>
 
 <template>
-    <div class="single-filter-container">
-        <div class="single-filter flex">
+    <div class="single-filter-container" 
+    @click="isClicked = !isClicked">
+        <div class="single-filter flex"
+        :class="{select:isClicked}"
+        >
             <h3>{{ props.name_filter }}</h3>
         </div>
     </div>
@@ -34,7 +41,7 @@
     .single-filter:hover{
         transform: scale(1.02, 1.02);
     }
-    .single-filter:active{
-        background-color: red;
+    .select {
+        background-color: green;
     }
 </style>

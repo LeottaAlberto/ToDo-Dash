@@ -1,28 +1,28 @@
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { onMounted, ref } from 'vue'
     import SingleFilterComponent from './SingleFilterComponent.vue';
 
     const filters = ref<string[]>([]);
+
+    onMounted(()=>{
+        if(filters.value.length == 0) {
+            filters.value.push("Tutti");
+            filters.value.push("Attive");
+            filters.value.push("Completate");
+        }
+    });
+
 </script>
 
 <template>
     <div class="filters-group-container flex">
-        <h2 class="w-100">Filters</h2>
+        <h1 class="w-100">Filters</h1>
         <div class="flex filters-group p-2">
-            <!-- <line x1="40" y1="162" x2="260" y2="162" stroke="#eee" stroke-width="1"></line> -->
-            <SingleFilterComponent 
-                :name_filter="'Tutti'"
-            />
-            <SingleFilterComponent 
-                :name_filter="'Attive'"
-            />
-            <SingleFilterComponent 
-                :name_filter="'Completate'"
-            />
-            <div v-if="filters.length>0">
+            <div v-if="filters.length>0" class="flex ">
                 <div v-for="item in filters" :key="item">
                     <SingleFilterComponent 
                         :name_filter="item"
+                        :class="{}"
                     />
                 </div>
             </div>
@@ -41,12 +41,16 @@
     }
     .filters-group {
         width: 100%;
-        height: 70vh;
+        height: 75vh;
         background-color: transparent;
         border: 2px solid #4d4d4dd8;
         border-radius: 15px;
         justify-content: start;
         align-items: center;
+        flex-direction: column;
+    }
+    
+    .filters-group div {
         flex-direction: column;
         gap: 0.3vw;
     }

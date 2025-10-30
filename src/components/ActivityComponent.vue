@@ -17,7 +17,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div v-if="activity && activity.length > 0" class="flex w-100 m-3 p-3 px-2 activity-container">
+  <div v-if="activity && activity.length > 0 && activity.length <= 5" class="flex w-100 m-3 p-3 px-2 activity-container">
+
     <div v-for="(item, index) in activity" :key="index" class="flex px-2 single-activity">
       <h2 class="w-25 mw-25">[{{ item.priority.charAt(0).toUpperCase()}}]</h2>
       <h1 v-if="item.title.length < 12" class="w-50 mw-55 p-relative left-0 px-3">{{ item.title }}</h1>
@@ -28,8 +29,11 @@ const props = defineProps<{
       </div>
     </div>
   </div>
+  <div v-else-if="activity.length > 5">
+    
+  </div>
   <div v-else>
-    <p>Nessuna attività presente</p>
+    <p style="width: max-content;">Nessuna attività presente</p>
   </div>
 </template>
 
