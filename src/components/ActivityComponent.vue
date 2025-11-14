@@ -6,6 +6,7 @@ interface Activity {
   title: string
   duration: number
   type: string
+  note: string
   status: string
 }
 
@@ -21,6 +22,8 @@ const props = defineProps<{
   activity: Activity[]
   filters: Filters[]
 }>()
+
+const emits = defineEmits(['open_pop_up'])
 
 const visibleActivities: Ref<Activity[]> = ref([])
 
@@ -66,6 +69,15 @@ function updateFilters() {
     count_scorer.value + max_visible_activity.value,
   )
 }
+
+function openPopUp(activity:Activity) {
+  console.log('Click sul prop => ');
+  console.log(activity);
+
+  emits('open_pop_up', activity);
+}
+
+
 </script>
 
 <template>
@@ -74,11 +86,11 @@ function updateFilters() {
     style="flex-direction: column; justify-content: center; align-items: center"
   >
     <div v-if="visibleActivities.length > 0" class="flex w-100 m-3 p-3 px-2 activity-container">
-      {{ console.log(visibleActivities) }}
       <div
         v-for="(item, index) in visibleActivities"
         :key="index"
         class="flex px-2 single-activity"
+        @click="openPopUp(item);"
       >
         <h2 class="w-25 mw-25">[{{ item.priority.charAt(0).toUpperCase() }}]</h2>
         <h1 v-if="item.title.length < 12" class="w-50 mw-55 p-relative left-0 px-3">

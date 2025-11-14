@@ -6,12 +6,14 @@ import ActivityComponent from '@/components/ActivityComponent.vue'
 import CreateActivityComponent from '@/components/CreateActivityComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
+import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
 
 interface Activity {
   priority: string
   title: string
   duration: number
   type: string
+  note: string
   status: string
 }
 
@@ -25,6 +27,8 @@ const isClicked = ref(false)
 const todo: Ref<Activity[]> = ref([])
 const filters = ref<string[]>([])
 const active_filter = ref<Filters[]>([])
+
+const activity_in_pop_up = ref<Activity>()
 
 onMounted(() => {
   loadActivity()
@@ -82,7 +86,7 @@ function createActivity(v: Activity) {
 function filters_manage(filters: Filters) {
   if (filters.status) {
     // Aggiungi solo se non esiste già
-    if (!active_filter.value.some(f => f.title === filters.title)) {
+    if (!active_filter.value.some((f) => f.title === filters.title)) {
       active_filter.value.push(filters)
     }
   } else {
@@ -91,9 +95,7 @@ function filters_manage(filters: Filters) {
   }
 }
 function removeFilter(filter: Filters) {
-  return active_filter.value.filter(
-    (f) => f.title !== filter.title
-  )
+  return active_filter.value.filter((f) => f.title !== filter.title)
 }
 </script>
 
@@ -109,8 +111,16 @@ function removeFilter(filter: Filters) {
         "
       />
       {{ console.log(todo) }}
-      <ActivityComponent :activity="todo" :filters="active_filter" />
-
+      <ActivityComponent
+        :activity="todo"
+        :filters="active_filter"
+        @open_pop_up="
+          (obj) => {
+            activity_in_pop_up = obj
+          }
+        "
+      />
+      <PopUpActivityComponents :activity="activity_in_pop_up" />
       <DashboardComponent />
       <CreateActivityComponent
         v-if="isClicked"
