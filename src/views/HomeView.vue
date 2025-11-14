@@ -12,50 +12,52 @@ interface Activity {
   title: string
   duration: number
   type: string
+  status: string
 }
 const isClicked = ref(false)
 
-const todo: Ref<Activity[]> = ref([]);
-const filters = ref<string[]>([]);
+const todo: Ref<Activity[]> = ref([])
+const filters = ref<string[]>([])
+const active_filter = ref<string[]>([])
 
 onMounted(() => {
-  loadActivity();
-  loadFilters();
-});
+  loadActivity()
+  loadFilters()
+})
 
-function loadActivity(){
+function loadActivity() {
   try {
-    const stored = localStorage.getItem('user-activity');
+    const stored = localStorage.getItem('user-activity')
     if (stored) {
-      const parsedData = JSON.parse(stored);
+      const parsedData = JSON.parse(stored)
       // Check if parsedData is an array
       if (Array.isArray(parsedData)) {
-        todo.value = parsedData;
+        todo.value = parsedData
       } else {
         // If single item, wrap in array
-        todo.value = [parsedData];
+        todo.value = [parsedData]
       }
     }
   } catch (error) {
     console.error('Error loading activities:', error)
-    todo.value = [];
+    todo.value = []
   }
 }
 
-function loadFilters(){
-    try {
-      const stored = localStorage.getItem('user-filters');
+function loadFilters() {
+  try {
+    const stored = localStorage.getItem('user-filters')
     if (stored) {
-      const parsedData = JSON.parse(stored);
+      const parsedData = JSON.parse(stored)
       if (Array.isArray(parsedData)) {
-        filters.value = parsedData;
+        filters.value = parsedData
       } else {
-        filters.value = [parsedData];
+        filters.value = [parsedData]
       }
     }
   } catch (error) {
     console.error('Error loading activities:', error)
-    filters.value = [];
+    filters.value = []
   }
 }
 
@@ -63,7 +65,7 @@ function createActivity(v: Activity) {
   console.log(v)
   isClicked.value = false
   if (v != null) todo.value.push(v as Activity)
-  localStorage.setItem('user-activity', JSON.stringify(todo.value));
+  localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
 </script>
 
@@ -71,9 +73,15 @@ function createActivity(v: Activity) {
   <div class="container flex">
     <Title @clicked="() => (isClicked = true)"></Title>
     <div class="w-100 flex main-container">
-      <FiltersGroupComponent/>
-      <ActivityComponent :activity="todo" />
-      <DashboardComponent/>
+      <FiltersGroupComponent
+        @filter_selected="
+          (filter: string) => {
+            active_filter.push(filter)
+          }
+        "
+      />
+      <ActivityComponent :activity="todo" :filters="active_filter" />
+      <DashboardComponent />
       <CreateActivityComponent
         v-if="isClicked"
         @submit="

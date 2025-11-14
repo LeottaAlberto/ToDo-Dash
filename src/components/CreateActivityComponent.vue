@@ -1,11 +1,12 @@
 <script setup lang="ts">
-    import { handleError, onMounted, onUnmounted, ref } from 'vue'
+    import { onMounted, onUnmounted, ref } from 'vue'
 
     interface Activity {
         priority: string
         title: string
         duration: number
         type: string
+        status: string
     }
 
     const optionStored = ref();
@@ -45,7 +46,8 @@
             title: title.value,
             type: category.value,
             priority: priority.value,
-            duration: 0
+            duration: 0,
+            status: "active"
         };
         emit('submit', activity);
     }
