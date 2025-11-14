@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue'
+import { watch, onMounted, ref, type Ref } from 'vue'
 
 import Title from '../components/TitleComponent.vue'
 import ActivityComponent from '@/components/ActivityComponent.vue'
@@ -14,15 +14,26 @@ interface Activity {
   type: string
   status: string
 }
+
+interface Filters {
+  title: string
+  status: boolean
+}
+
 const isClicked = ref(false)
 
 const todo: Ref<Activity[]> = ref([])
 const filters = ref<string[]>([])
-const active_filter = ref<string[]>([])
+const active_filter = ref<Filters[]>([])
 
 onMounted(() => {
   loadActivity()
   loadFilters()
+})
+
+watch(todo, () => {
+  console.log('Todo Aggiornato =>')
+  console.log(todo.value)
 })
 
 function loadActivity() {
@@ -67,6 +78,23 @@ function createActivity(v: Activity) {
   if (v != null) todo.value.push(v as Activity)
   localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
+
+function filters_manage(filters: Filters) {
+  if (filters.status) {
+    // Aggiungi solo se non esiste già
+    if (!active_filter.value.some(f => f.title === filters.title)) {
+      active_filter.value.push(filters)
+    }
+  } else {
+    // Rimuovi
+    active_filter.value = removeFilter(filters)
+  }
+}
+function removeFilter(filter: Filters) {
+  return active_filter.value.filter(
+    (f) => f.title !== filter.title
+  )
+}
 </script>
 
 <template>
@@ -75,12 +103,14 @@ function createActivity(v: Activity) {
     <div class="w-100 flex main-container">
       <FiltersGroupComponent
         @filter_selected="
-          (filter: string) => {
-            active_filter.push(filter)
+          (filter: Filters) => {
+            filters_manage(filter)
           }
         "
       />
+      {{ console.log(todo) }}
       <ActivityComponent :activity="todo" :filters="active_filter" />
+
       <DashboardComponent />
       <CreateActivityComponent
         v-if="isClicked"

@@ -1,24 +1,39 @@
 <script setup lang="ts">
-// import { onMounted } from 'vue';
-
+import { onMounted } from 'vue'
 import { ref } from 'vue'
+
 const props = defineProps({
   name_filter: String,
 })
 
+interface Filters {
+  title: string | undefined
+  status: boolean
+}
+
 const emits = defineEmits(['filter_selected'])
 
-const isClicked = ref(false)
+const filtro = ref<Filters>({
+  title: props.name_filter + '',
+  status: false,
+})
 
-function select_filter(filter_name: string | undefined) {
-  isClicked.value = !isClicked.value
-  emits('filter_selected', filter_name)
+function select_filter(filters:Filters) {
+  filtro.value.status = !filtro.value.status;
+  emits('filter_selected', filters)
 }
+
+onMounted(() => {
+  if (props.name_filter == 'Tutti') {
+    console.log('Filter All')
+    select_filter({title:props.name_filter, status:true})
+  }
+})
 </script>
 
 <template>
-  <div class="single-filter-container" @click="select_filter(props.name_filter)">
-    <div class="single-filter flex" :class="{ select: isClicked }">
+  <div class="single-filter-container" @click="select_filter({title:props.name_filter, status:filtro.status})">
+    <div class="single-filter flex" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>

@@ -4,6 +4,11 @@ import SingleFilterComponent from './SingleFilterComponent.vue'
 
 const filters = ref<string[]>([])
 
+interface Filters {
+  title: string
+  status: boolean
+}
+
 const emits = defineEmits(['filter_selected'])
 
 onMounted(() => {
@@ -14,7 +19,7 @@ onMounted(() => {
   }
 })
 
-function emits_filter_name(filter: string | undefined) {
+function emits_filter_name(filter: Filters) {
   emits('filter_selected', filter)
 }
 </script>
@@ -29,7 +34,7 @@ function emits_filter_name(filter: string | undefined) {
             :name_filter="item"
             :class="{}"
             @filter_selected="
-              (filter: string) => {
+              (filter: Filters) => {
                 emits_filter_name(filter)
               }
             "

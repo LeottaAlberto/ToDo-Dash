@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, ref, type Ref, onMounted } from 'vue'
+import { watch, ref, type Ref } from 'vue'
 
 interface Activity {
   priority: string
@@ -9,27 +9,48 @@ interface Activity {
   status: string
 }
 
+interface Filters {
+  title: string | undefined
+  status: boolean
+}
+
 const count_scorer = ref(0)
 const max_visible_activity = ref(5)
 
 const props = defineProps<{
   activity: Activity[]
-  filters: string[]
+  filters: Filters[]
 }>()
 
 const visibleActivities: Ref<Activity[]> = ref([])
 
 watch(props.filters, () => {
+  console.log("Watch => ")
   console.log(props.filters)
   updateFilters()
-})
+});
 
-onMounted(() => updateFilters())
+watch(props.activity, ()=> {
+  console.log('Monted: activity');
+  console.log('Filters: ');
+  console.log(props.filters);
+  console.log(props.filters.length);
+
+  if (props.filters.length !== 0) updateFilters()
+  else {
+    console.log("No Filters");
+    console.log(props.activity);
+    visibleActivities.value = props.activity
+    // .slice(count_scorer.value, count_scorer.value + max_visible_activity.value)
+    console.log(visibleActivities.value);
+  }
+});
 
 function updateFilters() {
   console.log('Update Filters')
 
   if (!props.activity || props.activity.length === 0) visibleActivities.value = []
+
   if (!props.filters)
     visibleActivities.value = props.activity.slice(
       count_scorer.value,
@@ -37,8 +58,9 @@ function updateFilters() {
     )
 
   const filtered_activity = props.activity.filter((activity) => {
-    return props.filters.filter((filter) => activity.status == filter)
+    return props.filters.filter((filter) => activity.status === filter.title)
   })
+
   visibleActivities.value = filtered_activity.slice(
     count_scorer.value,
     count_scorer.value + max_visible_activity.value,
