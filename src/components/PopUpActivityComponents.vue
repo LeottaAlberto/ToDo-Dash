@@ -1,29 +1,21 @@
 <script setup lang="ts">
+import type ActivityInterface from '@/interface/ActivityInterface'
 import { ref, watch } from 'vue'
-
-interface Activity {
-  priority: string
-  title: string
-  duration: number
-  type: string
-  note: string
-  status: string
-}
 
 const isVisible = ref(false)
 
 const props = defineProps<{
-  activity?: Activity
+  activity?: ActivityInterface
 }>()
 
 watch(props, () => {
   console.log('PopUpSbloccato =>')
   console.log(props.activity)
-  isVisible.value = true;
+  isVisible.value = true
 })
 
 function closePopUp() {
-  isVisible.value = false;
+  isVisible.value = false
 }
 </script>
 

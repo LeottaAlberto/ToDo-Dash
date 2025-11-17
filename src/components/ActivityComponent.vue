@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, type Ref } from 'vue'
-
-interface Activity {
-  priority: string
-  title: string
-  duration: number
-  type: string
-  note: string
-  status: string
-}
+import type ActivityInterface from '@/interface/ActivityInterface'
 
 interface Filters {
   title: string | undefined
@@ -19,35 +11,35 @@ const count_scorer = ref(0)
 const max_visible_activity = ref(5)
 
 const props = defineProps<{
-  activity: Activity[]
+  activity: ActivityInterface[]
   filters: Filters[]
 }>()
 
 const emits = defineEmits(['open_pop_up'])
 
-const visibleActivities: Ref<Activity[]> = ref([])
+const visibleActivities: Ref<ActivityInterface[]> = ref([])
 
 watch(props.filters, () => {
-  console.log("Watch => ")
+  console.log('Watch => ')
   console.log(props.filters)
   updateFilters()
-});
+})
 
-watch(props.activity, ()=> {
-  console.log('Monted: activity');
-  console.log('Filters: ');
-  console.log(props.filters);
-  console.log(props.filters.length);
+watch(props.activity, () => {
+  console.log('Monted: activity')
+  console.log('Filters: ')
+  console.log(props.filters)
+  console.log(props.filters.length)
 
   if (props.filters.length !== 0) updateFilters()
   else {
-    console.log("No Filters");
-    console.log(props.activity);
+    console.log('No Filters')
+    console.log(props.activity)
     visibleActivities.value = props.activity
     // .slice(count_scorer.value, count_scorer.value + max_visible_activity.value)
-    console.log(visibleActivities.value);
+    console.log(visibleActivities.value)
   }
-});
+})
 
 function updateFilters() {
   console.log('Update Filters')
@@ -70,14 +62,12 @@ function updateFilters() {
   )
 }
 
-function openPopUp(activity:Activity) {
-  console.log('Click sul prop => ');
-  console.log(activity);
+function openPopUp(activity: ActivityInterface) {
+  console.log('Click sul prop => ')
+  console.log(activity)
 
-  emits('open_pop_up', activity);
+  emits('open_pop_up', activity)
 }
-
-
 </script>
 
 <template>
@@ -90,7 +80,7 @@ function openPopUp(activity:Activity) {
         v-for="(item, index) in visibleActivities"
         :key="index"
         class="flex px-2 single-activity"
-        @click="openPopUp(item);"
+        @click="openPopUp(item)"
       >
         <h2 class="w-25 mw-25">[{{ item.priority.charAt(0).toUpperCase() }}]</h2>
         <h1 v-if="item.title.length < 12" class="w-50 mw-55 p-relative left-0 px-3">

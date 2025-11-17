@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-
-interface Activity {
-  priority: string
-  title: string
-  duration: number
-  type: string
-  note: string
-  status: string
-}
+import {Activity} from "./Activity"
 
 const optionStored = ref()
 

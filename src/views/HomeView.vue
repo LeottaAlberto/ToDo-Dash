@@ -8,14 +8,7 @@ import DashboardComponent from '@/components/DashboardComponent.vue'
 import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
 import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
 
-interface Activity {
-  priority: string
-  title: string
-  duration: number
-  type: string
-  note: string
-  status: string
-}
+import type ActivityInterface from '../interface/ActivityInterface'
 
 interface Filters {
   title: string
@@ -24,11 +17,11 @@ interface Filters {
 
 const isClicked = ref(false)
 
-const todo: Ref<Activity[]> = ref([])
+const todo: Ref<ActivityInterface[]> = ref([])
 const filters = ref<string[]>([])
 const active_filter = ref<Filters[]>([])
 
-const activity_in_pop_up = ref<Activity>()
+const activity_in_pop_up = ref<ActivityInterface>()
 
 onMounted(() => {
   loadActivity()
@@ -76,10 +69,10 @@ function loadFilters() {
   }
 }
 
-function createActivity(v: Activity) {
+function createActivity(v: ActivityInterface) {
   console.log(v)
   isClicked.value = false
-  if (v != null) todo.value.push(v as Activity)
+  if (v != null) todo.value.push(v as ActivityInterface)
   localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
 
