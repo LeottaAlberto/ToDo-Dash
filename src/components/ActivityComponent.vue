@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { watch, ref, type Ref } from 'vue'
 import type ActivityInterface from '@/interface/ActivityInterface'
-
-interface Filters {
-  title: string | undefined
-  status: boolean
-}
+import type FilterInterface from '@/interface/FilterInterface'
 
 const count_scorer = ref(0)
 const max_visible_activity = ref(5)
 
 const props = defineProps<{
   activity: ActivityInterface[]
-  filters: Filters[]
+  filters: FilterInterface[]
 }>()
 
 const emits = defineEmits(['open_pop_up'])

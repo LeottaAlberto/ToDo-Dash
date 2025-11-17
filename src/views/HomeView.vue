@@ -9,17 +9,12 @@ import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
 import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
 
 import type ActivityInterface from '../interface/ActivityInterface'
-
-interface Filters {
-  title: string
-  status: boolean
-}
+import type FilterInterface from '../interface/FilterInterface'
 
 const isClicked = ref(false)
-
 const todo: Ref<ActivityInterface[]> = ref([])
 const filters = ref<string[]>([])
-const active_filter = ref<Filters[]>([])
+const active_filter = ref<FilterInterface[]>([])
 
 const activity_in_pop_up = ref<ActivityInterface>()
 
@@ -76,7 +71,7 @@ function createActivity(v: ActivityInterface) {
   localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
 
-function filters_manage(filters: Filters) {
+function filters_manage(filters: FilterInterface) {
   if (filters.status) {
     // Aggiungi solo se non esiste già
     if (!active_filter.value.some((f) => f.title === filters.title)) {
@@ -87,7 +82,7 @@ function filters_manage(filters: Filters) {
     active_filter.value = removeFilter(filters)
   }
 }
-function removeFilter(filter: Filters) {
+function removeFilter(filter: FilterInterface) {
   return active_filter.value.filter((f) => f.title !== filter.title)
 }
 </script>
@@ -98,7 +93,7 @@ function removeFilter(filter: Filters) {
     <div class="w-100 flex main-container">
       <FiltersGroupComponent
         @filter_selected="
-          (filter: Filters) => {
+          (filter: FilterInterface) => {
             filters_manage(filter)
           }
         "

@@ -2,12 +2,9 @@
 import { onMounted, ref } from 'vue'
 import SingleFilterComponent from './SingleFilterComponent.vue'
 
-const filters = ref<string[]>([])
+import type FilterInterface from '@/interface/FilterInterface'
 
-interface Filters {
-  title: string
-  status: boolean
-}
+const filters = ref<string[]>([])
 
 const emits = defineEmits(['filter_selected'])
 
@@ -19,7 +16,7 @@ onMounted(() => {
   }
 })
 
-function emits_filter_name(filter: Filters) {
+function emits_filter_name(filter: FilterInterface) {
   emits('filter_selected', filter)
 }
 </script>
@@ -34,7 +31,7 @@ function emits_filter_name(filter: Filters) {
             :name_filter="item"
             :class="{}"
             @filter_selected="
-              (filter: Filters) => {
+              (filter: FilterInterface) => {
                 emits_filter_name(filter)
               }
             "

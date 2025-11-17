@@ -2,23 +2,20 @@
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 
+import type FilterInterface from '@/interface/FilterInterface'
+
 const props = defineProps({
   name_filter: String,
 })
 
-interface Filters {
-  title: string | undefined
-  status: boolean
-}
-
 const emits = defineEmits(['filter_selected'])
 
-const filtro = ref<Filters>({
+const filtro = ref<FilterInterface>({
   title: props.name_filter + '',
   status: false,
 })
 
-function select_filter(filters:Filters) {
+function select_filter(filters:FilterInterface) {
   filtro.value.status = !filtro.value.status;
   emits('filter_selected', filters)
 }
