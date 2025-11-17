@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import {Activity} from "./Activity"
+import type ActivityInterface from '@/interface/ActivityInterface'
 
 const optionStored = ref()
 
@@ -35,7 +35,7 @@ function submit() {
   console.log(note.value);
 
 
-  const activity: Activity = {
+  const activity: ActivityInterface = {
     title: title.value,
     type: category.value,
     priority: priority.value,
