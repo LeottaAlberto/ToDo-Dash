@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div>
-                <img src="/src/assets/sart_bimpson.PNG" alt="Sart Bimpson">
+                <!---<img src="/src/assets/sart_bimpson.PNG" alt="Sart Bimpson"> -->
             </div>
         </div>
     </div>
