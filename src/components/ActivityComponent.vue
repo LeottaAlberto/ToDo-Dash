@@ -15,11 +15,21 @@ const emits = defineEmits(['open_pop_up'])
 
 const visibleActivities: Ref<ActivityInterface[]> = ref([])
 
-watch(props.filters, () => {
-  console.log('Watch => ')
-  console.log(props.filters)
-  updateFilters()
-})
+// watch(props.filters, () => {
+//   console.log('Watch => ')
+//   console.log(props.filters)
+// })
+
+watch(
+  () => props.filters,
+  (newVal) => {
+    console.log('Filters updated:', newVal);
+    updateFilters()
+  },
+  { deep: true, immediate: false }
+);
+
+
 
 watch(props.activity, () => {
   console.log('Monted: activity')
@@ -40,22 +50,30 @@ watch(props.activity, () => {
 function updateFilters() {
   console.log('Update Filters')
 
+  // Caso in cui non ci sono activity
   if (!props.activity || props.activity.length === 0) visibleActivities.value = []
 
-  if (!props.filters)
+  console.log(props.filters);
+
+
+  if (props.filters.length === 0 || props.filters.some(filter => filter.title === "Tutto")) {
+    console.log("caso 2");
+
     visibleActivities.value = props.activity.slice(
       count_scorer.value,
       count_scorer.value + max_visible_activity.value,
     )
+  }
+  else {
+    console.log("caso 3");
+    const filtered_activity = props.activity.filter(activity => {
+      return props.filters.some(filter =>
+        activity.status.includes(filter.title+'')
+      );
+    });
 
-  const filtered_activity = props.activity.filter((activity) => {
-    return props.filters.filter((filter) => activity.status === filter.title)
-  })
-
-  visibleActivities.value = filtered_activity.slice(
-    count_scorer.value,
-    count_scorer.value + max_visible_activity.value,
-  )
+    visibleActivities.value = filtered_activity;
+  }
 }
 
 function openPopUp(activity: ActivityInterface) {

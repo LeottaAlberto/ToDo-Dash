@@ -7,7 +7,6 @@ import type FilterInterface from '@/interface/FilterInterface'
 const props = defineProps({
   name_filter: String,
 })
-
 const emits = defineEmits(['filter_selected'])
 
 const filtro = ref<FilterInterface>({
@@ -29,7 +28,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="single-filter-container" @click="select_filter({title:props.name_filter, status:filtro.status})">
+  <div v-if="props.name_filter != 'Tutti'" class="single-filter-container cursor-pointer" @click="select_filter({title:props.name_filter, status:filtro.status})">
+    <div class="single-filter flex" :class="{ select: filtro.status }">
+      <h3>{{ props.name_filter }}</h3>
+    </div>
+  </div>
+  <div v-else class="single-filter-container">
     <div class="single-filter flex" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
     </div>
@@ -50,8 +54,11 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   user-select: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .single-filter:hover {

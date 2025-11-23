@@ -8,6 +8,7 @@ const title = ref('')
 const category = ref('')
 const priority = ref('')
 const note = ref('')
+const duration = ref(0)
 
 const formRef = ref<HTMLFormElement | null>(null)
 
@@ -41,7 +42,7 @@ function submit() {
     priority: priority.value,
     duration: 0,
     note: note.value,
-    status: 'active',
+    status: ['active', 'uncompleted', category.value, priority.value, duration.value+''],
   }
   emit('submit', activity)
 }
