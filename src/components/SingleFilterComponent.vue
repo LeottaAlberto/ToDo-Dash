@@ -6,29 +6,37 @@ import type FilterInterface from '@/interface/FilterInterface'
 
 const props = defineProps({
   name_filter: String,
-})
+  id: Number,
+});
 const emits = defineEmits(['filter_selected'])
 
 const filtro = ref<FilterInterface>({
   title: props.name_filter + '',
   status: false,
+  id: props.id || 0,
 })
 
-function select_filter(filters:FilterInterface) {
-  filtro.value.status = !filtro.value.status;
+function select_filter(filters: FilterInterface) {
+  filtro.value.status = !filtro.value.status
   emits('filter_selected', filters)
 }
 
 onMounted(() => {
-  if (props.name_filter == 'Tutti') {
+  console.log(props);
+  if (props.name_filter == 'All') {
     console.log('Filter All')
-    select_filter({title:props.name_filter, status:true})
+    select_filter({ title: props.name_filter, status: true, id: props.id || 0})
   }
+  console.log(filtro)
 })
 </script>
 
 <template>
-  <div v-if="props.name_filter != 'Tutti'" class="single-filter-container cursor-pointer" @click="select_filter({title:props.name_filter, status:filtro.status})">
+  <div
+    v-if="props.name_filter != 'Tutti'"
+    class="single-filter-container cursor-pointer"
+    @click="select_filter({ title: props.name_filter, status: filtro.status, id: props.id || 0})"
+  >
     <div class="single-filter flex" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
     </div>

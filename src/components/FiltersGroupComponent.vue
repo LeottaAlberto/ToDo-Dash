@@ -4,20 +4,36 @@ import SingleFilterComponent from './SingleFilterComponent.vue'
 
 import type FilterInterface from '@/interface/FilterInterface'
 
-const filters = ref<string[]>([])
+const filters = ref<FilterInterface[]>([])
+const id_increment = ref(0);
 
 const emits = defineEmits(['filter_selected'])
 
+
 onMounted(() => {
   if (filters.value.length == 0) {
-    filters.value.push('Tutti')
-    filters.value.push('Attive')
-    filters.value.push('Completate')
+    pushNewFilter('All');
+    pushNewFilter('Active');
+    pushNewFilter('Completed');
   }
 })
 
 function emits_filter_name(filter: FilterInterface) {
-  emits('filter_selected', filter)
+  emits('filter_selected', filter);
+}
+
+function pushNewFilter(title: string){
+  if(title === undefined) return;
+  if(title.length === 0) return;
+
+  const filter: FilterInterface = {
+    title: title,
+    status: false,
+    id: id_increment.value
+  };
+
+  id_increment.value++;
+  filters.value.push(filter);
 }
 </script>
 
@@ -26,12 +42,15 @@ function emits_filter_name(filter: FilterInterface) {
     <h1 class="w-100">Filters</h1>
     <div class="flex filters-group p-2">
       <div v-if="filters.length > 0" class="flex">
-        <div v-for="item in filters" :key="item">
+        <div v-for="item in filters" :key="item.id">
           <SingleFilterComponent
-            :name_filter="item"
+            :name_filter="item.title"
+            :id="item.id"
             :class="{}"
             @filter_selected="
               (filter: FilterInterface) => {
+                console.log('Creo un nuovo filtro singolo');
+
                 emits_filter_name(filter)
               }
             "
