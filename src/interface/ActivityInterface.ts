@@ -5,7 +5,7 @@ export default interface ActivityInterface {
   type: string
   note: string
   status: {
-    title: string,
+    title: string
     id: number
   }[]
 }
