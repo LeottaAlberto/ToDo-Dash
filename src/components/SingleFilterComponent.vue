@@ -73,6 +73,6 @@ onMounted(() => {
   transform: scale(1.02, 1.02);
 }
 .select {
-  background-color: green;
+  background-color: #6d6d6d;
 }
 </style>
