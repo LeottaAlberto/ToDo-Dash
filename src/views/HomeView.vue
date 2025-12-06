@@ -72,9 +72,9 @@ function createActivity(v: ActivityInterface) {
 }
 
 function filters_manage(filters: FilterInterface) {
-if (!filters.status) {
+  if (!filters.status) {
     if (!active_filter.value.some((f) => f.title === filters.title)) {
-      active_filter.value.push(filters);
+      active_filter.value.push(filters)
     }
   } else {
     active_filter.value = removeFilter(filters)
