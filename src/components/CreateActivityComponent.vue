@@ -33,8 +33,7 @@ function submit() {
     return
   }
 
-  console.log(note.value);
-
+  console.log(note.value)
 
   const activity: ActivityInterface = {
     title: title.value,
@@ -42,7 +41,13 @@ function submit() {
     priority: priority.value,
     duration: 0,
     note: note.value,
-    status: [{title:'active', id: 1}, {title:'uncompleted', id: 6}, {title: category.value, id: 3}, {title: priority.value, id: 4}, {title: duration.value+'', id: 5}],
+    status: [
+      { title: 'active', id: 1 },
+      { title: 'uncompleted', id: 6 },
+      { title: category.value, id: 3 },
+      { title: priority.value, id: 4 },
+      { title: duration.value + '', id: 5 },
+    ],
   }
   emit('submit', activity)
 }
