@@ -193,6 +193,7 @@ function openPopUp(activity: ActivityInterface) {
 .activity-container {
   max-width: 75%;
   height: 70vh;
+  min-height: 70vh;
   border: solid 2px #4d4d4dd8;
   border-radius: 15px;
   gap: 1vw;
