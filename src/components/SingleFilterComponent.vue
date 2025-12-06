@@ -7,7 +7,7 @@ import type FilterInterface from '@/interface/FilterInterface'
 const props = defineProps({
   name_filter: String,
   id: Number,
-});
+})
 const emits = defineEmits(['filter_selected'])
 
 const filtro = ref<FilterInterface>({
@@ -22,10 +22,10 @@ function select_filter(filters: FilterInterface) {
 }
 
 onMounted(() => {
-  console.log(props);
+  console.log(props)
   if (props.name_filter == 'All') {
     console.log('Filter All')
-    select_filter({ title: props.name_filter, status: true, id: props.id || 0})
+    select_filter({ title: props.name_filter, status: true, id: props.id || 0 })
   }
   console.log(filtro)
 })
@@ -35,7 +35,7 @@ onMounted(() => {
   <div
     v-if="props.name_filter != 'Tutti'"
     class="single-filter-container cursor-pointer"
-    @click="select_filter({ title: props.name_filter, status: filtro.status, id: props.id || 0})"
+    @click="select_filter({ title: props.name_filter, status: filtro.status, id: props.id || 0 })"
   >
     <div class="single-filter flex" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
