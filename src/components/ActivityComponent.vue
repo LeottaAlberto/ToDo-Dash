@@ -89,14 +89,14 @@ function openPopUp(activity: ActivityInterface) {
       <div
         v-for="(item, index) in visibleActivities"
         :key="index"
-        class="flex px-2 single-activity"
+        class="flex px-2 single-activity pointer-clicked"
         @click="openPopUp(item)"
       >
-        <h2 class="w-25 mw-25">[{{ item.priority.charAt(0).toUpperCase() }}]</h2>
-        <h1 v-if="item.title.length < 12" class="w-50 mw-55 p-relative left-0 px-3">
+        <h2 class="mw-25 pointer-normal" :title="item.priority.toUpperCase()">[{{ item.priority.charAt(0).toUpperCase() }}]</h2>
+        <h1 v-if="item.title.length < 12" class="w-75 mw-55 p-relative left-0 px-3">
           {{ item.title }}
         </h1>
-        <h1 v-else class="w-50 p-relative left-0 px-3">{{ item.title.slice(0, 12) }}...</h1>
+        <h1 v-else class="w-75 p-relative left-0 px-3" :title="item.title">{{ item.title.slice(0, 12) }}...</h1>
         <div class="flex w-25 mw-25 item-activity">
           <h2>{{ item.duration }}h</h2>
           <h2>{{ item.type }}</h2>
@@ -228,5 +228,13 @@ button {
   background-color: transparent;
   border: none;
   max-width: fit-content;
+}
+
+.pointer-normal {
+  cursor: default;
+}
+
+.pointer-clicked {
+  cursor: pointer;
 }
 </style>
