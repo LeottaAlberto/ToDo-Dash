@@ -55,21 +55,20 @@ function updateFilters() {
       count_scorer.value + max_visible_activity.value,
     )
   } else {
-    console.log('caso 3');
-    const filterIds = new Set(props.filters.map(filter => filter.id));
+    console.log('caso 3')
+    const filterIds = new Set(props.filters.map((filter) => filter.id))
     const filtered_activity = props.activity.filter((activity) => {
-      return activity.status.some((statusFilter) => filterIds.has(statusFilter.id));
-    });
+      return activity.status.some((statusFilter) => filterIds.has(statusFilter.id))
+    })
     visibleActivities.value = filtered_activity.slice(
       count_scorer.value,
       count_scorer.value + max_visible_activity.value,
-    );
+    )
 
-    console.log(filterIds);
-    console.log(filtered_activity);
-    console.log(visibleActivities);
-    debugger;
-
+    console.log(filterIds)
+    console.log(filtered_activity)
+    console.log(visibleActivities)
+    debugger
   }
 }
 
