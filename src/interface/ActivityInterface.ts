@@ -4,5 +4,8 @@ export default interface ActivityInterface {
   duration: number
   type: string
   note: string
-  status: string[]
+  status: {
+    title: string,
+    id: number
+  }[]
 }

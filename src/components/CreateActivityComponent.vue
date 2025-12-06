@@ -42,7 +42,7 @@ function submit() {
     priority: priority.value,
     duration: 0,
     note: note.value,
-    status: ['active', 'uncompleted', category.value, priority.value, duration.value+''],
+    status: [{title:'active', id: 1}, {title:'uncompleted', id: 6}, {title: category.value, id: 3}, {title: priority.value, id: 4}, {title: duration.value+'', id: 5}],
   }
   emit('submit', activity)
 }

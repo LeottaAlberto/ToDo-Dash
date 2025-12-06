@@ -47,10 +47,7 @@ function updateFilters() {
 
   console.log(props.filters)
 
-  if (
-    props.filters.length === 0 ||
-    props.filters.some((filter) => filter.title?.toLowerCase() === 'all')
-  ) {
+  if (props.filters.length === 0 || props.filters.some((filter) => filter.id === 0)) {
     console.log('caso 2')
 
     visibleActivities.value = props.activity.slice(
@@ -58,12 +55,21 @@ function updateFilters() {
       count_scorer.value + max_visible_activity.value,
     )
   } else {
-    console.log('caso 3')
+    console.log('caso 3');
+    const filterIds = new Set(props.filters.map(filter => filter.id));
     const filtered_activity = props.activity.filter((activity) => {
-      return props.filters.some((filter) => activity.status.includes(filter.title + ''));
-    })
+      return activity.status.some((statusFilter) => filterIds.has(statusFilter.id));
+    });
+    visibleActivities.value = filtered_activity.slice(
+      count_scorer.value,
+      count_scorer.value + max_visible_activity.value,
+    );
 
-    visibleActivities.value = filtered_activity
+    console.log(filterIds);
+    console.log(filtered_activity);
+    console.log(visibleActivities);
+    debugger;
+
   }
 }
 
