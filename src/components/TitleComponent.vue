@@ -1,7 +1,7 @@
 <template>
-  <div class="title-component-container flex">
+  <div class="title-component-container flex box-shadow">
     <div class="flex">
-      <h1>My ToDo-Dashhhh</h1>
+      <h1 class="text-bolder font-size-big">My ToDo-Dash</h1>
       <input type="button" value="Add Activity" @click="addActivityClicked()" class="btn" />
     </div>
   </div>
