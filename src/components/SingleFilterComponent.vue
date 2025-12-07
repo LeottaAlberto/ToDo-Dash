@@ -37,12 +37,12 @@ onMounted(() => {
     class="single-filter-container cursor-pointer"
     @click="select_filter({ title: props.name_filter, status: filtro.status, id: props.id || 0 })"
   >
-    <div class="single-filter flex" :class="{ select: filtro.status }">
+    <div class="single-filter flex font-size-little" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>
   <div v-else class="single-filter-container">
-    <div class="single-filter flex" :class="{ select: filtro.status }">
+    <div class="single-filter flex font-size-little" :class="{ select: filtro.status }">
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>
