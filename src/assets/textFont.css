@@ -1,0 +1,34 @@
+.text-align-start {
+  text-align: start;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-bolder {
+  font-weight: bolder;
+}
+.text-bold {
+  font-weight: bold;
+}
+
+.font-size-big {
+  font-size: 6vh;
+}
+
+.font-size-little-big {
+  font-size: 4vh;
+}
+
+.font-size-medium {
+  font-size: 2vh;
+}
+
+.font-size-little {
+  font-size: 1.2vh;
+}
+
+.font-size-subtitle {
+  font-size: 0.8vh;
+}
