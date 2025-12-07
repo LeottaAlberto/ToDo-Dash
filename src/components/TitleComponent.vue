@@ -40,8 +40,7 @@ function addActivityClicked() {
 .btn {
   width: 12%;
   height: 4vh;
-  background-color: #6d6d6d;
-  font-size: large;
   border-radius: 5px;
+  color: var(--text-color);
 }
 </style>
