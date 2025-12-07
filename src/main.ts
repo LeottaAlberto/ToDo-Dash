@@ -1,4 +1,8 @@
 import './assets/main.css'
+import './assets/margin.css'
+import './assets/padding.css'
+import './assets/flexRule.css'
+import './assets/textFont.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
