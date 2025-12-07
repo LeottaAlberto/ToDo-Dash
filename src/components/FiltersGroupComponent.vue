@@ -37,24 +37,21 @@ function pushNewFilter(title: string) {
 </script>
 
 <template>
-  <div class="filters-group-container flex">
-    <h1 class="w-100">Filters</h1>
-    <div class="flex filters-group p-2">
-      <div v-if="filters.length > 0" class="flex">
-        <div v-for="item in filters" :key="item.id">
-          <SingleFilterComponent
-            :name_filter="item.title"
-            :id="item.id"
-            :class="{}"
-            @filter_selected="
-              (filter: FilterInterface) => {
-                console.log('Creo un nuovo filtro singolo')
+  <div class="flex filters-group">
+    <div v-if="filters.length > 0" class="flex">
+      <div v-for="item in filters" :key="item.id">
+        <SingleFilterComponent
+          :name_filter="item.title"
+          :id="item.id"
+          :class="{}"
+          @filter_selected="
+            (filter: FilterInterface) => {
+              console.log('Creo un nuovo filtro singolo')
 
-                emits_filter_name(filter)
-              }
-            "
-          />
-        </div>
+              emits_filter_name(filter)
+            }
+          "
+        />
       </div>
     </div>
   </div>
@@ -70,11 +67,7 @@ function pushNewFilter(title: string) {
   flex-direction: column;
 }
 .filters-group {
-  width: 100%;
-  height: 75vh;
   background-color: transparent;
-  border: 2px solid #4d4d4dd8;
-  border-radius: 15px;
   justify-content: start;
   align-items: center;
   flex-direction: column;
