@@ -9,8 +9,8 @@
 
 <template>
     <div class="flex f-col side-container">
-      <h1 class="w-100 text-align-center text-bolder">{{ props.title }}</h1>
-      <div class="side-sub-container p-2">
+      <h1 class="w-100 text-align-center text-bolder font-size-little-big">{{ props.title }}</h1>
+      <div class="side-sub-container p-2 box-shadow">
         <slot/>
       </div>
     </div>
@@ -24,13 +24,13 @@
       min-width: 10%;
     }
     .side-sub-container {
-        width: 100%;
-        height: 65vh;
-        border: solid 2px #4d4d4dd8;
-        border-radius: 15px;
-        gap: 1vw;
-        flex-direction: column;
-        justify-content: flex-start;
+      width: 100%;
+      height: 65vh;
+      border: solid 2px #4d4d4dd8;
+      border-radius: 15px;
+      gap: 1vw;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     .side-sub-container div {
