@@ -106,7 +106,9 @@ function removeFilter(filter: FilterInterface) {
           }
         "
       />
-      <PopUpActivityComponents :activity="activity_in_pop_up" />
+      <PopUpActivityComponents
+        :activity="activity_in_pop_up"
+        @closed="() => activity_in_pop_up = undefined"/>
       <DashboardComponent />
       <CreateActivityComponent
         v-if="isClicked"
