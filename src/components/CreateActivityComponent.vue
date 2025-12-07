@@ -72,42 +72,48 @@ addEventListener('keypress', (key) => {
   <div class="create-activity-container flex">
     <div class="flex field-container">
       <form class="w-100 flex" ref="formRef" @submit.prevent="submit">
-        <h1>Dettaglio attivita'</h1>
+        <h1 class="text-bolder">Add Activity</h1>
         <div class="w-100">
-          <h3>Titolo*</h3>
-          <input type="text" v-model="title" required />
+          <h3>Title *</h3>
+          <input name="title-content" type="text" v-model="title" required />
         </div>
-        <div class="flex category-center w-100">
-          <h3>Categoria*</h3>
-          <h3>Priorita'*</h3>
-          <input type="text" v-model="category" required />
-          <select
-            v-if="optionsArray.length > 0"
-            class="w-100 btn select"
-            v-model="priority"
-            required
-          >
-            <option v-for="opt in optionsArray" :value="opt" :key="opt">
-              {{ opt }}
-            </option>
-          </select>
-          <select v-else class="w-100 btn select" v-model="priority">
-            <option>Lower</option>
-            <option>Medium</option>
-            <option>Higher</option>
-          </select>
+        <div class="flex f-row category-center w-100 min-w-100">
+
+          <div class="w-100">
+            <h3>Category *</h3>
+            <input class="w-100 min-w-100" name="category-content" type="text" v-model="category" required />
+          </div>
+
+          <div class="w-50">
+            <h3>Priority *</h3>
+            <select
+              v-if="optionsArray.length > 0"
+              class="w-100 btn select"
+              v-model="priority"
+              required
+              >
+              <option v-for="opt in optionsArray" :value="opt" :key="opt">
+                {{ opt }}
+              </option>
+            </select>
+            <select v-else class="w-100 btn select" v-model="priority">
+              <option>Lower</option>
+              <option>Medium</option>
+              <option>Higher</option>
+            </select>
+          </div>
         </div>
         <div class="txt-area-container w-100">
-          <h3>Note'</h3>
-          <textarea v-model="note" id="txt" class="txt-area"></textarea>
+          <h3>Note</h3>
+          <textarea v-model="note" id="note-content" name="note-content" class="txt-area"></textarea>
         </div>
-        <p>* campi obbligatori</p>
+        <p class="font-size-little">* campi obbligatori</p>
         <div
           class="w-100 px-2"
           style="display: flex; justify-content: space-between; gap: 10vw; margin-top: 1vw"
         >
-          <input type="button" value="Annulla" class="btn" @click="closeCreateActivity()" />
-          <input type="submit" value="Aggiungi" class="btn" />
+          <input type="button" value="Cancel" class="btn" @click="closeCreateActivity()" />
+          <input type="submit" value="Add" class="btn" />
         </div>
       </form>
     </div>
@@ -135,8 +141,7 @@ form {
   border: none;
   height: 2.5vw;
   width: 100%;
-  background-color: var(--color-background);
-  color: whitesmoke;
+  color: var(--color-text);
   padding-inline: 0.3vw;
   font-size: large;
 }
@@ -164,8 +169,8 @@ form {
   height: 10vh;
   resize: none;
   border-radius: 8px;
-  background-color: var(--color-background);
-  color: whitesmoke;
+  color: var(--color-text);
+  padding: 0.4vw;
 }
 
 .txt-area-container {
@@ -173,16 +178,13 @@ form {
 }
 
 .category-center {
-  background-color: transparent !important;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 0.5vw;
 }
 
 .select {
   border-radius: 8px;
   background-color: var(--color-background);
-  color: whitesmoke;
+  color: var(--color-text);
   height: 2.5vw;
   padding-inline: 0.5vw;
 }
