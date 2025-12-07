@@ -98,9 +98,8 @@ function openPopUp(activity: ActivityInterface) {
 <template>
   <div
     class="flex w-50"
-    style="flex-direction: column; justify-content: center; align-items: center"
-  >
-    <div v-if="visibleActivities.length > 0" class="flex w-100 m-3 p-3 px-2 activity-container">
+    style="flex-direction: column; justify-content: center; align-items: center">
+    <div v-if="visibleActivities.length > 0" class="flex w-100 m-3 p-3 px-2 activity-container box-shadow">
       <div
         v-for="(item, index) in visibleActivities"
         :key="index"
