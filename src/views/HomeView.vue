@@ -4,9 +4,10 @@ import { watch, onMounted, ref, type Ref } from 'vue'
 import Title from '../components/TitleComponent.vue'
 import ActivityComponent from '@/components/ActivityComponent.vue'
 import CreateActivityComponent from '@/components/CreateActivityComponent.vue'
-import DashboardComponent from '@/components/DashboardComponent.vue'
+import SideContainerComponent from '@/components/SideContainerComponent.vue'
 import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
 import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
+import DashboardComponent from '@/components/DashboardComponent.vue'
 
 import type ActivityInterface from '../interface/ActivityInterface'
 import type FilterInterface from '../interface/FilterInterface'
@@ -89,14 +90,12 @@ function removeFilter(filter: FilterInterface) {
   <div class="container flex">
     <Title @clicked="() => (isClicked = true)"></Title>
     <div class="w-100 flex main-container">
-      <FiltersGroupComponent
-        @filter_selected="
-          (filter: FilterInterface) => {
-            filters_manage(filter)
-          }
-        "
-      />
-      {{ console.log(todo) }}
+      <SideContainerComponent title="Filters">
+        <FiltersGroupComponent
+          @filter_selected="(filter: FilterInterface) => filters_manage(filter)"
+        />
+      </SideContainerComponent>
+
       <ActivityComponent
         :activity="todo"
         :filters="active_filter"
@@ -109,7 +108,17 @@ function removeFilter(filter: FilterInterface) {
       <PopUpActivityComponents
         :activity="activity_in_pop_up"
         @closed="() => activity_in_pop_up = undefined"/>
-      <DashboardComponent />
+
+      <SideContainerComponent title="Dashboard">
+        <DashboardComponent
+          :num_activity="todo.length"
+          :num_activity_completed="1"
+          :num_activity_not_completed="2"
+        />
+      </SideContainerComponent>
+
+
+
       <CreateActivityComponent
         v-if="isClicked"
         @submit="
