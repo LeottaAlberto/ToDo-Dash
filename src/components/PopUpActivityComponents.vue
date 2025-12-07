@@ -6,16 +6,21 @@ const isVisible = ref(false)
 
 const props = defineProps<{
   activity?: ActivityInterface
-}>()
+}>();
+const emits = defineEmits(['closed']);
 
 watch(props, () => {
-  console.log('PopUpSbloccato =>')
-  console.log(props.activity)
-  isVisible.value = true
+  openPopUp()
 })
 
 function closePopUp() {
-  isVisible.value = false
+  isVisible.value = false;
+  emits('closed');
+}
+
+function openPopUp() {
+  if(props.activity === undefined) return;
+  isVisible.value = true;
 }
 </script>
 
