@@ -15,6 +15,17 @@ const emits = defineEmits(['open_pop_up'])
 
 const visibleActivities: Ref<ActivityInterface[]> = ref([])
 
+const priority = ref({
+  'Priority': [['H', 'p-high'], ['M', 'p-medium'], ['L', 'p-low']]
+});
+
+function priorityClass(p: string) {
+  if (!p) return ''
+  const key = p.charAt(0).toUpperCase()
+  const found = priority.value['Priority'].find((f: string[]) => f[0] === key)
+  return found ? found[1] : ''
+}
+
 watch(
   () => props.filters,
   (newVal) => {
@@ -92,18 +103,43 @@ function openPopUp(activity: ActivityInterface) {
         class="flex px-2 single-activity pointer-clicked"
         @click="openPopUp(item)"
       >
-        <h2 class="mw-25 pointer-normal" :title="item.priority.toUpperCase()">
-          [{{ item.priority.charAt(0).toUpperCase() }}]
-        </h2>
-        <h1 v-if="item.title.length < 12" class="w-75 mw-55 p-relative left-0 px-3">
-          {{ item.title }}
-        </h1>
-        <h1 v-else class="w-75 p-relative left-0 px-3" :title="item.title">
-          {{ item.title.slice(0, 12) }}...
-        </h1>
-        <div class="flex w-25 mw-25 item-activity">
-          <h2>{{ item.duration }}h</h2>
-          <h2>{{ item.type }}</h2>
+
+        <div class="flex f-col" style="gap: 1vw;">
+          <!-- Priority -->
+          <div class="flex just-content-start w-100 pointer-normal">
+            <span class="flex text-bold priority font-size-subtitle" :class="priorityClass(item.priority)">{{ item.priority.toUpperCase() }}</span>
+        </div>
+
+          <!-- Title -->
+          <div class="flex just-content-start w-100 font-size-medium" style="padding: 0;">
+            <h2 v-if="item.title.length < 30" class="text-bolder single-line">
+              {{ item.title }}
+            </h2>
+            <h2 v-else :title="item.title" class="text-bolder single-line">
+              {{ item.title.substring(0, 30) }}...
+            </h2>
+          </div>
+        </div>
+
+        <div class="flex f-col w-50 mw-50 min-w-50 item-activity">
+          <h2 v-if="item.type.length < 15" class="flex just-content-end text-bolder w-100">
+            <svg fill="none" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+              <g id="SVGRepo_iconCarrier"> <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#ebebeba3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3);"/> </g>
+            </svg>
+            {{ item.duration }}
+          </h2>
+          <h2 v-else  class="flex just-content-end text-bolder w-25">
+            <svg fill="none" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+              <g id="SVGRepo_iconCarrier"> <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#ebebeba3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3);"/> </g>
+            </svg>
+            {{ item.duration }}
+          </h2>
+          <h2 v-if="item.type.length < 15" class="flex just-content-end w-100 font-size-little">{{ item.type }}</h2>
+          <h2 v-else class="flex just-content-end w-50 font-size-little" :title="item.type">{{ item.type.substring(0, 15) }}...</h2>
         </div>
       </div>
     </div>
@@ -214,8 +250,8 @@ function openPopUp(activity: ActivityInterface) {
 }
 
 .item-activity {
-  gap: 1vw;
-  justify-content: space-around;
+  /* gap: 1vw;
+  justify-content: space-around; */
 }
 
 .num-of-page {
@@ -241,5 +277,13 @@ button {
 
 .pointer-clicked {
   cursor: pointer;
+}
+
+.single-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 </style>
