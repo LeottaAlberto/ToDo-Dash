@@ -136,6 +136,10 @@ a,
   background-color: rgb(124, 0, 124);
 }
 
+.box-shadow {
+  box-shadow: 12px 12px 10px 1px rgba(63, 63, 63, 0.2);
+}
+
 input {
   background-color: var(--color-background);
 }
