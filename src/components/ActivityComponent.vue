@@ -107,7 +107,7 @@ function openPopUp(activity: ActivityInterface) {
         class="flex px-2 single-activity pointer-clicked"
         @click="openPopUp(item)"
       >
-        <div class="flex f-col" style="gap: 1vw">
+        <div class="flex f-col pt-1" style="min-height: inherit; justify-content: start;">
           <!-- Priority -->
           <div class="flex just-content-start w-100 pointer-normal">
             <span
@@ -151,7 +151,7 @@ function openPopUp(activity: ActivityInterface) {
                 />
               </g>
             </svg>
-            {{ item.duration }}
+             {{ item.duration }}h
           </h2>
           <h2 v-else class="flex just-content-end text-bolder w-25">
             <svg
@@ -175,12 +175,12 @@ function openPopUp(activity: ActivityInterface) {
                 />
               </g>
             </svg>
-            {{ item.duration }}
+            {{ item.duration }}h
           </h2>
           <h2 v-if="item.type.length < 15" class="flex just-content-end w-100 font-size-little">
             {{ item.type }}
           </h2>
-          <h2 v-else class="flex just-content-end w-50 font-size-little" :title="item.type">
+          <h2 v-else class="flex just-content-end w-50 font-size-little" :title="item.type" style="padding-right: 0.5vw;">
             {{ item.type.substring(0, 15) }}...
           </h2>
         </div>
