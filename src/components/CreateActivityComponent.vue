@@ -33,13 +33,15 @@ function submit() {
     return
   }
 
+  if (duration.value > 72) duration.value = 72
+
   console.log(note.value)
 
   const activity: ActivityInterface = {
     title: title.value,
     type: category.value,
     priority: priority.value,
-    duration: 0,
+    duration: duration.value,
     note: note.value,
     status: [
       { title: 'active', id: 1 },
@@ -73,15 +75,35 @@ addEventListener('keypress', (key) => {
     <div class="flex field-container">
       <form class="w-100 flex" ref="formRef" @submit.prevent="submit">
         <h1 class="text-bolder">Add Activity</h1>
-        <div class="w-100">
-          <h3>Title *</h3>
-          <input name="title-content" type="text" v-model="title" required />
-        </div>
-        <div class="flex f-row category-center w-100 min-w-100">
 
+        <div class="flex f-row g-1 w-100 min-w-100">
+          <div class="w-100">
+            <h3>Title *</h3>
+            <input name="title-content" type="text" v-model="title" required />
+          </div>
+          <div class="w-50">
+            <h3>Time (h)</h3>
+            <input
+              name="duration"
+              type="number"
+              placeholder="How much time in hours"
+              class="font-size-little"
+              v-model="duration"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="flex f-row category-center w-100 min-w-100">
           <div class="w-100">
             <h3>Category *</h3>
-            <input class="w-100 min-w-100" name="category-content" type="text" v-model="category" required />
+            <input
+              class="w-100 min-w-100"
+              name="category-content"
+              type="text"
+              v-model="category"
+              required
+            />
           </div>
 
           <div class="w-50">
@@ -91,7 +113,7 @@ addEventListener('keypress', (key) => {
               class="w-100 btn select"
               v-model="priority"
               required
-              >
+            >
               <option v-for="opt in optionsArray" :value="opt" :key="opt">
                 {{ opt }}
               </option>
@@ -105,7 +127,12 @@ addEventListener('keypress', (key) => {
         </div>
         <div class="txt-area-container w-100">
           <h3>Note</h3>
-          <textarea v-model="note" id="note-content" name="note-content" class="txt-area"></textarea>
+          <textarea
+            v-model="note"
+            id="note-content"
+            name="note-content"
+            class="txt-area"
+          ></textarea>
         </div>
         <p class="font-size-little">* campi obbligatori</p>
         <div
@@ -143,7 +170,6 @@ form {
   width: 100%;
   color: var(--color-text);
   padding-inline: 0.3vw;
-  font-size: large;
 }
 
 .field-container {

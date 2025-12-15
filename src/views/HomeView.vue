@@ -65,10 +65,9 @@ function loadFilters() {
   }
 }
 
-function createActivity(v: ActivityInterface) {
-  console.log(v)
+function createActivity(activity: ActivityInterface) {
   isClicked.value = false
-  if (v != null) todo.value.push(v as ActivityInterface)
+  if (activity != null) todo.value.push(activity as ActivityInterface)
   localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
 
