@@ -46,12 +46,8 @@ watch(props.activity, () => {
 })
 
 function updateFilters() {
-  console.log('Update Filters')
-
   // Caso in cui non ci sono activity
   if (!props.activity || props.activity.length === 0) visibleActivities.value = []
-
-  console.log(props.filters)
 
   if (props.filters.length === 0 || props.filters.some((filter) => filter.id === 0)) {
     console.log('caso 2')
@@ -281,11 +277,6 @@ function openPopUp(activity: ActivityInterface) {
   justify-content: space-between;
   flex-direction: row;
   border-radius: 10px;
-}
-
-.item-activity {
-  /* gap: 1vw;
-  justify-content: space-around; */
 }
 
 .num-of-page {
