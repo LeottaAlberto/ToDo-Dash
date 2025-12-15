@@ -32,25 +32,16 @@ function priorityClass(p: string) {
 
 watch(
   () => props.filters,
-  (newVal) => {
-    console.log('Filters updated:', newVal)
+  () => {
     updateFilters()
   },
   { deep: true, immediate: false },
 )
 
 watch(props.activity, () => {
-  console.log('Monted: activity')
-  console.log('Filters: ')
-  console.log(props.filters)
-  console.log(props.filters.length)
-
   if (props.filters.length !== 0) updateFilters()
   else {
-    console.log('No Filters')
-    console.log(props.activity)
     visibleActivities.value = props.activity
-    console.log(visibleActivities.value)
   }
 })
 
@@ -79,18 +70,10 @@ function updateFilters() {
       count_scorer.value,
       count_scorer.value + max_visible_activity.value,
     )
-
-    console.log(filterIds)
-    console.log(filtered_activity)
-    console.log(visibleActivities)
-    debugger
   }
 }
 
 function openPopUp(activity: ActivityInterface) {
-  console.log('Click sul prop => ')
-  console.log(activity)
-
   emits('open_pop_up', activity)
 }
 </script>
@@ -98,15 +81,19 @@ function openPopUp(activity: ActivityInterface) {
 <template>
   <div
     class="flex w-50"
-    style="flex-direction: column; justify-content: center; align-items: center">
-    <div v-if="visibleActivities.length > 0" class="flex w-100 m-3 p-3 px-2 activity-container box-shadow">
+    style="flex-direction: column; justify-content: center; align-items: center"
+  >
+    <div
+      v-if="visibleActivities.length > 0"
+      class="flex w-100 m-3 p-3 px-2 activity-container box-shadow"
+    >
       <div
         v-for="(item, index) in visibleActivities"
         :key="index"
         class="flex px-2 single-activity pointer-clicked"
         @click="openPopUp(item)"
       >
-        <div class="flex f-col pt-1" style="min-height: inherit; justify-content: start;">
+        <div class="flex f-col pt-1" style="min-height: inherit; justify-content: start">
           <!-- Priority -->
           <div class="flex just-content-start w-100 pointer-normal">
             <span
@@ -150,7 +137,7 @@ function openPopUp(activity: ActivityInterface) {
                 />
               </g>
             </svg>
-             {{ item.duration }}h
+            {{ item.duration }}h
           </h2>
           <h2 v-else class="flex just-content-end text-bolder w-25">
             <svg
@@ -179,7 +166,12 @@ function openPopUp(activity: ActivityInterface) {
           <h2 v-if="item.type.length < 15" class="flex just-content-end w-100 font-size-little">
             {{ item.type }}
           </h2>
-          <h2 v-else class="flex just-content-end w-50 font-size-little" :title="item.type" style="padding-right: 0.5vw;">
+          <h2
+            v-else
+            class="flex just-content-end w-50 font-size-little"
+            :title="item.type"
+            style="padding-right: 0.5vw"
+          >
             {{ item.type.substring(0, 15) }}...
           </h2>
         </div>
