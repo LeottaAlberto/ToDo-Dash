@@ -8,11 +8,14 @@ import SideContainerComponent from '@/components/SideContainerComponent.vue'
 import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
 import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
+import PopUpComponent from '@/components/PopUpComponent.vue'
 
 import type ActivityInterface from '../interface/ActivityInterface'
 import type FilterInterface from '../interface/FilterInterface'
 
-const isClicked = ref(false)
+const isVisibleAddActivity = ref(false)
+const addSubmitActivityClicked = ref(false);
+
 const todo: Ref<ActivityInterface[]> = ref([])
 const filters = ref<string[]>([])
 const active_filter = ref<FilterInterface[]>([])
@@ -22,6 +25,7 @@ const activity_in_pop_up = ref<ActivityInterface>()
 onMounted(() => {
   loadActivity()
   loadFilters()
+  activity_in_pop_up.value = undefined;
 })
 
 watch(todo, () => {
@@ -66,7 +70,7 @@ function loadFilters() {
 }
 
 function createActivity(activity: ActivityInterface) {
-  isClicked.value = false
+  isVisibleAddActivity.value = false
   if (activity != null) todo.value.push(activity as ActivityInterface)
   localStorage.setItem('user-activity', JSON.stringify(todo.value))
 }
@@ -87,7 +91,7 @@ function removeFilter(filter: FilterInterface) {
 
 <template>
   <div class="container flex">
-    <Title @clicked="() => (isClicked = true)"></Title>
+    <Title @clicked="() => (isVisibleAddActivity = true)"></Title>
     <div class="w-100 flex main-container">
       <SideContainerComponent title="Filters">
         <FiltersGroupComponent
@@ -100,13 +104,11 @@ function removeFilter(filter: FilterInterface) {
         :filters="active_filter"
         @open_pop_up="
           (obj) => {
+            console.log(obj);
             activity_in_pop_up = obj
           }
         "
       />
-      <PopUpActivityComponents
-        :activity="activity_in_pop_up"
-        @closed="() => activity_in_pop_up = undefined"/>
 
       <SideContainerComponent title="Dashboard">
         <DashboardComponent
@@ -116,23 +118,55 @@ function removeFilter(filter: FilterInterface) {
         />
       </SideContainerComponent>
 
-
-
-      <CreateActivityComponent
-        v-if="isClicked"
-        @submit="
-          (form) => {
-            createActivity(form)
-          }
-        "
-        @closed="
-          () => {
-            isClicked = false
-          }
-        "
-      />
     </div>
   </div>
+
+  <PopUpComponent
+    v-if="isVisibleAddActivity"
+    title="Create New Activity"
+    footer_btn_title="Add"
+    @closed="isVisibleAddActivity = false"
+
+
+    >
+    <CreateActivityComponent
+    :is-submit-clicked="addSubmitActivityClicked"
+    @submit="
+        (form) => {
+          createActivity(form)
+        }
+        "
+      @closed="
+        () => {
+          isVisibleAddActivity = false
+        }
+        "
+    />
+    <template #footer>
+      <div
+        class="flex w-100 px-3"
+        style="display: flex; justify-content: space-between; gap: 2vw;"
+      >
+        <input type="button" value="Cancel" class="btn w-75" style="height: 3vh;" @click="isVisibleAddActivity = false" />
+        <input type="button" value="Add" class="btn w-75" style="height: 3vh;" @click="()=>addSubmitActivityClicked = !addSubmitActivityClicked"/>
+      </div>
+    </template>
+  </PopUpComponent>
+
+  <PopUpComponent
+    v-if="activity_in_pop_up"
+    :activity="activity_in_pop_up"
+    :title="activity_in_pop_up.title"
+    footer_btn_title="Complete Activity"
+    @closed="() => activity_in_pop_up = undefined"
+  >
+    <PopUpActivityComponents
+      :activity="activity_in_pop_up"
+      @closed="() => (activity_in_pop_up = undefined)"
+    />
+  </PopUpComponent>
+
+
 </template>
 
 <style scoped>
