@@ -9,14 +9,14 @@ const props = defineProps<{
 
 <template>
   <div>
-    <div class="flex flex-col w-100">
+    <div class="flex flex-col mt-2 w-100">
       <!-- Duration Div -->
       <div class="flex f-col w-50 text-align-center">
         <h1 class="text-bolder w-50 text-align-center">
           <svg
             fill="#ebebeba3"
-            width="48px"
-            height="48px"
+            width="38px"
+            height="38px"
             viewBox="0 0 24 24"
             id="Layer_1"
             data-name="Layer 1"
@@ -36,8 +36,8 @@ const props = defineProps<{
         <h1 class="text-bolder w-50 text-align-center">
           <svg
             fill="#ebebeba3"
-            width="48px"
-            height="48px"
+            width="38px"
+            height="38px"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -110,8 +110,8 @@ const props = defineProps<{
         <h1 class="text-bolder w-50 text-align-center">
           <svg
             fill="#ebebeba3"
-            width="48px"
-            height="48px"
+            width="40px"
+            height="40px"
             viewBox="0 0 64 64"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
