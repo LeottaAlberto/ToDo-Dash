@@ -6,7 +6,7 @@ import ActivityComponent from '@/components/ActivityComponent.vue'
 import CreateActivityComponent from '@/components/CreateActivityComponent.vue'
 import SideContainerComponent from '@/components/SideContainerComponent.vue'
 import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
-import PopUpActivityComponents from '@/components/PopUpActivityComponents.vue'
+import PopUpActivityComponents from '@/components/ActivityDetailsComponents.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import PopUpComponent from '@/components/PopUpComponent.vue'
 
@@ -112,9 +112,7 @@ function removeFilter(filter: FilterInterface) {
 
       <SideContainerComponent title="Dashboard">
         <DashboardComponent
-          :num_activity="todo.length"
-          :num_activity_completed="1"
-          :num_activity_not_completed="2"
+          :activities="todo"
         />
       </SideContainerComponent>
 
