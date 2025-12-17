@@ -80,7 +80,7 @@ addEventListener('keypress', (key) => {
 })
 </script>
 <template>
-  <div class="create-activity-container flex">
+  <div class="create-activity-container flex mx-2">
     <form class="flex f-col w-100" ref="formRef" @submit.prevent="submit">
       <div class="flex f-row g-1 w-100 min-w-100">
         <div class="w-100">
