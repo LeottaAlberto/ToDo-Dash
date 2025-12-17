@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="w-100">
     <div class="flex flex-col mt-2 w-100">
       <!-- Duration Div -->
       <div class="flex f-col w-50 text-align-center">
@@ -27,7 +27,7 @@ const props = defineProps<{
             />
           </svg>
         </h1>
-        <h2 class="w-50 text-align-center text-bold">{{ props.activity.duration }} h</h2>
+        <h2 class="w-100 text-align-center text-bold single-line">{{ props.activity.duration }} h</h2>
       </div>
 
       <!-- Priority Div -->
@@ -206,16 +206,25 @@ const props = defineProps<{
       </div>
     </div>
 
-    <div class="flex w-100 text-align-start my-1">
-      <h2
-        v-if="props.activity.note && props.activity.note.length < 350"
-        class="text-align-start w-100 font-size-little"
-      >
+    <div class="flex w-100 text-align-start my-1 px-3">
+      <div v-if="props.activity.note && props.activity.note.length < 350" class="w-100">
+        <h1 class="text-align-start text-bolder w-100">
+          Note
+        </h1>
+        <h2 class="text-align-start w-100 font-size-medium">
         {{ props.activity.note }}
       </h2>
-      <h2 v-else-if="props.activity.note" class="text-align-start w-100 font-size-little">
-        {{ props.activity.note.substring(0, 350) }}...
-      </h2>
+      </div>
+
+      <div v-else-if="props.activity.note">
+        <h1 class="text-align-start text-bolder w-100">
+          Note
+        </h1>
+        <h2 class="text-align-start w-100 font-size-little">
+          {{ props.activity.note.substring(0, 350) }}...
+        </h2>
+      </div>
+
       <h2 v-else class="font-size-medium">Non ci sono note per questa Activity</h2>
     </div>
   </div>
