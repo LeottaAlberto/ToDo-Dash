@@ -49,7 +49,7 @@ function closePopUp() {
         <h1 class="flex px-1 pt-1 font-size-little-big text-bolder w-100">{{ props.title }}</h1>
       </div>
 
-      <div class="body px-2">
+      <div class="body w-100">
         <slot />
       </div>
 
