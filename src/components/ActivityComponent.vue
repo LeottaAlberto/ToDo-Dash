@@ -31,19 +31,15 @@ function priorityClass(p: string) {
 }
 
 watch(
-  () => props.filters,
+  () => props,
   () => {
-    updateFilters()
+    if (props.filters.length !== 0) updateFilters()
+    else {
+      visibleActivities.value = props.activity
+    }
   },
-  { deep: true, immediate: false },
+  { deep: true, immediate: true },
 )
-
-watch(props.activity, () => {
-  if (props.filters.length !== 0) updateFilters()
-  else {
-    visibleActivities.value = props.activity
-  }
-})
 
 function updateFilters() {
   // Caso in cui non ci sono activity
@@ -302,13 +298,5 @@ button {
 
 .pointer-clicked {
   cursor: pointer;
-}
-
-.single-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  max-width: 100%;
 }
 </style>
