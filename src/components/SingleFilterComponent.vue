@@ -33,7 +33,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-if="props.name_filter != 'Tutti'"
+    v-if="props.name_filter != 'All'"
     class="single-filter-container cursor-pointer"
     @click="select_filter({ title: props.name_filter, status: filtro.status, id: props.id || 0 })"
   >
@@ -41,8 +41,9 @@ onMounted(() => {
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>
+
   <div v-else class="single-filter-container">
-    <div class="single-filter flex font-size-little" :class="{ select: filtro.status }">
+    <div class="single-filter flex font-size-little" name="all" :class="{ select: filtro.status }" style="background-color: grey;">
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>
@@ -69,7 +70,7 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.single-filter:hover {
+.single-filter:not([name='all']):hover {
   transform: scale(1.02, 1.02);
 }
 .select {
