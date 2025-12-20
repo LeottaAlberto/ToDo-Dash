@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type ActivityInterface from '@/interface/ActivityInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface'
 
 const props = defineProps<{
   activity: ActivityInterface
 }>()
-
 </script>
 
 <template>
@@ -27,7 +26,9 @@ const props = defineProps<{
             />
           </svg>
         </h1>
-        <h2 class="w-100 text-align-center text-bold single-line">{{ props.activity.duration }} h</h2>
+        <h2 class="w-100 text-align-center text-bold single-line">
+          {{ props.activity.duration }} h
+        </h2>
       </div>
 
       <!-- Priority Div -->
@@ -208,18 +209,14 @@ const props = defineProps<{
 
     <div class="flex w-100 text-align-start my-1 px-3">
       <div v-if="props.activity.note && props.activity.note.length < 350" class="w-100">
-        <h1 class="text-align-start text-bolder w-100">
-          Note
-        </h1>
+        <h1 class="text-align-start text-bolder w-100">Note</h1>
         <h2 class="text-align-start w-100 font-size-medium">
-        {{ props.activity.note }}
-      </h2>
+          {{ props.activity.note }}
+        </h2>
       </div>
 
       <div v-else-if="props.activity.note">
-        <h1 class="text-align-start text-bolder w-100">
-          Note
-        </h1>
+        <h1 class="text-align-start text-bolder w-100">Note</h1>
         <h2 class="text-align-start w-100 font-size-little">
           {{ props.activity.note.substring(0, 350) }}...
         </h2>
