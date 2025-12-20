@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import type ActivityInterface from '@/interface/ActivityInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface'
+import { APP_MESSAGE } from '@/core/constants/messages'
+import { useToast } from '@/composable/useToast'
+
 // import { ref } from 'vue'
 
 const props = defineProps<{
@@ -14,14 +17,26 @@ function closePopUp() {
   emits('closed')
 }
 
+function completeActivity() {
+  closePopUp()
+  const { showToast } = useToast()
+
+  try {
+    // 2. Chiami il toast dedicato
+    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_SUCCESS)
+  } catch (e) {
+    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_ERROR)
+    console.error(e)
+  }
+}
+
 // :class="{ flex: isVisible, 'display-none': !isVisible }"
 </script>
 
 <template>
   <div class="pop-up-background flex">
     <div class="pop-up-container border-standard flex f-col w-25">
-
-      <div class="" @click="closePopUp()" style="position: relative; left: 45%; top: 30px;">
+      <div class="" @click="closePopUp()" style="position: relative; left: 45%; top: 30px">
         <svg
           width="32px"
           height="32px"
@@ -56,7 +71,12 @@ function closePopUp() {
       <div class="w-100 p-1">
         <slot name="footer" v-if="$slots.footer" />
         <div class="flex w-100" v-else>
-          <input type="button" :value="footer_btn_title" class="btn footer-btn w-75" />
+          <input
+            type="button"
+            :value="footer_btn_title"
+            class="btn footer-btn w-75"
+            @click="completeActivity()"
+          />
         </div>
       </div>
     </div>
