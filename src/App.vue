@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ToastComponent from './components/b-popup/src/ToastComponent.vue';
+
 // import { RouterLink } from 'vue-router'
 </script>
 
@@ -9,6 +11,7 @@
 
   <main>
     <RouterView></RouterView>
+      <ToastComponent/>
   </main>
 </template>
 
