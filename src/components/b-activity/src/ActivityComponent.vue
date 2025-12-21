@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch, ref, type Ref } from 'vue'
-import type ActivityInterface from '@/interface/ActivityInterface'
-import type FilterInterface from '@/interface/FilterInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface'
+import type FilterInterface from '@/core/interface/FilterInterface'
 
 const count_scorer = ref(0)
 const max_visible_activity = ref(5)
@@ -172,81 +172,6 @@ function openPopUp(activity: ActivityInterface) {
 
     <div v-else>
       <p style="width: max-content">Nessuna attività presente</p>
-    </div>
-
-    <!-- Pulsanti per scorrere -->
-    <div
-      v-if="props.activity.length > max_visible_activity"
-      class="flex w-50 gap-2 mt-2"
-      style="justify-content: center"
-    >
-      <button @click="count_scorer = Math.max(0, count_scorer - 1)" :disabled="count_scorer === 0">
-        <svg
-          width="32px"
-          height="32px"
-          viewBox="-1.6 -1.6 19.20 19.20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          stroke="#D4D4D4D4"
-          transform="rotate(180)matrix(-1, 0, 0, 1, 0, 0)"
-        >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke="#CCCCCC"
-            stroke-width="0.48"
-          >
-            <path
-              d="M8 10L8 14L6 14L-2.62268e-07 8L6 2L8 2L8 6L16 6L16 10L8 10Z"
-              fill="#D4D4D4D4"
-            ></path>
-          </g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              d="M8 10L8 14L6 14L-2.62268e-07 8L6 2L8 2L8 6L16 6L16 10L8 10Z"
-              fill="#D4D4D4D4"
-            ></path>
-          </g>
-        </svg>
-      </button>
-      <button
-        @click="
-          count_scorer = Math.min(props.activity.length - max_visible_activity, count_scorer + 1)
-        "
-        :disabled="count_scorer + max_visible_activity >= props.activity.length"
-      >
-        <svg
-          width="32px"
-          height="32px"
-          viewBox="-1.6 -1.6 19.20 19.20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          stroke="#D4D4D4D4"
-          transform="rotate(180)matrix(1, 0, 0, 1, 0, 0)"
-        >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke="#CCCCCC"
-            stroke-width="0.48"
-          >
-            <path
-              d="M8 10L8 14L6 14L-2.62268e-07 8L6 2L8 2L8 6L16 6L16 10L8 10Z"
-              fill="#D4D4D4D4"
-            ></path>
-          </g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              d="M8 10L8 14L6 14L-2.62268e-07 8L6 2L8 2L8 6L16 6L16 10L8 10Z"
-              fill="#D4D4D4D4"
-            ></path>
-          </g>
-        </svg>
-      </button>
     </div>
   </div>
 </template>
