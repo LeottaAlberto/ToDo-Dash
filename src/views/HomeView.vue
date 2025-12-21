@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import { watch, onMounted, ref, type Ref } from 'vue'
 
-import Title from '../components/TitleComponent.vue'
-import ActivityComponent from '@/components/ActivityComponent.vue'
-import CreateActivityComponent from '@/components/CreateActivityComponent.vue'
-import SideContainerComponent from '@/components/SideContainerComponent.vue'
-import FiltersGroupComponent from '@/components/FiltersGroupComponent.vue'
-import PopUpActivityComponents from '@/components/ActivityDetailsComponents.vue'
-import DashboardComponent from '@/components/DashboardComponent.vue'
-import PopUpComponent from '@/components/PopUpComponent.vue'
+import Title from '../components/b-title/src/TitleComponent.vue'
+import ActivityComponent from '@/components/b-activity/src/ActivityComponent.vue'
+import CreateActivityComponent from '@/components/b-popup/src/CreateActivityComponent.vue'
+import SideContainerComponent from '@/components/b-side-viewer/src/SideContainerComponent.vue'
+import FiltersGroupComponent from '@/components/b-filter/src/FiltersGroupComponent.vue'
+import PopUpActivityComponents from '@/components/b-popup/src/ActivityDetailsComponents.vue'
+import DashboardComponent from '@/components/b-dashboard/src/DashboardComponent.vue'
+import PopUpComponent from '@/components/b-popup/src/PopUpComponent.vue'
+import ShiftActivityComponent from '@/components/b-activity/src/ShiftActivityComponent.vue'
+import { useToast } from '@/composable/useToast'
+import { APP_MESSAGE } from '@/core/constants/messages'
 
-import type ActivityInterface from '../interface/ActivityInterface'
-import type FilterInterface from '../interface/FilterInterface'
+import type ActivityInterface from '../core/interface/ActivityInterface'
+import type FilterInterface from '../core/interface/FilterInterface'
+import type { ToastMessage } from '@/core/interface/toast.interface'
+
+const { showToast } = useToast()
 
 const isVisibleAddActivity = ref(false)
-const addSubmitActivityClicked = ref(false);
+const addSubmitActivityClicked = ref(false)
 
 const todo: Ref<ActivityInterface[]> = ref([])
 const filters = ref<string[]>([])
@@ -25,7 +31,7 @@ const activity_in_pop_up = ref<ActivityInterface>()
 onMounted(() => {
   loadActivity()
   loadFilters()
-  activity_in_pop_up.value = undefined;
+  activity_in_pop_up.value = undefined
 })
 
 watch(todo, () => {
@@ -87,6 +93,15 @@ function filters_manage(filters: FilterInterface) {
 function removeFilter(filter: FilterInterface) {
   return active_filter.value.filter((f) => f.title !== filter.title)
 }
+
+const handleSave = async (message: ToastMessage) => {
+  try {
+    showToast(message)
+  } catch (error) {
+    showToast(APP_MESSAGE.ACTIVITY.ADD_ERROR)
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -104,18 +119,15 @@ function removeFilter(filter: FilterInterface) {
         :filters="active_filter"
         @open_pop_up="
           (obj) => {
-            console.log(obj);
+            console.log(obj)
             activity_in_pop_up = obj
           }
         "
       />
 
       <SideContainerComponent title="Dashboard">
-        <DashboardComponent
-          :activities="todo"
-        />
+        <DashboardComponent :activities="todo" />
       </SideContainerComponent>
-
     </div>
   </div>
 
@@ -124,29 +136,37 @@ function removeFilter(filter: FilterInterface) {
     title="Create New Activity"
     footer_btn_title="Add"
     @closed="isVisibleAddActivity = false"
-
-
-    >
+  >
     <CreateActivityComponent
-    :is-submit-clicked="addSubmitActivityClicked"
-    @submit="
+      :is-submit-clicked="addSubmitActivityClicked"
+      @submit="
         (form) => {
           createActivity(form)
+          handleSave(APP_MESSAGE.ACTIVITY.ADD_SUCCESS)
         }
-        "
+      "
       @closed="
         () => {
           isVisibleAddActivity = false
         }
-        "
+      "
     />
     <template #footer>
-      <div
-        class="flex w-100 px-3"
-        style="display: flex; justify-content: space-between; gap: 2vw;"
-      >
-        <input type="button" value="Cancel" class="btn w-75" style="height: 3vh;" @click="isVisibleAddActivity = false" />
-        <input type="button" value="Add" class="btn w-75" style="height: 3vh;" @click="()=>addSubmitActivityClicked = !addSubmitActivityClicked"/>
+      <div class="flex w-100 px-3" style="display: flex; justify-content: space-between; gap: 2vw">
+        <input
+          type="button"
+          value="Cancel"
+          class="btn w-75"
+          style="height: 3vh"
+          @click="isVisibleAddActivity = false"
+        />
+        <input
+          type="button"
+          value="Add"
+          class="btn w-75"
+          style="height: 3vh"
+          @click="() => (addSubmitActivityClicked = !addSubmitActivityClicked)"
+        />
       </div>
     </template>
   </PopUpComponent>
@@ -156,7 +176,7 @@ function removeFilter(filter: FilterInterface) {
     :activity="activity_in_pop_up"
     :title="activity_in_pop_up.title"
     footer_btn_title="Complete Activity"
-    @closed="() => activity_in_pop_up = undefined"
+    @closed="() => (activity_in_pop_up = undefined)"
   >
     <PopUpActivityComponents
       :activity="activity_in_pop_up"
@@ -164,7 +184,7 @@ function removeFilter(filter: FilterInterface) {
     />
   </PopUpComponent>
 
-
+  <ShiftActivityComponent />
 </template>
 
 <style scoped>
