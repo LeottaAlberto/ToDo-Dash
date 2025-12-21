@@ -21,7 +21,7 @@
       flex-direction: column;
       width: fit-content;
       max-width: 15%;
-      min-width: 10%;
+      min-width: 15%;
     }
     .side-sub-container {
       width: 100%;
