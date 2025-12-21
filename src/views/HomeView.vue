@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import Title from '../components/b-title/src/TitleComponent.vue'
 import ActivityComponent from '@/components/b-activity/src/ActivityComponent.vue'
@@ -10,53 +10,30 @@ import PopUpActivityComponents from '@/components/b-popup/src/ActivityDetailsCom
 import DashboardComponent from '@/components/b-dashboard/src/DashboardComponent.vue'
 import PopUpComponent from '@/components/b-popup/src/PopUpComponent.vue'
 import ShiftActivityComponent from '@/components/b-activity/src/ShiftActivityComponent.vue'
-import { useToast } from '@/composable/useToast'
-import { APP_MESSAGE } from '@/core/constants/messages'
 
 import type ActivityInterface from '../core/interface/ActivityInterface'
 import type FilterInterface from '../core/interface/FilterInterface'
 import type { ToastMessage } from '@/core/interface/toast.interface'
 
+import { useActivity } from '@/composable/useActivity'
+import { useToast } from '@/composable/useToast'
+import { APP_MESSAGE } from '@/core/constants/messages'
+
+const { addActivity, allActivities } = useActivity()
 const { showToast } = useToast()
 
 const isVisibleAddActivity = ref(false)
 const addSubmitActivityClicked = ref(false)
 
-const todo: Ref<ActivityInterface[]> = ref([])
 const filters = ref<string[]>([])
 const active_filter = ref<FilterInterface[]>([])
 
 const activity_in_pop_up = ref<ActivityInterface>()
 
 onMounted(() => {
-  loadActivity()
   loadFilters()
   activity_in_pop_up.value = undefined
 })
-
-watch(todo, () => {
-  console.log('Todo Aggiornato =>')
-  console.log(todo.value)
-})
-
-function loadActivity() {
-  try {
-    const stored = localStorage.getItem('user-activity')
-    if (stored) {
-      const parsedData = JSON.parse(stored)
-      // Check if parsedData is an array
-      if (Array.isArray(parsedData)) {
-        todo.value = parsedData
-      } else {
-        // If single item, wrap in array
-        todo.value = [parsedData]
-      }
-    }
-  } catch (error) {
-    console.error('Error loading activities:', error)
-    todo.value = []
-  }
-}
 
 function loadFilters() {
   try {
@@ -75,12 +52,6 @@ function loadFilters() {
   }
 }
 
-function createActivity(activity: ActivityInterface) {
-  isVisibleAddActivity.value = false
-  if (activity != null) todo.value.push(activity as ActivityInterface)
-  localStorage.setItem('user-activity', JSON.stringify(todo.value))
-}
-
 function filters_manage(filters: FilterInterface) {
   if (!filters.status) {
     if (!active_filter.value.some((f) => f.title === filters.title)) {
@@ -94,8 +65,12 @@ function removeFilter(filter: FilterInterface) {
   return active_filter.value.filter((f) => f.title !== filter.title)
 }
 
-const handleSave = async (message: ToastMessage) => {
+const handleSave = async (message: ToastMessage, activity?: ActivityInterface) => {
   try {
+    if(message === APP_MESSAGE.ACTIVITY.ADD_SUCCESS && activity){
+      addActivity(activity)
+      isVisibleAddActivity.value = false
+    }
     showToast(message)
   } catch (error) {
     showToast(APP_MESSAGE.ACTIVITY.ADD_ERROR)
@@ -115,7 +90,7 @@ const handleSave = async (message: ToastMessage) => {
       </SideContainerComponent>
 
       <ActivityComponent
-        :activity="todo"
+        :activity="allActivities"
         :filters="active_filter"
         @open_pop_up="
           (obj) => {
@@ -126,7 +101,7 @@ const handleSave = async (message: ToastMessage) => {
       />
 
       <SideContainerComponent title="Dashboard">
-        <DashboardComponent :activities="todo" />
+        <DashboardComponent :activities="allActivities" />
       </SideContainerComponent>
     </div>
   </div>
@@ -141,8 +116,7 @@ const handleSave = async (message: ToastMessage) => {
       :is-submit-clicked="addSubmitActivityClicked"
       @submit="
         (form) => {
-          createActivity(form)
-          handleSave(APP_MESSAGE.ACTIVITY.ADD_SUCCESS)
+          handleSave(APP_MESSAGE.ACTIVITY.ADD_SUCCESS, form)
         }
       "
       @closed="
