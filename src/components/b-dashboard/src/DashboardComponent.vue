@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ActivityInterface from '@/interface/ActivityInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface'
 import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -9,21 +9,24 @@ const props = defineProps<{
 const num_stats = ref({
   active: 0,
   uncompleated: 0,
-  completed: 0
+  completed: 0,
 })
 
-watch(() => props.activities, () => {
-  changeNumberStat()
-})
+watch(
+  () => props.activities,
+  () => {
+    changeNumberStat()
+  },
+)
 
 onMounted(() => {
   changeNumberStat()
 })
 
 function changeNumberStat() {
-  if (!props.activities) return;
+  if (!props.activities) return
 
-  resetStat();
+  resetStat()
 
   props.activities.forEach((activity) => {
     activity.status.forEach((stat) => {
@@ -35,9 +38,9 @@ function changeNumberStat() {
 }
 
 function resetStat() {
-  num_stats.value.active = 0;
-  num_stats.value.completed = 0;
-  num_stats.value.uncompleated = 0;
+  num_stats.value.active = 0
+  num_stats.value.completed = 0
+  num_stats.value.uncompleated = 0
 }
 </script>
 
