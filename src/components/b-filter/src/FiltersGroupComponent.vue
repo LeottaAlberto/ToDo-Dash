@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import SingleFilterComponent from './SingleFilterComponent.vue'
 
-import type FilterInterface from '@/interface/FilterInterface'
+import type FilterInterface from '@/core/interface/FilterInterface'
 
 const filters = ref<FilterInterface[]>([])
 const id_increment = ref(0)

@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 
-import type FilterInterface from '@/interface/FilterInterface'
+import type FilterInterface from '@/core/interface/FilterInterface'
 
 const props = defineProps({
   name_filter: String,
@@ -43,7 +43,12 @@ onMounted(() => {
   </div>
 
   <div v-else class="single-filter-container">
-    <div class="single-filter flex font-size-little" name="all" :class="{ select: filtro.status }" style="background-color: grey;">
+    <div
+      class="single-filter flex font-size-little"
+      name="all"
+      :class="{ select: filtro.status }"
+      style="background-color: grey"
+    >
       <h3>{{ props.name_filter }}</h3>
     </div>
   </div>

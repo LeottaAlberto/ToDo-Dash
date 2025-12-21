@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import type ActivityInterface from '@/interface/ActivityInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface'
 
 const optionStored = ref()
 
