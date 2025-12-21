@@ -1,13 +1,69 @@
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <div class="w-100">
-
+  <div class="flex w-50" style="position: absolute; bottom: 1vh">
+    <div
+      class="flex border-standard w-25"
+      style="background-color: gray; justify-content: space-between"
+    >
+      <button class="" style="background-color: transparent; border: transparent">
+        <svg
+          width="48px"
+          height="48px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          transform="rotate(180)"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19"
+              stroke="#181818"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
+            />
+          </g>
+        </svg>
+      </button>
+      <h2 class="text-bolder text-align-center">Activity</h2>
+      <button class="" style="background-color: transparent; border: transparent">
+        <svg
+          width="48px"
+          height="48px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19"
+              stroke="#181818"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+  button {
+    transition: all 0.05s;
+  }
 
+  button:hover {
+    transform: scale(1.05, 1.05);
+  }
 </style>
