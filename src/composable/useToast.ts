@@ -12,8 +12,13 @@ export function useToast() {
     }, config.duration || 3000)
   }
 
+  const hideToast = () => {
+    activeToast.value = null
+  }
+
   return {
-    activeToast,
-    showToast,
+    activeToast, // Il componente Toast.vue leggerà questo
+    showToast,   // Le tue pagine chiameranno questo
+    hideToast
   }
 }
