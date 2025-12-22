@@ -1,7 +1,11 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useActivity } from '@/composable/useActivity'
+
+const { allActivities } = useActivity()
+</script>
 
 <template>
-  <div class="flex scroll-buttons w-50">
+  <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
     <div class="flex border-standard w-25">
       <button>
         <svg
