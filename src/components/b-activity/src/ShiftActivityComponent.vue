@@ -77,6 +77,6 @@ button {
 }
 
 button:hover {
-  transform: scale(1.05, 1.05);
+  transform: scale(1.08, 1.08);
 }
 </style>
