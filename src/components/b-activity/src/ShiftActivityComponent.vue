@@ -1,12 +1,9 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="flex w-50" style="position: absolute; bottom: 1vh">
-    <div
-      class="flex border-standard w-25"
-      style="background-color: gray; justify-content: space-between"
-    >
-      <button class="" style="background-color: transparent; border: transparent">
+  <div class="flex scroll-buttons w-50">
+    <div class="flex border-standard w-25">
+      <button>
         <svg
           width="48px"
           height="48px"
@@ -31,7 +28,7 @@
         </svg>
       </button>
       <h2 class="text-bolder text-align-center">Activity</h2>
-      <button class="" style="background-color: transparent; border: transparent">
+      <button>
         <svg
           width="48px"
           height="48px"
@@ -59,11 +56,23 @@
 </template>
 
 <style scoped>
-  button {
-    transition: all 0.05s;
-  }
+.scroll-buttons {
+  position: absolute;
+  bottom: 1vh;
+}
 
-  button:hover {
-    transform: scale(1.05, 1.05);
-  }
+.scroll-buttons > div {
+  background-color: var(--vt-c-divider-dark-1);
+  justify-content: space-between;
+}
+
+button {
+  transition: all 0.05s;
+  background-color: transparent;
+  border: transparent;
+}
+
+button:hover {
+  transform: scale(1.05, 1.05);
+}
 </style>
