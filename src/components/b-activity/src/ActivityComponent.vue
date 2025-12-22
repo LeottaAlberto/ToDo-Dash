@@ -2,18 +2,24 @@
 import { watch, ref, type Ref } from 'vue'
 import type ActivityInterface from '@/core/interface/ActivityInterface'
 import type FilterInterface from '@/core/interface/FilterInterface'
+import { useActivity } from '@/composable/useActivity'
 
-const count_scorer = ref(0)
-const max_visible_activity = ref(5)
+const { allActivities, totalActivities } = useActivity()
+const visibleActivities: Ref<ActivityInterface[]> = ref([])
+
+const pages = {
+  page: 0,
+  indexStart: 0,
+  indexEnd: 5,
+  step: 5,
+}
 
 const props = defineProps<{
-  activity: ActivityInterface[]
+  // activity: ActivityInterface[]
   filters: FilterInterface[]
 }>()
 
 const emits = defineEmits(['open_pop_up'])
-
-const visibleActivities: Ref<ActivityInterface[]> = ref([])
 
 const priority = ref({
   Priority: [
@@ -30,40 +36,47 @@ function priorityClass(p: string) {
   return found ? found[1] : ''
 }
 
+watch(totalActivities, () => {
+  // if (props.filters.length !== 0) updateFilters()
+  // else {
+  if (totalActivities.value < pages.step) visibleActivities.value = allActivities.value
+  else {
+    visibleActivities.value = allActivities.value.slice(pages.indexStart, pages.indexEnd)
+  }
+  // }
+})
+
 watch(
-  () => props,
+  () => props.filters,
   () => {
-    if (props.filters.length !== 0) updateFilters()
-    else {
-      visibleActivities.value = props.activity
-    }
+    // updateFilters()
   },
   { deep: true, immediate: true },
 )
 
-function updateFilters() {
-  // Caso in cui non ci sono activity
-  if (!props.activity || props.activity.length === 0) visibleActivities.value = []
+// function updateFilters() {
+//   // Caso in cui non ci sono activity
+//   if (!allActivities.value || totalActivities.value === 0) visibleActivities.value = []
 
-  if (props.filters.length === 0 || props.filters.some((filter) => filter.id === 0)) {
-    console.log('caso 2')
+//   if (props.filters.length === 0 || props.filters.some((filter) => filter.id === 0)) {
+//     console.log('caso 2')
 
-    visibleActivities.value = props.activity.slice(
-      count_scorer.value,
-      count_scorer.value + max_visible_activity.value,
-    )
-  } else {
-    console.log('caso 3')
-    const filterIds = new Set(props.filters.map((filter) => filter.id))
-    const filtered_activity = props.activity.filter((activity) => {
-      return activity.status.some((statusFilter) => filterIds.has(statusFilter.id))
-    })
-    visibleActivities.value = filtered_activity.slice(
-      count_scorer.value,
-      count_scorer.value + max_visible_activity.value,
-    )
-  }
-}
+//     visibleActivities.value = allActivities.value.slice(
+//       pages.indexStart,
+//       pages.indexEnd,
+//     )
+//   } else {
+//     console.log('caso 3')
+//     const filterIds = new Set(props.filters.map((filter) => filter.id))
+//     const filtered_activity = allActivities.value.filter((activity) => {
+//       return activity.filters.some((statusFilter) => filterIds.has(statusFilter.filter_id))
+//     })
+//     visibleActivities.value = filtered_activity.slice(
+//       pages.indexStart,
+//       pages.indexEnd,
+//     )
+//   }
+// }
 
 function openPopUp(activity: ActivityInterface) {
   emits('open_pop_up', activity)
