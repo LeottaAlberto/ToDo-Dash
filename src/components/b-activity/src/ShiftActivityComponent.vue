@@ -1,13 +1,21 @@
 <script lang="ts" setup>
 import { useActivity } from '@/composable/useActivity'
+import { usePagination } from '@/composable/usePagination';
 
 const { allActivities } = useActivity()
+const { nextPage, prevPage } = usePagination()
+// const emit = defineEmits(['update'])
+
+function updatePage(turn: number) {
+  if(turn === 1) prevPage()
+  else nextPage()
+}
 </script>
 
 <template>
   <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
     <div class="flex border-standard w-25">
-      <button>
+      <button @click="updatePage(1)">
         <svg
           width="48px"
           height="48px"
@@ -32,7 +40,7 @@ const { allActivities } = useActivity()
         </svg>
       </button>
       <h2 class="text-bolder text-align-center">Activity</h2>
-      <button>
+      <button @click="updatePage(-1)">
         <svg
           width="48px"
           height="48px"
