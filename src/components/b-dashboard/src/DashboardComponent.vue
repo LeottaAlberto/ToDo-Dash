@@ -1,46 +1,31 @@
 <script setup lang="ts">
-import type ActivityInterface from '@/core/interface/ActivityInterface'
-import { onMounted, ref, watch } from 'vue'
+import { useActivity } from '@/composable/useActivity';
+import { onMounted, watch } from 'vue';
 
-const props = defineProps<{
-  activities: ActivityInterface[]
-}>()
+const { totalActivities, getNumByType } = useActivity();
 
-const num_stats = ref({
-  active: 0,
+const stat = {
+  all: 0,
   uncompleated: 0,
   completed: 0,
-})
+};
 
 watch(
-  () => props.activities,
+  () => totalActivities,
   () => {
-    changeNumberStat()
+    try {
+      loadStat();
+    } catch (error) {
+      console.error(`Errore: ${error}`);
+    }
   },
-)
+  { deep: true, immediate: true },
+);
 
-onMounted(() => {
-  changeNumberStat()
-})
-
-function changeNumberStat() {
-  if (!props.activities) return
-
-  resetStat()
-
-  props.activities.forEach((activity) => {
-    activity.filters.forEach((stat) => {
-      if (stat.filter_name == 'active') num_stats.value.active++
-      else if (stat.filter_name == 'uncompleted') num_stats.value.uncompleated++
-      else if (stat.filter_name == 'completed') num_stats.value.completed++
-    })
-  })
-}
-
-function resetStat() {
-  num_stats.value.active = 0
-  num_stats.value.completed = 0
-  num_stats.value.uncompleated = 0
+function loadStat() {
+  stat.uncompleated = getNumByType(false);
+  stat.completed = getNumByType(true);
+  stat.all = totalActivities.value;
 }
 </script>
 
@@ -69,7 +54,7 @@ function resetStat() {
             </g>
           </svg>
         </div>
-        <h1 class="text-bolder">{{ num_stats.active }}</h1>
+        <h1 class="text-bolder">{{ stat.all }}</h1>
       </div>
 
       <!-- Number Activity Completed -->
@@ -114,7 +99,7 @@ function resetStat() {
             </g>
           </svg>
         </div>
-        <h1 class="text-bolder">{{ num_stats.completed }}</h1>
+        <h1 class="text-bolder">{{ stat.completed }}</h1>
       </div>
 
       <!-- Number Activity Not Completed -->
@@ -204,7 +189,7 @@ function resetStat() {
             </g>
           </svg>
         </div>
-        <h1 class="text-bolder">{{ num_stats.uncompleated }}</h1>
+        <h1 class="text-bolder">{{ stat.uncompleated }}</h1>
       </div>
     </div>
     <div></div>

@@ -19,7 +19,6 @@ export function useActivity() {
   function completeActivity(activity: ActivityInterface): void;
 
   function completeActivity(payload: number | string | ActivityInterface) {
-
     const activity =
       typeof payload === 'object' && 'id' in payload
         ? allActivities.value.filter((a) => a.id === payload.id)
@@ -28,8 +27,19 @@ export function useActivity() {
     if (!activity || !activity[0]) throw new Error('');
 
     activity[0].status = true;
-    console.log(`\n\nActivity Completata con SUCCESSO ${allActivities.value.filter(a => a.id === activity[0]?.id)[0]?.status}`);
+    console.log(
+      `\n\nActivity Completata con SUCCESSO ${allActivities.value.filter((a) => a.id === activity[0]?.id)[0]?.status}`,
+    );
+  }
 
+  function getNumByType(status: boolean): number;
+  function getNumByType(filter_id: number): number;
+
+  function getNumByType(param: boolean | number): number {
+    if (typeof param === 'boolean') {
+      return allActivities.value.filter((a) => a.status === param).length;
+    }
+    return allActivities.value.flatMap((a) => a.filters || []).length;
   }
 
   const totalActivities = computed(() => allActivities.value.length);
@@ -54,5 +64,6 @@ export function useActivity() {
     addActivity,
     removeActivity,
     completeActivity,
+    getNumByType,
   };
 }
