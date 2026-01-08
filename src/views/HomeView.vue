@@ -54,7 +54,7 @@ function loadFilters() {
 
 function filters_manage(filters: FilterInterface) {
   if (!filters.status) {
-    if (!active_filter.value.some((f) => f.title === filters.title)) {
+    if (!active_filter.value.some((f) => f.filter_name === filters.filter_name)) {
       active_filter.value.push(filters)
     }
   } else {
@@ -62,7 +62,7 @@ function filters_manage(filters: FilterInterface) {
   }
 }
 function removeFilter(filter: FilterInterface) {
-  return active_filter.value.filter((f) => f.title !== filter.title)
+  return active_filter.value.filter((f) => f.filter_name !== filter.filter_name)
 }
 
 const handleSave = async (message: ToastMessage, activity?: ActivityInterface) => {

@@ -29,10 +29,10 @@ function changeNumberStat() {
   resetStat()
 
   props.activities.forEach((activity) => {
-    activity.status.forEach((stat) => {
-      if (stat.title == 'active') num_stats.value.active++
-      else if (stat.title == 'uncompleted') num_stats.value.uncompleated++
-      else if (stat.title == 'completed') num_stats.value.completed++
+    activity.filters.forEach((stat) => {
+      if (stat.filter_name == 'active') num_stats.value.active++
+      else if (stat.filter_name == 'uncompleted') num_stats.value.uncompleated++
+      else if (stat.filter_name == 'completed') num_stats.value.completed++
     })
   })
 }

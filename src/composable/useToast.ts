@@ -17,8 +17,8 @@ export function useToast() {
   }
 
   return {
-    activeToast, // Il componente Toast.vue leggerà questo
-    showToast,   // Le tue pagine chiameranno questo
+    activeToast,
+    showToast,
     hideToast
   }
 }

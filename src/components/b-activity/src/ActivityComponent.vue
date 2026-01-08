@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import { watch, ref, type Ref } from 'vue'
-import type ActivityInterface from '@/core/interface/ActivityInterface'
-import type FilterInterface from '@/core/interface/FilterInterface'
-import { useActivity } from '@/composable/useActivity'
+import { watch, ref, type Ref, onMounted } from 'vue';
+import { useActivity } from '@/composable/useActivity';
+import { useFilter } from '@/composable/useFilter';
+import { usePagination } from '@/composable/usePagination';
+import type ActivityInterface from '@/core/interface/ActivityInterface';
+// import type FilterInterface from '@/core/interface/FilterInterface';
 
-const { allActivities, totalActivities } = useActivity()
-const visibleActivities: Ref<ActivityInterface[]> = ref([])
+const { allActivities, totalActivities } = useActivity();
+const { activeFilters, allFiltersLength, INITIAL_FILTERS } = useFilter();
 
-const pages = {
-  page: 0,
-  indexStart: 0,
-  indexEnd: 5,
-  step: 5,
-}
+const { startIndex, endIndex, itemPerPage } = usePagination();
+const visibleActivities: Ref<ActivityInterface[]> = ref([]);
 
-const props = defineProps<{
-  // activity: ActivityInterface[]
-  filters: FilterInterface[]
-}>()
-
-const emits = defineEmits(['open_pop_up'])
+const emits = defineEmits(['open_pop_up']);
 
 const priority = ref({
   Priority: [
@@ -27,32 +20,52 @@ const priority = ref({
     ['M', 'p-medium'],
     ['L', 'p-low'],
   ],
-})
+});
 
 function priorityClass(p: string) {
-  if (!p) return ''
-  const key = p.charAt(0).toUpperCase()
-  const found = priority.value['Priority'].find((f: string[]) => f[0] === key)
-  return found ? found[1] : ''
+  if (!p) return '';
+  const key = p.charAt(0).toUpperCase();
+  const found = priority.value['Priority'].find((f: string[]) => f[0] === key);
+  return found ? found[1] : '';
 }
 
 watch(totalActivities, () => {
-  // if (props.filters.length !== 0) updateFilters()
-  // else {
-  if (totalActivities.value < pages.step) visibleActivities.value = allActivities.value
-  else {
-    visibleActivities.value = allActivities.value.slice(pages.indexStart, pages.indexEnd)
-  }
-  // }
-})
+  if (totalActivities.value < itemPerPage) visibleActivities.value = allActivities.value;
+  else visibleActivities.value = allActivities.value.slice(startIndex.value, endIndex.value);
+});
 
 watch(
-  () => props.filters,
+  activeFilters,
   () => {
-    // updateFilters()
+    if (allFiltersLength.size !== INITIAL_FILTERS.length) {
+      visibleActivities.value = allActivities.value.filter((activity) =>
+        activity.filters.some((activityFilter) =>
+          activeFilters.value.some(
+            (activeFilter) => activeFilter.filter_id === activityFilter.filter_id,
+          ),
+        ),
+      );
+    } else {
+      if (activeFilters.value.find((f) => f.filter_id === 2)) {
+        // Uncompleted
+        visibleActivities.value = allActivities.value.filter((activity) => !activity.status);
+      } else if (activeFilters.value.find((f) => f.filter_id === 1)) {
+        // Completed
+        visibleActivities.value = allActivities.value.filter((activity) => activity.status);
+      } else {
+        visibleActivities.value = allActivities.value;
+      }
+    }
   },
-  { deep: true, immediate: true },
-)
+  { deep: true },
+);
+
+onMounted(() => {
+  if (totalActivities.value < itemPerPage) visibleActivities.value = allActivities.value;
+  else {
+    visibleActivities.value = allActivities.value.slice(startIndex.value, endIndex.value);
+  }
+});
 
 // function updateFilters() {
 //   // Caso in cui non ci sono activity
@@ -79,7 +92,7 @@ watch(
 // }
 
 function openPopUp(activity: ActivityInterface) {
-  emits('open_pop_up', activity)
+  emits('open_pop_up', activity);
 }
 </script>
 

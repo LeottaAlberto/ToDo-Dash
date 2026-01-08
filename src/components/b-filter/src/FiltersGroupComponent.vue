@@ -1,56 +1,34 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import SingleFilterComponent from './SingleFilterComponent.vue'
+import { onMounted, ref } from 'vue';
+import SingleFilterComponent from './SingleFilterComponent.vue';
 
-import type FilterInterface from '@/core/interface/FilterInterface'
+import type FilterInterface from '@/core/interface/FilterInterface';
+import { useFilter } from '@/composable/useFilter';
 
-const filters = ref<FilterInterface[]>([])
-const id_increment = ref(0)
+const selectedId = ref<number | string | null>(null)
 
-const emits = defineEmits(['filter_selected'])
+const { activateFilter, allFilters } = useFilter();
+
+function checkFilter(filter: FilterInterface) {
+  selectedId.value = filter.filter_id;
+  activateFilter(filter.filter_id);
+}
 
 onMounted(() => {
-  if (filters.value.length == 0) {
-    pushNewFilter('All')
-    pushNewFilter('Active')
-    pushNewFilter('Completed')
-  }
-})
+  activateFilter(0)
+});
 
-function emits_filter_name(filter: FilterInterface) {
-  emits('filter_selected', filter)
-}
-
-function pushNewFilter(title: string) {
-  if (title === undefined) return
-  if (title.length === 0) return
-
-  const filter: FilterInterface = {
-    title: title,
-    status: false,
-    id: id_increment.value,
-  }
-
-  id_increment.value++
-  filters.value.push(filter)
-}
 </script>
 
 <template>
   <div class="flex filters-group">
-    <div v-if="filters.length > 0" class="flex">
-      <div v-for="item in filters" :key="item.id">
+    <div v-if="allFilters.length > 0" class="flex">
+      <div v-for="item in allFilters" :key="item.filter_id">
         <SingleFilterComponent
-          :name_filter="item.title"
-          :id="item.id"
+          :selected-id="selectedId"
+          :filter="item"
           :class="{}"
-          @filter_selected="
-            (filter: FilterInterface) => {
-              console.log('Creo un nuovo filtro singolo')
-
-              emits_filter_name(filter)
-            }
-          "
+          @filter_selected="(filter: FilterInterface) => checkFilter(filter)"
         />
       </div>
     </div>

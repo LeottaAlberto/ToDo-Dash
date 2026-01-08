@@ -1,32 +1,36 @@
 <script lang="ts" setup>
-import type ActivityInterface from '@/core/interface/ActivityInterface'
-import { APP_MESSAGE } from '@/core/constants/messages'
-import { useToast } from '@/composable/useToast'
+import type ActivityInterface from '@/core/interface/ActivityInterface';
+import { APP_MESSAGE } from '@/core/constants/messages';
+import { useToast } from '@/composable/useToast';
+import { useActivity } from '@/composable/useActivity';
 
 // import { ref } from 'vue'
 
 const props = defineProps<{
-  title: string
-  footer_btn_title: string
-  activity?: ActivityInterface
-}>()
+  title: string;
+  footer_btn_title: string;
+  activity?: ActivityInterface;
+}>();
 
-const emits = defineEmits(['closed'])
+const { showToast } = useToast();
+const { completeActivity } = useActivity();
+const emits = defineEmits(['closed']);
 
 function closePopUp() {
-  emits('closed')
+  emits('closed');
 }
 
-function completeActivity() {
-  closePopUp()
-  const { showToast } = useToast()
-
+function complete() {
   try {
     // 2. Chiami il toast dedicato
-    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_SUCCESS)
+    if (!props.activity) throw new Error("");
+    
+    completeActivity(props.activity);
+    closePopUp();
+    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_SUCCESS);
   } catch (e) {
-    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_ERROR)
-    console.error(e)
+    showToast(APP_MESSAGE.ACTIVITY.COMPLETED_ERROR);
+    console.error(e);
   }
 }
 
@@ -75,7 +79,7 @@ function completeActivity() {
             type="button"
             :value="footer_btn_title"
             class="btn footer-btn w-75"
-            @click="completeActivity()"
+            @click="complete()"
           />
         </div>
       </div>

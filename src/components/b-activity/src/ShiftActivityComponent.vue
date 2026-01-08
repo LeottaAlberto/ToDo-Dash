@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { useActivity } from '@/composable/useActivity'
+import { useActivity } from '@/composable/useActivity';
 import { usePagination } from '@/composable/usePagination';
 
-const { allActivities } = useActivity()
-const { nextPage, prevPage } = usePagination()
+const { allActivities } = useActivity();
+const { nextPage, prevPage } = usePagination();
 // const emit = defineEmits(['update'])
 
 function updatePage(turn: number) {
-  if(turn === 1) prevPage()
-  else nextPage()
+  if (turn === 1) prevPage();
+  else nextPage();
 }
 </script>
 

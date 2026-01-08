@@ -27,10 +27,6 @@ optionStored.value = JSON.parse(localStorage.getItem('priority-option') || '{}')
 
 const optionsArray = optionStored.value.option ? Object.values(optionStored.value.option) : []
 
-for (const option of optionsArray) {
-  console.log('Elemento nel ciclo:', option)
-}
-
 function closeCreateActivity() {
   emit('closed')
 }
@@ -42,24 +38,21 @@ function submit() {
     return
   }
 
-  if (duration.value > 72) duration.value = 72
-
-  console.log(note.value)
-
   const activity: ActivityInterface = {
+    id: `activity-${Math.random()*100}`,
     title: title.value,
     type: category.value,
     priority: priority.value,
-    duration: duration.value,
+    duration: (duration.value < 72) ? duration.value : 72,
     note: note.value,
-    status: [
-      { title: 'active', id: 1 },
-      { title: 'uncompleted', id: 6 },
-      { title: category.value, id: 3 },
-      { title: priority.value, id: 4 },
-      { title: duration.value + '', id: 5 },
+    status: false,
+    filters: [
+      { filter_name: category.value, filter_id: 3 },
+      { filter_name: priority.value, filter_id: 4 },
+      { filter_name: duration.value+"", filter_id: 5 },
     ],
   }
+
   emit('submit', activity)
 }
 
