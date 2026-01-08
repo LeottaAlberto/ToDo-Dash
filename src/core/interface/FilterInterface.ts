@@ -1,5 +1,6 @@
 export default interface Filters {
-  title: string | undefined
-  status: boolean
-  id: number
+  filter_id: number;
+  filter_name: string;
+  status: boolean;
+  frequency?: number;
 }
