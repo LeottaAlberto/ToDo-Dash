@@ -4,35 +4,24 @@ import { useActivity } from '@/composable/useActivity';
 import { useFilter } from '@/composable/useFilter';
 import { usePagination } from '@/composable/usePagination';
 import type ActivityInterface from '@/core/interface/ActivityInterface';
-// import type FilterInterface from '@/core/interface/FilterInterface';
+import SingleActivityComponent from './SingleActivityComponent.vue';
 
 const { allActivities, totalActivities } = useActivity();
 const { activeFilters, allFiltersLength, INITIAL_FILTERS } = useFilter();
 
-const { startIndex, endIndex, itemPerPage } = usePagination();
+const { startIndex, itemPerPage, currentPage } = usePagination();
 const visibleActivities: Ref<ActivityInterface[]> = ref([]);
 
 const emits = defineEmits(['open_pop_up']);
 
-const priority = ref({
-  Priority: [
-    ['H', 'p-high'],
-    ['M', 'p-medium'],
-    ['L', 'p-low'],
-  ],
-});
-
-function priorityClass(p: string) {
-  if (!p) return '';
-  const key = p.charAt(0).toUpperCase();
-  const found = priority.value['Priority'].find((f: string[]) => f[0] === key);
-  return found ? found[1] : '';
-}
-
-watch(totalActivities, () => {
-  if (totalActivities.value < itemPerPage) visibleActivities.value = allActivities.value;
-  else visibleActivities.value = allActivities.value.slice(startIndex.value, endIndex.value);
-});
+watch(totalActivities, () => setActivity());
+watch(
+  currentPage,
+  () => {
+    setActivity();
+  },
+  { deep: true, immediate: true },
+);
 
 watch(
   activeFilters,
@@ -60,12 +49,19 @@ watch(
   { deep: true },
 );
 
-onMounted(() => {
+onMounted(() => setActivity());
+
+function setActivity(): void {
   if (totalActivities.value < itemPerPage) visibleActivities.value = allActivities.value;
   else {
-    visibleActivities.value = allActivities.value.slice(startIndex.value, endIndex.value);
+    const start = itemPerPage * (currentPage.value - 1);
+    const end =
+      startIndex.value + itemPerPage < start + itemPerPage
+        ? startIndex.value + itemPerPage
+        : start + itemPerPage;
+    visibleActivities.value = allActivities.value.slice(start, end);
   }
-});
+}
 
 // function updateFilters() {
 //   // Caso in cui non ci sono activity
@@ -108,91 +104,10 @@ function openPopUp(activity: ActivityInterface) {
       <div
         v-for="(item, index) in visibleActivities"
         :key="index"
-        class="flex px-2 single-activity pointer-clicked"
+        class="flex w-100"
         @click="openPopUp(item)"
       >
-        <div class="flex f-col pt-1" style="min-height: inherit; justify-content: start">
-          <!-- Priority -->
-          <div class="flex just-content-start w-100 pointer-normal">
-            <span
-              class="flex text-bold priority font-size-subtitle"
-              :class="priorityClass(item.priority)"
-              >{{ item.priority.toUpperCase() }}</span
-            >
-          </div>
-
-          <!-- Title -->
-          <div class="flex just-content-start w-100 font-size-medium" style="padding: 0">
-            <h2 v-if="item.title.length < 30" class="text-bolder single-line">
-              {{ item.title }}
-            </h2>
-            <h2 v-else :title="item.title" class="text-bolder single-line">
-              {{ item.title.substring(0, 30) }}...
-            </h2>
-          </div>
-        </div>
-
-        <div class="flex f-col w-50 mw-50 min-w-50 item-activity">
-          <h2 v-if="item.type.length < 15" class="flex just-content-end text-bolder w-100">
-            <svg
-              fill="none"
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0" />
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
-                  stroke="#ebebeba3"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  data-darkreader-inline-stroke=""
-                  style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
-                />
-              </g>
-            </svg>
-            {{ item.duration }}h
-          </h2>
-          <h2 v-else class="flex just-content-end text-bolder w-25">
-            <svg
-              fill="none"
-              width="24px"
-              height="24px"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0" />
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
-                  stroke="#ebebeba3"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  data-darkreader-inline-stroke=""
-                  style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
-                />
-              </g>
-            </svg>
-            {{ item.duration }}h
-          </h2>
-          <h2 v-if="item.type.length < 15" class="flex just-content-end w-100 font-size-little">
-            {{ item.type }}
-          </h2>
-          <h2
-            v-else
-            class="flex just-content-end w-50 font-size-little"
-            :title="item.type"
-            style="padding-right: 0.5vw"
-          >
-            {{ item.type.substring(0, 15) }}...
-          </h2>
-        </div>
+        <SingleActivityComponent :activity="item" />
       </div>
     </div>
 
@@ -212,18 +127,6 @@ function openPopUp(activity: ActivityInterface) {
   gap: 1vw;
   flex-direction: column;
   justify-content: flex-start;
-}
-.single-activity {
-  background-color: #4d4d4dd8;
-  border: solid 2px #2d2d2d;
-  max-width: 100%;
-  max-height: 10vh;
-
-  min-width: 100%;
-  min-height: 10vh;
-  justify-content: space-between;
-  flex-direction: row;
-  border-radius: 10px;
 }
 
 .num-of-page {

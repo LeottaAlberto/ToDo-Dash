@@ -27,9 +27,7 @@ export function useActivity() {
     if (!activity || !activity[0]) throw new Error('');
 
     activity[0].status = true;
-    console.log(
-      `\n\nActivity Completata con SUCCESSO ${allActivities.value.filter((a) => a.id === activity[0]?.id)[0]?.status}`,
-    );
+    allActivities.value = allActivities.value.filter(f => f.id != activity[0].id);
   }
 
   function getNumByType(status: boolean): number;

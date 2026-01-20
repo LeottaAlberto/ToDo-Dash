@@ -4,18 +4,15 @@ import { usePagination } from '@/composable/usePagination';
 
 const { allActivities } = useActivity();
 const { nextPage, prevPage } = usePagination();
-// const emit = defineEmits(['update'])
 
-function updatePage(turn: number) {
-  if (turn === 1) prevPage();
-  else nextPage();
-}
+console.log('NextPage function:', nextPage);
+
 </script>
 
 <template>
   <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
     <div class="flex border-standard w-25">
-      <button @click="updatePage(1)">
+      <button @click.stop="prevPage()" style="z-index: 999;">
         <svg
           width="48px"
           height="48px"
@@ -23,6 +20,7 @@ function updatePage(turn: number) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           transform="rotate(180)"
+          style="z-index: 1;"
         >
           <g id="SVGRepo_bgCarrier" stroke-width="0" />
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
@@ -40,7 +38,7 @@ function updatePage(turn: number) {
         </svg>
       </button>
       <h2 class="text-bolder text-align-center">Activity</h2>
-      <button @click="updatePage(-1)">
+      <button @click.stop="nextPage()">
         <svg
           width="48px"
           height="48px"
