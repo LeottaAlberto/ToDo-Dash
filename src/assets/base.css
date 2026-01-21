@@ -1,5 +1,11 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  --popup-background: #18181b;
+  --popup-primary: #ffffff;
+  --popup-secondary: #a1a1aa;
+  --popup-tertiary: #a855f7;
+  --popup-divider: #27272a;
+
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;

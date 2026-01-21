@@ -28,6 +28,14 @@
   align-items: baseline;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: end;
+}
+
 .g-1 {
   gap: 0.5vw;
 }
