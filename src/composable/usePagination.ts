@@ -11,7 +11,6 @@ export function usePagination(itemPerPage: number = 5) {
 
   const nextPage = () => {
     if (currentPage.value < totalPages.value) currentPage.value++;
-    console.log(`CurrentPage: ${currentPage.value}`);
   };
   const prevPage = () => {
     if (currentPage.value > 1) currentPage.value--;

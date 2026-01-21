@@ -1,91 +1,40 @@
 <script setup lang="ts">
-import { watch, ref, type Ref, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useActivity } from '@/composable/useActivity';
 import { useFilter } from '@/composable/useFilter';
 import { usePagination } from '@/composable/usePagination';
 import type ActivityInterface from '@/core/interface/ActivityInterface';
 import SingleActivityComponent from './SingleActivityComponent.vue';
 
-const { allActivities, totalActivities } = useActivity();
+const { allActivities } = useActivity();
 const { activeFilters, allFiltersLength, INITIAL_FILTERS } = useFilter();
 
-const { startIndex, itemPerPage, currentPage } = usePagination();
-const visibleActivities: Ref<ActivityInterface[]> = ref([]);
+const { itemPerPage, currentPage } = usePagination();
 
 const emits = defineEmits(['open_pop_up']);
 
-watch(totalActivities, () => setActivity());
-watch(
-  currentPage,
-  () => {
-    setActivity();
-  },
-  { deep: true, immediate: true },
-);
+const filteredActivities = computed(() => {
+  if (allFiltersLength.size === INITIAL_FILTERS.length) return allActivities.value;
 
-watch(
-  activeFilters,
-  () => {
-    if (allFiltersLength.size !== INITIAL_FILTERS.length) {
-      visibleActivities.value = allActivities.value.filter((activity) =>
-        activity.filters.some((activityFilter) =>
-          activeFilters.value.some(
-            (activeFilter) => activeFilter.filter_id === activityFilter.filter_id,
-          ),
-        ),
-      );
-    } else {
-      if (activeFilters.value.find((f) => f.filter_id === 2)) {
-        // Uncompleted
-        visibleActivities.value = allActivities.value.filter((activity) => !activity.status);
-      } else if (activeFilters.value.find((f) => f.filter_id === 1)) {
-        // Completed
-        visibleActivities.value = allActivities.value.filter((activity) => activity.status);
-      } else {
-        visibleActivities.value = allActivities.value;
-      }
+  return allActivities.value.filter((activity) => {
+    const statusFilter = activeFilters.value.find((f) => f.filter_id === 1 || f.filter_id === 2);
+
+    if (statusFilter) {
+      const isCompletedRequested = statusFilter.filter_id === 1;
+      if (activity.status !== isCompletedRequested) return false;
     }
-  },
-  { deep: true },
-);
 
-onMounted(() => setActivity());
+    return activity.filters.some((activityFilter) => {
+      activeFilters.value.some((active) => active.filter_id === activityFilter.filter_id);
+    });
+  });
+});
 
-function setActivity(): void {
-  if (totalActivities.value < itemPerPage) visibleActivities.value = allActivities.value;
-  else {
-    const start = itemPerPage * (currentPage.value - 1);
-    const end =
-      startIndex.value + itemPerPage < start + itemPerPage
-        ? startIndex.value + itemPerPage
-        : start + itemPerPage;
-    visibleActivities.value = allActivities.value.slice(start, end);
-  }
-}
-
-// function updateFilters() {
-//   // Caso in cui non ci sono activity
-//   if (!allActivities.value || totalActivities.value === 0) visibleActivities.value = []
-
-//   if (props.filters.length === 0 || props.filters.some((filter) => filter.id === 0)) {
-//     console.log('caso 2')
-
-//     visibleActivities.value = allActivities.value.slice(
-//       pages.indexStart,
-//       pages.indexEnd,
-//     )
-//   } else {
-//     console.log('caso 3')
-//     const filterIds = new Set(props.filters.map((filter) => filter.id))
-//     const filtered_activity = allActivities.value.filter((activity) => {
-//       return activity.filters.some((statusFilter) => filterIds.has(statusFilter.filter_id))
-//     })
-//     visibleActivities.value = filtered_activity.slice(
-//       pages.indexStart,
-//       pages.indexEnd,
-//     )
-//   }
-// }
+const visibleActivities = computed(() => {
+  const start = itemPerPage * (currentPage.value - 1);
+  const end = start + itemPerPage;
+  return filteredActivities.value.slice(start, end);
+});
 
 function openPopUp(activity: ActivityInterface) {
   emits('open_pop_up', activity);
