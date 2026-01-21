@@ -1,78 +1,54 @@
 <script setup lang="ts">
-import type ActivityInterface from '@/core/interface/ActivityInterface'
+import type ActivityInterface from '@/core/interface/ActivityInterface';
 
 const props = defineProps<{
-  activity: ActivityInterface
-}>()
+  activity: ActivityInterface;
+}>();
 </script>
 
 <template>
-  <div class="w-100">
-    <div class="flex flex-col mt-2 w-100">
+  <div class="w-100 pop-up-body flex f-col just-content-start pt-1">
+    <span
+      class="w-100"
+      style="height: 1px; background-color: var(--popup-divider); margin-bottom: 0.5vh"
+    ></span>
+
+    <div class="flex flex-col w-100 px-2 g-3 just-content-start align-items-center">
       <!-- Duration Div -->
-      <div class="flex f-col w-50 text-align-center">
-        <h1 class="text-bolder w-50 text-align-center">
+      <div class="flex f-row just-content-start align-items-center g-1">
+        <h1 class="text-bolder">
           <svg
-            fill="#ebebeba3"
-            width="38px"
-            height="38px"
-            viewBox="0 0 24 24"
-            id="Layer_1"
-            data-name="Layer 1"
             xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           >
-            <path
-              d="M24,12A12,12,0,0,1,0,12a1,1,0,0,1,2,0A10,10,0,1,0,12,2a1,1,0,0,1,0-2A12.013,12.013,0,0,1,24,12ZM10.277,11H8a1,1,0,0,0,0,2h2.277A1.994,1.994,0,1,0,13,10.277V7a1,1,0,0,0-2,0v3.277A2,2,0,0,0,10.277,11ZM1.827,8.784a1,1,0,1,0-1-1A1,1,0,0,0,1.827,8.784ZM4.221,5.207a1,1,0,1,0-1-1A1,1,0,0,0,4.221,5.207ZM7.779,2.841a1,1,0,1,0-1-1A1,1,0,0,0,7.779,2.841Z"
-            />
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
           </svg>
         </h1>
-        <h2 class="w-100 text-align-center text-bold single-line">
+        <h3 class="w-100 flex align-items-center text-align-center single-line">
           {{ props.activity.duration }} h
-        </h2>
+        </h3>
       </div>
 
       <!-- Priority Div -->
-      <div class="flex f-col w-50 text-align-center">
-        <!-- SVG -->
-        <h1 class="text-bolder w-50 text-align-center">
-          <svg
-            fill="#ebebeba3"
-            width="38px"
-            height="38px"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            data-darkreader-inline-fill=""
-            style="--darkreader-inline-fill: var(--darkreader-background-000000, #000000)"
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <rect
-                width="24"
-                height="24"
-                fill="none"
-                stroke="#000000"
-                stroke-width="0"
-                data-darkreader-inline-stroke=""
-                style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
-              />
-              <path
-                d="M19,3H5A2,2,0,0,0,3,5V19a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V5A2,2,0,0,0,19,3ZM13,13H11V7h2Zm0,4H11V15h2Z"
-              />
-            </g>
-          </svg>
-        </h1>
-
+      <div class="flex text-align-center">
         <!-- Priority Value -->
         <h2 class="w-100 text-align-center">
           <span
             v-if="props.activity.priority.charAt(0).toUpperCase() === 'H'"
             class="text-bold"
             style="
-              background: #4a1818;
+              border: #4a1818 solid 2px;
+              background-color: transparent;
               color: #ff6b6b;
-              padding: 2px 6px;
+              padding: 2px 8px;
               border-radius: 4px;
               font-size: 0.8em;
             "
@@ -82,9 +58,10 @@ const props = defineProps<{
             v-else-if="props.activity.priority.charAt(0).toUpperCase() === 'M'"
             class="text-bold"
             style="
-              background: #423008;
+              border: #fbbf24 solid 2px;
+              background-color: transparent;
               color: #fbbf24;
-              padding: 2px 6px;
+              padding: 2px 8px;
               border-radius: 4px;
               font-size: 0.8em;
             "
@@ -94,9 +71,10 @@ const props = defineProps<{
             v-else
             class="text-bold"
             style="
-              background: #1e3a8a;
+              border: #60a5fa solid 1px;
+              background-color: transparent;
               color: #60a5fa;
-              padding: 2px 6px;
+              padding: 2px 8px;
               border-radius: 4px;
               font-size: 0.8em;
             "
@@ -106,13 +84,13 @@ const props = defineProps<{
       </div>
 
       <!-- Category Div -->
-      <div class="flex f-col w-50 text-align-center">
+      <div class="flex f-row just-content-start g-1">
         <!-- SVG -->
-        <h1 class="text-bolder w-50 text-align-center">
+        <h1 class="flex text-bolder text-align-center">
           <svg
             fill="#ebebeba3"
-            width="40px"
-            height="40px"
+            width="30"
+            height="30"
             viewBox="0 0 64 64"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -198,25 +176,30 @@ const props = defineProps<{
           </svg>
         </h1>
         <!-- Category Value -->
-        <h2 class="w-50 text-align-center text-bold" v-if="props.activity.type.length < 10">
+        <h2 class="w-25 text-align-center" v-if="props.activity.type.length < 10">
           {{ props.activity.type }}
         </h2>
-        <h2 class="w-50 text-align-center text-bold" v-else>
+        <h2 class="w-25 text-align-center" v-else>
           {{ props.activity.type.substring(0, 12) }}
         </h2>
       </div>
     </div>
 
-    <div class="flex w-100 text-align-start my-1 px-3">
+    <span
+      class="w-100"
+      style="height: 1px; background-color: var(--popup-divider); margin-top: 0.5vh"
+    ></span>
+
+    <div class="flex w-100 text-align-start my-1 px-2">
       <div v-if="props.activity.note && props.activity.note.length < 350" class="w-100">
-        <h1 class="text-align-start text-bolder w-100">Note</h1>
+        <h2 class="text-align-start text-bolder w-100">Note</h2>
         <h2 class="text-align-start w-100 font-size-medium">
           {{ props.activity.note }}
         </h2>
       </div>
 
       <div v-else-if="props.activity.note">
-        <h1 class="text-align-start text-bolder w-100">Note</h1>
+        <h2 class="text-align-start text-bolder w-100">Note</h2>
         <h2 class="text-align-start w-100 font-size-little">
           {{ props.activity.note.substring(0, 350) }}...
         </h2>
@@ -228,20 +211,9 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.pop-up-container {
-  background-color: #4d4d4d;
-  width: 40vw;
-  min-height: 50vh;
-  max-height: 70vh;
-  position: absolute;
-  border-radius: 15px;
-  align-items: baseline;
-}
-
 button {
   color: var(--color-text);
   font-size: large;
-  border-radius: 15px;
 }
 
 button:hover {
@@ -250,10 +222,7 @@ button:hover {
 }
 
 .pop-up-body {
-  min-height: 20vh;
-}
-
-.visibility {
-  display: none;
+  min-height: 30vh;
+  max-height: 30vh;
 }
 </style>

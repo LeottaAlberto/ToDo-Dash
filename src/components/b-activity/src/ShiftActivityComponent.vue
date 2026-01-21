@@ -8,7 +8,7 @@ const { nextPage, prevPage } = usePagination();
 
 <template>
   <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
-    <div class="flex border-standard w-25">
+    <div class="flex border-standard w-25 radius-standard">
       <button @click.stop="prevPage()">
         <svg
           width="48px"

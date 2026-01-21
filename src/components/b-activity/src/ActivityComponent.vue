@@ -48,7 +48,7 @@ function openPopUp(activity: ActivityInterface) {
   >
     <div
       v-if="visibleActivities.length > 0"
-      class="flex w-100 m-3 p-3 px-2 activity-container box-shadow"
+      class="flex w-100 m-3 p-3 px-2 activity-container box-shadow radius-standard"
     >
       <div
         v-for="(item, index) in visibleActivities"
@@ -72,7 +72,6 @@ function openPopUp(activity: ActivityInterface) {
   height: 70vh;
   min-height: 70vh;
   border: solid 2px #4d4d4dd8;
-  border-radius: 15px;
   gap: 1vw;
   flex-direction: column;
   justify-content: flex-start;
