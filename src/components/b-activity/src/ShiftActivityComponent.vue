@@ -4,15 +4,12 @@ import { usePagination } from '@/composable/usePagination';
 
 const { allActivities } = useActivity();
 const { nextPage, prevPage } = usePagination();
-
-console.log('NextPage function:', nextPage);
-
 </script>
 
 <template>
   <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
     <div class="flex border-standard w-25">
-      <button @click.stop="prevPage()" style="z-index: 999;">
+      <button @click.stop="prevPage()">
         <svg
           width="48px"
           height="48px"
@@ -20,7 +17,6 @@ console.log('NextPage function:', nextPage);
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           transform="rotate(180)"
-          style="z-index: 1;"
         >
           <g id="SVGRepo_bgCarrier" stroke-width="0" />
           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
