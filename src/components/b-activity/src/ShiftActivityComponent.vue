@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { useActivity } from '@/composable/useActivity';
 import { usePagination } from '@/composable/usePagination';
 
@@ -9,7 +10,7 @@ const { nextPage, prevPage } = usePagination();
 <template>
   <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
     <div class="flex border-standard w-25 radius-standard">
-      <button @click.stop="prevPage()">
+      <ButtonComponent :is_svg="true" @click="prevPage()">
         <svg
           width="48px"
           height="48px"
@@ -32,9 +33,11 @@ const { nextPage, prevPage } = usePagination();
             />
           </g>
         </svg>
-      </button>
+      </ButtonComponent>
+
       <h2 class="text-bolder text-align-center">Activity</h2>
-      <button @click.stop="nextPage()">
+
+      <ButtonComponent :is_svg="true" @click="nextPage()">
         <svg
           width="48px"
           height="48px"
@@ -56,7 +59,7 @@ const { nextPage, prevPage } = usePagination();
             />
           </g>
         </svg>
-      </button>
+      </ButtonComponent>
     </div>
   </div>
 </template>
