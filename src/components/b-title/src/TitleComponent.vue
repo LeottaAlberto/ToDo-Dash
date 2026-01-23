@@ -2,18 +2,16 @@
   <div class="title-component-container flex box-shadow">
     <div class="flex">
       <h1 class="text-bolder font-size-big">My ToDo-Dash</h1>
-      <input type="button" value="Add Activity" @click="addActivityClicked()" class="btn" />
+      <ButtonComponent @click="emit('clicked')"> Add Activity </ButtonComponent>
+      <!-- <input type="button" value="Add Activity" @click="addActivityClicked()" class="btn" /> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['clicked'])
+import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 
-function addActivityClicked() {
-  // alert('aggingi activity');
-  emit('clicked')
-}
+const emit = defineEmits(['clicked']);
 </script>
 
 <style scoped>
@@ -23,7 +21,7 @@ function addActivityClicked() {
   z-index: 1;
 }
 
-.title-component-container div {
+.title-component-container > div {
   width: 100%;
   height: max-content;
   padding: 0.5vw;
