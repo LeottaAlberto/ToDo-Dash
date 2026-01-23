@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.text-align-end {
+  text-align: end;
+}
+
 .text-bolder {
   font-weight: bolder;
 }

@@ -3,8 +3,12 @@
   --popup-background: #18181b;
   --popup-primary: #ffffff;
   --popup-secondary: #a1a1aa;
-  --popup-tertiary: #a855f7;
   --popup-divider: #27272a;
+
+  --btn-background-n: #c084fc;
+  --btn-background-d: #f87171;
+
+  --input-background: #27272a;
 
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
