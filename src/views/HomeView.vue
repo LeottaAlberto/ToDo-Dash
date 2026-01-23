@@ -18,6 +18,8 @@ import type { ToastMessage } from '@/core/interface/toast.interface';
 import { useActivity } from '@/composable/useActivity';
 import { useToast } from '@/composable/useToast';
 import { APP_MESSAGE } from '@/core/constants/messages';
+import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
+import { ButtonType, ButtonWidth } from '@/enums/ButtonEnum';
 
 const { addActivity, allActivities } = useActivity();
 const { showToast } = useToast();
@@ -126,21 +128,15 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
       "
     />
     <template #footer>
-      <div class="flex w-100 px-3" style="display: flex; justify-content: space-between; gap: 2vw">
-        <input
-          type="button"
-          value="Cancel"
-          class="btn radius-standard w-75"
-          style="height: 3vh"
-          @click="isVisibleAddActivity = false"
-        />
-        <input
-          type="button"
-          value="Add"
-          class="btn radius-standard w-75"
-          style="height: 3vh"
+      <div class="flex just-content-end w-100 mt-1 g-1">
+        <ButtonComponent
+          :value="'Add'"
+          :type="ButtonType.NORMAL"
+          :disable="false"
+          :w="ButtonWidth.MEDIUM_LONG"
           @click="() => (addSubmitActivityClicked = !addSubmitActivityClicked)"
-        />
+          >Add</ButtonComponent
+        >
       </div>
     </template>
   </PopUpComponent>
