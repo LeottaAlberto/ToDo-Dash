@@ -1,115 +1,111 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
-import type ActivityInterface from '@/core/interface/ActivityInterface'
+import { onMounted, onUnmounted, ref, watch } from 'vue';
+import type ActivityInterface from '@/core/interface/ActivityInterface';
 
-const optionStored = ref()
+const optionStored = ref();
 
-const title = ref('')
-const category = ref('')
-const priority = ref('')
-const note = ref('')
-const duration = ref(0)
+const title = ref('');
+const category = ref('');
+const priority = ref('');
+const note = ref('');
+const duration = ref(0);
 
-const formRef = ref<HTMLFormElement | null>(null)
+const formRef = ref<HTMLFormElement | null>(null);
 
-const emit = defineEmits(['submit', 'closed'])
+const emit = defineEmits(['submit', 'closed']);
 const props = defineProps({
   isSubmitClicked: Boolean,
-})
+});
 
 watch(props, () => {
-  const btn = document.getElementById('submit-add-activity-btn')
+  const btn = document.getElementById('submit-add-activity-btn');
 
-  if (btn) btn.click()
-})
+  if (btn) btn.click();
+});
 
-optionStored.value = JSON.parse(localStorage.getItem('priority-option') || '{}')
+optionStored.value = JSON.parse(localStorage.getItem('priority-option') || '{}');
 
-const optionsArray = optionStored.value.option ? Object.values(optionStored.value.option) : []
+const optionsArray = optionStored.value.option ? Object.values(optionStored.value.option) : [];
 
 function closeCreateActivity() {
-  emit('closed')
+  emit('closed');
 }
 
 function submit() {
   // Verifica validità del form nativo
   if (formRef.value && !formRef.value.checkValidity()) {
-    formRef.value.reportValidity()
-    return
+    formRef.value.reportValidity();
+    return;
   }
 
   const activity: ActivityInterface = {
-    id: `activity-${Math.random()*100}`,
+    id: `activity-${Math.random() * 100}`,
     title: title.value,
     type: category.value,
     priority: priority.value,
-    duration: (duration.value < 72) ? duration.value : 72,
+    duration: duration.value < 72 ? duration.value : 72,
     note: note.value,
     status: false,
     filters: [
       { filter_name: category.value, filter_id: 3 },
       { filter_name: priority.value, filter_id: 4 },
-      { filter_name: duration.value+"", filter_id: 5 },
+      { filter_name: duration.value + '', filter_id: 5 },
     ],
-  }
+  };
 
-  emit('submit', activity)
+  emit('submit', activity);
 }
 
 onMounted(() => {
   const handlerEscape = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeCreateActivity()
-  }
+    if (event.key === 'Escape') closeCreateActivity();
+  };
 
-  window.addEventListener('keydown', handlerEscape)
+  window.addEventListener('keydown', handlerEscape);
 
-  onUnmounted(() => window.removeEventListener('keydown', handlerEscape))
-})
+  onUnmounted(() => window.removeEventListener('keydown', handlerEscape));
+});
 
 addEventListener('keypress', (key) => {
-  console.log(key.key)
+  console.log(key.key);
 
-  if (key.key == 'escape') closeCreateActivity()
-})
+  if (key.key == 'escape') closeCreateActivity();
+});
 </script>
 <template>
   <div class="create-activity-container flex mx-2">
     <form class="flex f-col w-100" ref="formRef" @submit.prevent="submit">
-      <div class="flex f-row g-1 w-100 min-w-100">
-        <div class="w-100">
-          <h3>Title *</h3>
+      <!-- Riga 1 -->
+      <div class="flex f-row g-3 w-100 min-w-100">
+        <!-- Title -->
+        <div class="w-75 flex f-col just-content-end">
+          <h3 class="w-100">Title *</h3>
           <input name="title-content" type="text" v-model="title" required />
+          <label for="title-content" class="w-100 text-align-end font-size-little">0 / 20</label>
         </div>
-        <div class="w-50">
-          <h3>Time (h)</h3>
-          <input
-            name="duration"
-            type="number"
-            placeholder="How much time in hours"
-            class="font-size-little"
-            v-model="duration"
-            required
-          />
+        <!-- Time -->
+        <div class="w-25 flex f-col just-content-end">
+          <h3 class="w-100">Time (h)</h3>
+          <input name="duration" type="number" v-model="duration" required />
+          <label for="duration" class="w-100 text-align-end font-size-little">Max 72 Hours</label>
         </div>
       </div>
 
-      <div class="flex f-row g-1 w-100 min-w-100">
-        <div class="w-100">
-          <h3>Category *</h3>
-          <input
-            class="w-100 min-w-100"
-            name="category-content"
-            type="text"
-            v-model="category"
-            required
-          />
+      <!-- Riga 2 -->
+      <div class="flex f-row g-3 w-100 min-w-100">
+        <!-- Category -->
+        <div class="w-75 flex f-col just-content-end">
+          <h3 class="w-100">Category *</h3>
+          <input name="category-content" type="text" v-model="category" required />
+          <label for="category-content" class="w-100 text-align-end font-size-little">0 / 20</label>
         </div>
 
-        <div class="w-50">
-          <h3>Priority *</h3>
+        <!-- Priority -->
+        <div class="w-25 flex f-col just-content-end">
+          <h3 class="w-100">Priority *</h3>
           <select
             v-if="optionsArray.length > 0"
-            class="w-100 btn select"
+            class="w-100 btn select radius-cummed"
             v-model="priority"
             required
           >
@@ -117,23 +113,37 @@ addEventListener('keypress', (key) => {
               {{ opt }}
             </option>
           </select>
-          <select v-else class="w-100 btn select" v-model="priority">
+          <select v-else class="w-100 btn select radius-cummed" v-model="priority">
             <option>Lower</option>
             <option>Medium</option>
             <option>Higher</option>
           </select>
+          <label
+            for="duration"
+            class="w-100 text-align-end font-size-little"
+            style="color: transparent"
+            >a</label
+          >
         </div>
       </div>
       <div class="txt-area-container w-100">
         <h3>Note</h3>
         <textarea v-model="note" id="note-content" name="note-content" class="txt-area"></textarea>
       </div>
-      <p class="font-size-little">* campi obbligatori</p>
+      <p class="font-size-little w-100">* campi obbligatori</p>
       <input type="submit" id="submit-add-activity-btn" hidden />
     </form>
   </div>
 </template>
 <style scoped>
+input {
+  background-color: var(--input-background);
+}
+
+.create-activity-container {
+  height: 35vh;
+}
+
 .create-activity-container input {
   border-radius: 7px;
   border: none;
@@ -157,7 +167,7 @@ addEventListener('keypress', (key) => {
 }
 
 .select {
-  background-color: var(--color-background);
+  background-color: var(--input-background);
   color: var(--color-text);
   padding-inline: 0.5vw;
   height: 2vw;
