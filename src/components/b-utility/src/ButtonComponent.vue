@@ -1,32 +1,39 @@
 <script lang="ts" setup>
 import { Position } from '@/enums';
-import { ButtonType, ButtonWidth } from '@/enums/ButtonEnum';
-import { computed } from 'vue';
+import { ButtonType } from '@/enums/ButtonEnum';
+import { computed, useSlots } from 'vue';
+
+const slots = useSlots();
+const emits = defineEmits(['click']);
 
 interface Props {
   type?: ButtonType;
-  w?: ButtonWidth;
   radius?: number;
   disable?: boolean;
-  is_svg?: boolean;
   direction?: Position;
+  icon?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: ButtonType.NORMAL,
-  w: ButtonWidth.MEDIUM,
   radius: 0.5,
   disable: false,
-  is_svg: false,
   direction: Position.CENTER,
+  icon: undefined,
 });
 
-const emits = defineEmits(['click']);
+const getIconUrl = (name: string) => {
+  return new URL(`../../../assets/SVGs/button/${name}.svg`, import.meta.url).href;
+};
+
+const isIconOnly = computed(() => {
+  return !slots.default && props.icon;
+});
 
 const buttonClass = computed(() => {
   return [
     'btn-base',
-    `btn-${props.is_svg ? 'svg' : 'text'}`,
+    isIconOnly.value ? 'btn-svg' : 'btn-text',
     `btn-${props.type.toString().toLocaleLowerCase()}`,
   ];
 });
@@ -41,37 +48,44 @@ const containerClass = computed(() => {
     <button
       :class="buttonClass"
       :disabled="props.disable"
+      :aria-label="props.icon ? props.icon : undefined"
       @click="emits('click')"
       class="btn-base radius-cummed"
       :style="{
-        // minWidth: `${props.w}rem`,
         borderRadius: `${props.radius}rem`,
-        backgroundColor: `${props.is_svg}`,
       }"
     >
-      <slot></slot>
+      <img
+        v-if="props.icon"
+        :src="getIconUrl(props.icon)"
+        class="btn-icon-img"
+        aria-hidden="true"
+      />
+
+      <span v-if="$slots.default">
+        <slot></slot>
+      </span>
     </button>
   </div>
 </template>
 
 <style scoped>
 .btn-container {
-  border: 0 !important;
-  outline: 0 !important;
+  border: 0;
+  outline: 0;
 }
 
 .btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  outline: none;
   cursor: pointer;
-
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius);
 }
 
 .btn-svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0.5rem;
   aspect-ratio: 1 / 1;
   border-radius: 50% !important;
@@ -129,6 +143,6 @@ const containerClass = computed(() => {
 
 .btn-svg:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  transform: rotate(90deg);
+  /* transform: rotate(90deg); */
 }
 </style>
