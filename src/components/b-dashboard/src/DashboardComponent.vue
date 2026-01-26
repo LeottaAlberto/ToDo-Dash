@@ -1,204 +1,108 @@
 <script setup lang="ts">
+import StatisticComponent from '@/components/b-utility/src/StatisticComponent.vue';
 import { useActivity } from '@/composable/useActivity';
-import { onMounted, watch } from 'vue';
+import { computed } from 'vue';
 
 const { totalActivities, getNumByType } = useActivity();
 
-const stat = {
-  all: 0,
-  uncompleated: 0,
-  completed: 0,
-};
-
-watch(
-  () => totalActivities,
-  () => {
-    try {
-      loadStat();
-    } catch (error) {
-      console.error(`Errore: ${error}`);
-    }
-  },
-  { deep: true, immediate: true },
-);
-
-function loadStat() {
-  stat.uncompleated = getNumByType(false);
-  stat.completed = getNumByType(true);
-  stat.all = totalActivities.value;
-}
+const stats = computed(() => {
+  return {
+    all: totalActivities.value,
+    completed: getNumByType(true),
+    uncompleted: getNumByType(false),
+  };
+});
 </script>
 
 <template>
-  <div class="flex f-row w-100">
-    <div class="flex">
-      <!-- Number Activity -->
-      <div class="flex f-col min-h-100 just-content-start" title="Number Activity ">
-        <div class="flex align-items-baseline pt-1 w-100 dash-item">
-          <svg
-            fill="#ebebeba3"
-            width="48px"
-            height="48px"
-            viewBox="-3.5 0 19 19"
-            xmlns="http://www.w3.org/2000/svg"
-            class="cf-icon-svg"
-            data-darkreader-inline-fill=""
-            style="--darkreader-inline-fill: var(--darkreader-background-000000, #000000)"
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <path
-                d="M10.05 3.828a1.112 1.112 0 0 1 1.11 1.108v10.562a1.112 1.112 0 0 1-1.11 1.108h-8.1a1.112 1.112 0 0 1-1.11-1.108V4.936a1.112 1.112 0 0 1 1.11-1.108h.415v1.108h-.414l-.002.002v10.558l.002.002h8.098l.002-.002V4.938l-.002-.002h-.414V3.828h.416zm-.98 4.076H2.82v1.108h6.25zm0 2.337H2.82v1.108h6.25zm0 2.337H2.82v1.108h6.25zm-.543-8.935v1.25a.476.476 0 0 1-.475.476H3.948a.476.476 0 0 1-.475-.475v-1.25a.476.476 0 0 1 .475-.476h.697V1.87a.476.476 0 0 1 .475-.475h1.76a.476.476 0 0 1 .475.475v1.3h.697a.476.476 0 0 1 .475.474zM6.55 2.67a.554.554 0 1 0-.554.554.554.554 0 0 0 .554-.554z"
-              />
-            </g>
-          </svg>
-        </div>
-        <h1 class="text-bolder">{{ stat.all }}</h1>
-      </div>
+  <div class="dashboard-stats">
+    <!-- :iconName="'num_activity'" -->
+    <StatisticComponent :statName="'Total Activities'" :statNum="stats.all">
+      <svg
+        width="60px"
+        height="50px"
+        viewBox="-2.4 -2.4 28.80 28.80"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#c084fc"
+        data-darkreader-inline-fill=""
+        style="--darkreader-inline-fill: var(--darkreader-background-000000, #ebebeba3); padding: 0"
+        class="flex"
+        transform="matrix(1, 0, 0, 1, 0, 0)"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke="#CCCCCC"
+          stroke-width="0.048"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: var(--darkreader-text-cccccc, #c8c3bc)"
+        />
+        <g id="SVGRepo_iconCarrier">
+          <path
+            d="M20 4h-3V3h-3a2 2 0 0 0-4 0H7v1H4v18h16zM8 4h3V2.615A.615.615 0 0 1 11.614 2h.771a.615.615 0 0 1 .615.615V4h3v2H8zm11 17H5V5h2v2h10V5h2zM7 18h5v1H7zm0-8h10v1H7zm0 4h10v1H7z"
+          />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </g>
+      </svg>
+    </StatisticComponent>
 
-      <!-- Number Activity Completed -->
-      <div class="flex f-col min-h-100 just-content-start" title="Number Activity Completed">
-        <div class="flex align-items-baseline pt-1 w-100 dash-item">
-          <svg
-            width="48px"
-            height="48px"
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <rect
-                width="48"
-                height="48"
-                fill="none"
-                fill-opacity="0.01"
-                data-darkreader-inline-fill=""
-                style="--darkreader-inline-fill: var(--darkreader-background-ffffff, #181a1b)"
-              />
-              <path
-                d="M14 24L15.25 25.25M44 14L24 34L22.75 32.75"
-                stroke="#ebebeba3"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                data-darkreader-inline-stroke=""
-                style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
-              />
-              <path
-                d="M4 24L14 34L34 14"
-                stroke="#ebebeba3"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                data-darkreader-inline-stroke=""
-                style="--darkreader-inline-stroke: var(--darkreader-text-000000, #e8e6e3)"
-              />
-            </g>
-          </svg>
-        </div>
-        <h1 class="text-bolder">{{ stat.completed }}</h1>
-      </div>
+    <!-- :icon_name="'num_activity_completed'" -->
+    <StatisticComponent :statName="'Completed'" :statNum="stats.completed">
+      <svg
+        width="50px"
+        height="50px"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#34d399"
+        data-darkreader-inline-fill=""
+        style="
+          --darkreader-inline-fill: var(--darkreader-background-ebebeba3, rgba(35, 38, 40, 0.64));
+        "
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+        <g id="SVGRepo_iconCarrier">
+          <path
+            d="M7 13.689l.637-.636 2.863 2.674 7.022-6.87.637.637L10.5 17zM22.8 12.5A10.3 10.3 0 1 1 12.5 2.2a10.297 10.297 0 0 1 10.3 10.3zm-1 0a9.3 9.3 0 1 0-9.3 9.3 9.31 9.31 0 0 0 9.3-9.3z"
+          />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </g>
+      </svg>
+    </StatisticComponent>
 
-      <!-- Number Activity Not Completed -->
-      <div class="flex f-col min-h-100 just-content-start" title="Number Activity Uncompleted">
-        <div class="flex align-items-baseline pt-1 w-100 dash-item">
-          <svg
-            fill="#ebebeba3"
-            width="40px"
-            height="40px"
-            viewBox="0 0 64 64"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xml:space="preserve"
-            xmlns:serif="http://www.serif.com/"
-            style="
-              fill-rule: evenodd;
-              clip-rule: evenodd;
-              stroke-linejoin: round;
-              stroke-miterlimit: 2;
-              --darkreader-inline-fill: var(--darkreader-background-000000, #ebebeba3);
-            "
-            data-darkreader-inline-fill=""
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <rect
-                id="Icons"
-                x="-704"
-                y="-64"
-                width="1280"
-                height="800"
-                style="fill: none; --darkreader-inline-fill: none"
-                data-darkreader-inline-fill=""
-              />
-              <g id="Icons1" serif:id="Icons">
-                <g id="Strike"></g>
-                <g id="H1"></g>
-                <g id="H2"></g>
-                <g id="div"></g>
-                <g id="list-ul"></g>
-                <g id="hamburger-1"></g>
-                <g id="hamburger-2"></g>
-                <g id="list-ol"></g>
-                <g id="list-task"></g>
-                <g id="trash"></g>
-                <g id="vertical-menu"></g>
-                <g id="horizontal-menu"></g>
-                <g id="sidebar-2"></g>
-                <g id="Pen"></g>
-                <g id="Pen1" serif:id="Pen"></g>
-                <g id="clock"></g>
-                <g id="external-link"></g>
-                <g id="hr"></g>
-                <g id="info"></g>
-                <g id="warning"></g>
-                <path
-                  id="error-circle"
-                  d="M32.085,56.058c6.165,-0.059 12.268,-2.619 16.657,-6.966c5.213,-5.164 7.897,-12.803 6.961,-20.096c-1.605,-12.499 -11.855,-20.98 -23.772,-20.98c-9.053,0 -17.853,5.677 -21.713,13.909c-2.955,6.302 -2.96,13.911 0,20.225c3.832,8.174 12.488,13.821 21.559,13.908c0.103,0.001 0.205,0.001 0.308,0Zm-0.282,-4.003c-9.208,-0.089 -17.799,-7.227 -19.508,-16.378c-1.204,-6.452 1.07,-13.433 5.805,-18.015c5.53,-5.35 14.22,-7.143 21.445,-4.11c6.466,2.714 11.304,9.014 12.196,15.955c0.764,5.949 -1.366,12.184 -5.551,16.48c-3.672,3.767 -8.82,6.016 -14.131,6.068c-0.085,0 -0.171,0 -0.256,0Zm-12.382,-10.29l9.734,-9.734l-9.744,-9.744l2.804,-2.803l9.744,9.744l10.078,-10.078l2.808,2.807l-10.078,10.079l10.098,10.098l-2.803,2.804l-10.099,-10.099l-9.734,9.734l-2.808,-2.808Z"
-                />
-                <g id="plus-circle"></g>
-                <g id="minus-circle"></g>
-                <g id="vue"></g>
-                <g id="cog"></g>
-                <g id="logo"></g>
-                <g id="radio-check"></g>
-                <g id="eye-slash"></g>
-                <g id="eye"></g>
-                <g id="toggle-off"></g>
-                <g id="shredder"></g>
-                <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"></g>
-                <g id="react"></g>
-                <g id="check-selected"></g>
-                <g id="turn-off"></g>
-                <g id="code-block"></g>
-                <g id="user"></g>
-                <g id="coffee-bean"></g>
-                <g id="coffee-beans"><g id="coffee-bean1" serif:id="coffee-bean"></g></g>
-                <g id="coffee-bean-filled"></g>
-                <g id="coffee-beans-filled"><g id="coffee-bean2" serif:id="coffee-bean"></g></g>
-                <g id="clipboard"></g>
-                <g id="clipboard-paste"></g>
-                <g id="clipboard-copy"></g>
-                <g id="Layer1"></g>
-              </g>
-            </g>
-          </svg>
-        </div>
-        <h1 class="text-bolder">{{ stat.uncompleated }}</h1>
-      </div>
-    </div>
-    <div></div>
+    <!-- :icon_name="'num_activity_uncompleted'" -->
+    <StatisticComponent :statName="'Uncompleted'" :statNum="stats.uncompleted">
+      <svg
+        width="51px"
+        height="51px"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fb7185"
+        data-darkreader-inline-fill=""
+        style="
+          --darkreader-inline-fill: var(--darkreader-background-ebebeba3, rgba(35, 38, 40, 0.64));
+        "
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+        <g id="SVGRepo_iconCarrier">
+          <path
+            d="M17.45 8.257L13.207 12.5l4.243 4.243-.707.707-4.243-4.243-4.243 4.243-.707-.707 4.243-4.243L7.55 8.257l.707-.707 4.243 4.243 4.243-4.243zM22.8 12.5A10.3 10.3 0 1 1 12.5 2.2a10.297 10.297 0 0 1 10.3 10.3zm-1 0a9.3 9.3 0 1 0-9.3 9.3 9.31 9.31 0 0 0 9.3-9.3z"
+          />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </g>
+      </svg>
+    </StatisticComponent>
   </div>
 </template>
 
 <style scoped>
-.dash-item {
-  min-height: 8vh;
-  min-width: 3vw;
+.dashboard-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
 }
 </style>
