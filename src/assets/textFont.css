@@ -18,21 +18,21 @@
 }
 
 .font-size-big {
-  font-size: 5vh;
+  font-size: 4rem;
 }
 
 .font-size-little-big {
-  font-size: 4vh;
+  font-size: 2.5rem;
 }
 
 .font-size-medium {
-  font-size: 2vh;
+  font-size: 1rem;
 }
 
 .font-size-little {
-  font-size: 1.2vh;
+  font-size: 1rem;
 }
 
 .font-size-subtitle {
-  font-size: 0.8vh;
+  font-size: 0.8rem;
 }
