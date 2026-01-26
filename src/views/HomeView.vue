@@ -37,6 +37,12 @@ onMounted(() => {
   activity_in_pop_up.value = undefined;
 });
 
+const activityFormRef = ref<InstanceType<typeof CreateActivityComponent> | null>(null);
+
+const onSaveClicked = () => {
+  activityFormRef.value?.triggerSubmit();
+};
+
 function loadFilters() {
   try {
     const stored = localStorage.getItem('user-filters');
@@ -112,9 +118,11 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     v-if="isVisibleAddActivity"
     title="Create New Activity"
     footer_btn_title="Add"
+    :disable_btn_footer="false"
     @closed="isVisibleAddActivity = false"
   >
     <CreateActivityComponent
+      ref="onSaveClicked"
       :is-submit-clicked="addSubmitActivityClicked"
       @submit="
         (form) => {
@@ -135,7 +143,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
           :disable="false"
           :w="ButtonWidth.MEDIUM_LONG"
           @click="() => (addSubmitActivityClicked = !addSubmitActivityClicked)"
-          >Add</ButtonComponent
+          >Create</ButtonComponent
         >
       </div>
     </template>
@@ -145,6 +153,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     v-if="activity_in_pop_up"
     :activity="activity_in_pop_up"
     :title="activity_in_pop_up.title"
+    :disable_btn_footer="activity_in_pop_up.status"
     footer_btn_title="Complete Activity"
     @closed="() => (activity_in_pop_up = undefined)"
   >

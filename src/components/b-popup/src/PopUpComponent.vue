@@ -5,13 +5,13 @@ import { useToast } from '@/composable/useToast';
 import { useActivity } from '@/composable/useActivity';
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { Position } from '@/enums';
-import { ButtonWidth } from '@/enums/ButtonEnum';
 
 // import { ref } from 'vue'
 
 const props = defineProps<{
   title: string;
   footer_btn_title: string;
+  disable_btn_footer: boolean | true;
   activity?: ActivityInterface;
 }>();
 
@@ -69,12 +69,12 @@ function complete() {
         <slot name="footer" v-if="$slots.footer" />
         <div class="flex just-content-end w-100" v-else>
           <ButtonComponent
-            :w="ButtonWidth.MEDIUM_LONG"
             :direction="Position.RIGHT"
+            :disable="props.disable_btn_footer"
             class="w-100"
             @click="complete()"
           >
-            Complete Activity
+            {{ props.footer_btn_title }}
           </ButtonComponent>
         </div>
       </div>
