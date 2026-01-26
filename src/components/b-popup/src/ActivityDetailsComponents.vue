@@ -191,7 +191,7 @@ const props = defineProps<{
     ></span>
 
     <div class="flex w-100 text-align-start my-1 px-2">
-      <div v-if="props.activity.note && props.activity.note.length < 350" class="w-100">
+      <div v-if="props.activity.note && props.activity.note.length < 400" class="w-100">
         <h2 class="text-align-start text-bolder w-100">Note</h2>
         <h2 class="text-align-start w-100 font-size-medium">
           {{ props.activity.note }}
@@ -200,8 +200,8 @@ const props = defineProps<{
 
       <div v-else-if="props.activity.note">
         <h2 class="text-align-start text-bolder w-100">Note</h2>
-        <h2 class="text-align-start w-100 font-size-little">
-          {{ props.activity.note.substring(0, 350) }}...
+        <h2 class="text-align-start w-100 font-size-medium">
+          {{ props.activity.note.substring(0, 500) }}
         </h2>
       </div>
 
