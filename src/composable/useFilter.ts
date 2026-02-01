@@ -94,16 +94,25 @@ export function useFilter() {
     const filter = allFilters.value.find((f) => f.filter_id == id);
     if (!filter) return;
 
-    const alreadyActive = activeFilters.value.some((f) => f.filter_id == id);
-
-    if (!alreadyActive) {
-      filter.status = true;
-      activeFilters.value.push(filter);
-    } else {
+    const isActive = activeFilters.value.some((f) => f.filter_id === id);
+    if (isActive) {
       deactivateFilter(id);
+      return;
     }
 
-    if (filter.frequency) deactivateFilter(filter.filter_id, filter.frequency);
+    if (filter.frequency) {
+      const conflicts = activeFilters.value.filter(
+        (f) => f.frequency === filter.frequency && f.filter_id !== id,
+      );
+
+      conflicts.forEach((f) => deactivateFilter(f.filter_id));
+    }
+
+    if (id === 0) [...activeFilters.value].forEach((f) => deactivateFilter(f.filter_id));
+    else if (activeFilters.value.some((f) => f.filter_id === 0)) deactivateFilter(0);
+
+    filter.status = true;
+    activeFilters.value.push(filter);
   };
 
   /**
@@ -114,24 +123,12 @@ export function useFilter() {
    *
    * @param id Filter identifier
    */
-  const deactivateFilter = (id: number | string, frequency?: number): void => {
-    if (!frequency) {
-      activeFilters.value = activeFilters.value.filter((f) => f.filter_id !== id);
-      const f = activeFilters.value.filter((f) => f.filter_id === id)[0];
-      if (f) f.status = false;
-      return;
-    }
+  const deactivateFilter = (id: number | string): void => {
+    activeFilters.value = activeFilters.value.filter((f) => f.filter_id !== id);
 
-    const f = allFilters.value.filter((f) => f.filter_id === id)[0];
-    if (f) {
-      const disableOther = allFilters.value.filter(
-        (fil) => fil.frequency === f?.frequency && fil.filter_id != id,
-      );
-      if (disableOther) {
-        disableOther.forEach((d) => {
-          d.status = false;
-        });
-      }
+    const filterRef = allFilters.value.find((f) => f.filter_id === id);
+    if (filterRef) {
+      filterRef.status = false;
     }
   };
 
