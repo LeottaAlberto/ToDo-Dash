@@ -7,14 +7,17 @@ import type ActivityInterface from '@/core/interface/ActivityInterface';
 import SingleActivityComponent from './SingleActivityComponent.vue';
 
 const { allActivities } = useActivity();
-const { activeFilters, allFiltersLength, INITIAL_FILTERS } = useFilter();
+const { activeFilters } = useFilter();
 
 const { itemPerPage, currentPage } = usePagination();
 
 const emits = defineEmits(['open_pop_up']);
 
 const filteredActivities = computed(() => {
-  if (allFiltersLength.size === INITIAL_FILTERS.length) return allActivities.value;
+  const isAllSelected = activeFilters.value.some((f) => f.filter_id === 0);
+  if (activeFilters.value.length === 0 || isAllSelected) {
+    return allActivities.value;
+  }
 
   return allActivities.value.filter((activity) => {
     const statusFilter = activeFilters.value.find((f) => f.filter_id === 1 || f.filter_id === 2);
@@ -24,9 +27,15 @@ const filteredActivities = computed(() => {
       if (activity.status !== isCompletedRequested) return false;
     }
 
-    return activity.filters.some((activityFilter) => {
-      activeFilters.value.some((active) => active.filter_id === activityFilter.filter_id);
+    const activeTags = activeFilters.value.filter((f) => f.filter_id > 2);
+
+    if (activeTags.length === 0) return true;
+
+    const hasMatchingTag = activity.filters.some((activityFilter) => {
+      return activeTags.some((activeTag) => activeTag.filter_id === activityFilter.filter_id);
     });
+
+    return hasMatchingTag;
   });
 });
 
@@ -60,7 +69,7 @@ function openPopUp(activity: ActivityInterface) {
       </div>
     </div>
 
-    <div v-else>
+    <div v-else class="flex w-100 m-3 p-3 px-2 activity-container box-shadow radius-standard">
       <p style="width: max-content">Nessuna attività presente</p>
     </div>
   </div>
