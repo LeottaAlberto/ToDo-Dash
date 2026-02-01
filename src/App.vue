@@ -8,7 +8,7 @@ const { allActivities } = useActivity();
 
 const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   saveData();
-  event.preventDefault();
+  // event.preventDefault();
 };
 
 const handleBlur = () => saveData();

@@ -8,8 +8,12 @@ const { nextPage, prevPage } = usePagination();
 </script>
 
 <template>
-  <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
-    <div class="flex border-standard w-25 radius-standard">
+  <div
+    class="flex justify-content-center scroll-buttons w-50"
+    v-if="allActivities.length > 5"
+    style="background-color: red"
+  >
+    <div class="flex border-standard w-25 radius-standard" style="background-color: blue">
       <ButtonComponent :icon="'leftArrow'" @click="prevPage()" />
 
       <h2 class="text-bolder text-align-center">Activity</h2>
