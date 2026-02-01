@@ -11,16 +11,10 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   event.preventDefault();
 };
 
-const handleBlur = () => {
-  saveData();
-  console.log("L'utente ha lasciato la pagina o cambiato tab");
-};
+const handleBlur = () => saveData();
 
 // 3. Ritorno del Focus
-const handleFocus = () => {
-  saveData();
-  console.log("L'utente è tornato sulla pagina");
-};
+const handleFocus = () => saveData();
 
 onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
@@ -48,14 +42,14 @@ function saveData() {
 
   <main>
     <RouterView></RouterView>
-      <ToastComponent/>
+    <ToastComponent />
   </main>
 </template>
 
 <style scoped>
-  main {
-    max-width: 100vw;
-    max-height: 100vh;
-    overflow-x: hidden;
-  }
+main {
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow-x: hidden;
+}
 </style>

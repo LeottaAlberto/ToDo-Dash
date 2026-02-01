@@ -1,21 +1,19 @@
 <script lang="ts" setup>
-import { useToast } from '@/composable/useToast'
-import { ToastType } from '@/core/enum/toast.enum'
+import { useToast } from '@/composable/useToast';
+import { ToastType } from '@/core/enum/toast.enum';
 
-const { activeToast } = useToast()
+const { activeToast } = useToast();
 
 const getBorderColor = (type: ToastType) => {
-  console.log(type)
-
   switch (type) {
     case ToastType.SUCCESS:
-      return 'border-success'
+      return 'border-success';
     case ToastType.ERROR:
-      return 'border-error'
+      return 'border-error';
     case ToastType.WARNING:
-      return 'border-warning'
+      return 'border-warning';
   }
-}
+};
 </script>
 
 <template>
@@ -31,7 +29,6 @@ const getBorderColor = (type: ToastType) => {
 </template>
 
 <style scoped>
-
 .border-success {
   border-left: solid 5px #4caf50;
 }

@@ -102,7 +102,6 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
         :filters="active_filter"
         @open_pop_up="
           (obj) => {
-            console.log(obj);
             activity_in_pop_up = obj;
           }
         "

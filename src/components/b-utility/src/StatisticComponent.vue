@@ -8,8 +8,6 @@ const props = defineProps({
 });
 
 const iconComponent = computed(() => {
-  console.log(props);
-
   if (!props.iconName) return null;
   return defineAsyncComponent(() => import(`@/assets/SVGs/statistics/${props.iconName}.svg`));
 });
