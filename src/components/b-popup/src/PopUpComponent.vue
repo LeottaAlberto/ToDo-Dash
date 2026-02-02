@@ -6,8 +6,6 @@ import { useActivity } from '@/composable/useActivity';
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { Position } from '@/enums';
 
-// import { ref } from 'vue'
-
 const props = defineProps<{
   title: string;
   footer_btn_title: string;
@@ -38,40 +36,44 @@ function complete() {
 </script>
 
 <template>
-  <div class="pop-up-background flex">
-    <div class="pop-up-container just-content-start radius-cummed flex f-col w-50">
-      <div class="flex just-content-space-between w-100" style="background-color: transparent">
-        <div class="flex f-row w-75">
+  <div
+    class="flex justify-center items-center top-0 left-0 p-0 m-0 z-9999 absolute w-full h-full bg-black/20"
+  >
+    <div
+      class="flex flex-col px-5 py-3 max-h-4/6 max-w-2/5 absolute rounded-xl w-full h-full bg-zinc-900"
+    >
+      <div class="flex just-content-space-between w-full">
+        <div class="flex flex-row basis-2/3">
           <h1
-            class="flex just-content-start px-2 pt-1 font-size-little-big text-bolder w-100 popup-title-color"
+            class="flex justify-start items-center text-align-center px-2 pt-1 text-5xl font-bold w-full"
           >
             {{ props.title }}
           </h1>
         </div>
 
-        <div class="flex min-h-100 w-50 just-content-end align-items-end px-2">
+        <div class="flex basis-1/3 px-2">
           <ButtonComponent
             :is_svg="true"
             :direction="Position.RIGHT"
             :icon="'close'"
-            class="w-100"
+            class="w-full"
             @click="closePopUp()"
           >
           </ButtonComponent>
         </div>
       </div>
 
-      <div class="popup-body w-100">
+      <div class="flex-1 overflow-y-auto p-5 w-full">
         <slot />
       </div>
 
-      <div class="w-100 p-2">
+      <div class="w-full p-4">
         <slot name="footer" v-if="$slots.footer" />
-        <div class="flex just-content-end w-100" v-else>
+        <div class="flex justify-end w-full" v-else>
           <ButtonComponent
             :direction="Position.RIGHT"
             :disable="props.disable_btn_footer"
-            class="w-100"
+            class="w-full"
             @click="complete()"
           >
             {{ props.footer_btn_title }}
@@ -81,47 +83,3 @@ function complete() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.popup-title-color {
-  color: var(--popup-primary);
-}
-
-.pop-up-container {
-  background-color: var(--popup-background);
-  min-height: 45vh;
-  max-height: 60vh;
-  max-width: 40vw;
-  position: absolute;
-  align-items: baseline;
-}
-
-.pop-up-background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.55);
-  z-index: 900;
-  top: 0;
-  left: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.popup-body {
-  max-height: 30vh;
-  min-height: 20vh;
-}
-
-.footer-btn {
-  height: 3vh;
-}
-
-.close-btn {
-  animation: all 0.2s;
-}
-
-.close-btn:hover {
-  transform: scale(1.08, 1.08);
-}
-</style>
