@@ -51,63 +51,18 @@ function openPopUp(activity: ActivityInterface) {
 </script>
 
 <template>
-  <div
-    class="flex w-50"
-    style="flex-direction: column; justify-content: center; align-items: center"
-  >
+  <div class="flex w-50 flex-col justify-center items-center">
     <div
-      v-if="visibleActivities.length > 0"
-      class="flex w-100 m-3 p-3 px-2 activity-container box-shadow radius-standard"
+      class="m-3 p-6 w-75 min-h-full outline-2 outline-neutral-600 shadow-lg shadow-sky-100/10 rounded-xl"
     >
-      <div
-        v-for="(item, index) in visibleActivities"
-        :key="index"
-        class="flex w-100"
-        @click="openPopUp(item)"
-      >
-        <SingleActivityComponent :activity="item" />
-      </div>
-    </div>
-
-    <div v-else class="flex w-100 m-3 p-3 px-2 activity-container box-shadow radius-standard">
-      <p style="width: max-content">Nessuna attività presente</p>
+      <span v-if="visibleActivities.length > 0" class="flex flex-col gap-2">
+        <div v-for="(item, index) in visibleActivities" :key="index" @click="openPopUp(item)">
+          <SingleActivityComponent :activity="item" />
+        </div>
+      </span>
+      <span v-else>
+        <p style="width: max-content">There are no activities</p>
+      </span>
     </div>
   </div>
 </template>
-
-<style scoped>
-.activity-container {
-  max-width: 75%;
-  height: 70vh;
-  min-height: 70vh;
-  border: solid 2px #4d4d4dd8;
-  gap: 1vw;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.num-of-page {
-  flex-direction: row;
-  gap: 1vw;
-  cursor: pointer;
-}
-
-.num-of-page h3:hover {
-  transform: scale(1.015, 1.015);
-  font-weight: bold;
-}
-
-button {
-  background-color: transparent;
-  border: none;
-  max-width: fit-content;
-}
-
-.pointer-normal {
-  cursor: default;
-}
-
-.pointer-clicked {
-  cursor: pointer;
-}
-</style>
