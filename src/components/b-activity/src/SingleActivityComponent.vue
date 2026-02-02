@@ -25,32 +25,39 @@ function priorityClass(p: string) {
 <template>
   <div
     v-if="props.activity"
-    :class="props.activity.status ? 'completed' : 'uncompleted'"
-    class="pointer-clicked single-activity flex px-2 w-100"
+    :class="[
+      props.activity.status
+        ? 'hover:outline-lime-600 brightness-50 hover:brightness-75'
+        : 'outline-violet-500 hover:brightness-125',
+    ]"
+    class="flex justify-between cursor-pointer px-4 py-2 w-full rounded-md transition-all duration-50 bg-neutral-600 hover:outline-2"
   >
-    <div class="flex f-col pt-1" style="min-height: inherit; justify-content: start">
+    <div class="flex flex-col pt-1 gap-2">
       <!-- Priority -->
-      <div class="flex just-content-start w-100 pointer-normal">
+      <div class="flex content-start w-full max-h-6 cursor-default">
         <span
-          class="flex text-bold priority font-size-subtitle"
-          :class="[priorityClass(props.activity.priority), { 'badge-inactive': props.activity.status }]"
+          class="flex justify-center items-center rounded-md text-xs text-bold p-2"
+          :class="[priorityClass(props.activity.priority), { grayscale: props.activity.status }]"
           >{{ props.activity.priority.toUpperCase() }}</span
         >
       </div>
 
       <!-- Title -->
-      <div class="flex just-content-start w-100 font-size-medium" style="padding: 0">
-        <h2 v-if="props.activity.title.length < 30" class="text-bolder single-line">
+      <div class="flex content-start w-full text-3xl">
+        <h2 v-if="props.activity.title.length < 30" class="font-bold whitespace-nowrap">
           {{ props.activity.title }}
         </h2>
-        <h2 v-else :title="props.activity.title" class="text-bolder single-line">
+        <h2 v-else :title="props.activity.title" class="font-bold whitespace-nowrap">
           {{ props.activity.title.substring(0, 30) }}...
         </h2>
       </div>
     </div>
 
-    <div class="flex f-col w-50 mw-50 min-w-50 props.activity-activity">
-      <h2 v-if="props.activity.type.length < 15" class="flex just-content-end text-bolder w-100">
+    <div class="flex flex-wrap flex-col justify-center w-1/4">
+      <h2
+        v-if="props.activity.type.length < 15"
+        class="flex flex-wrap justify-end font-bolder w-full"
+      >
         <svg
           v-if="!props.activity.status"
           fill="none"
@@ -104,9 +111,10 @@ function priorityClass(p: string) {
             />
           </g>
         </svg>
-        <h5 v-if="!props.activity.status" class="text-bolder">{{ props.activity.duration }}h</h5>
+        <h5 v-if="!props.activity.status" class="font-bolder">{{ props.activity.duration }}h</h5>
       </h2>
-      <h2 v-else class="flex just-content-end text-bolder w-25">
+
+      <h2 v-else class="flex flex-wrap justify-end font-bolder">
         <svg
           v-if="!props.activity.status"
           fill="none"
@@ -162,67 +170,12 @@ function priorityClass(p: string) {
         </svg>
         {{ props.activity.duration }}h
       </h2>
-      <h2
-        v-if="props.activity.type.length < 15"
-        class="flex just-content-end w-100 font-size-little"
-      >
+      <h2 v-if="props.activity.type.length < 15" class="flex justify-end w-full text-md">
         {{ props.activity.type }}
       </h2>
-      <h2
-        v-else
-        class="flex just-content-end w-50 font-size-little"
-        :title="props.activity.type"
-        style="padding-right: 0.5vw"
-      >
+      <h2 v-else class="flex justify-end w-50 text-md pr-2" :title="props.activity.type">
         {{ props.activity.type.substring(0, 15) }}...
       </h2>
     </div>
   </div>
 </template>
-
-<style scoped>
-.single-activity {
-  max-width: 100%;
-  max-height: 10vh;
-
-  min-width: 100%;
-  min-height: 10vh;
-  justify-content: space-between;
-  flex-direction: row;
-  border-radius: 10px;
-}
-
-.single-activity:focus, .single-activity:hover {
-  border: solid 2px #9e009e;
-}
-
-.uncompleted {
-  background-color: #4d4d4dd8;
-  border: solid 2px #2d2d2d;
-}
-
-.completed {
-  background-color: #4d4d4dd8;
-  border: 1px solid transparent;
-  opacity: 0.5;
-}
-
-.completed:hover, .completed:focus {
-  border: solid 2px #4caf50;
-}
-
-.completed:focus .completed:hover {
-  filter: brightness(5);
-}
-
-svg {
-  filter: brightness(1.5);
-  opacity: 1.0;
-}
-
-.badge-inactive {
-  background-color: #444;
-  color: #888;
-  border: 1px solid #555;
-}
-</style>
