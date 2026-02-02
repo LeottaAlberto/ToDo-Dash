@@ -8,8 +8,8 @@ import { useFilter } from '@/composable/useFilter';
 const { allFilters } = useFilter();
 
 const props = defineProps<{
-  filter: FilterInterface,
-  selectedId: number | string | null
+  filter: FilterInterface;
+  selectedId: number | string | null;
 }>();
 
 const filterData = ref<FilterInterface>();
@@ -28,64 +28,41 @@ onMounted(() => {
   if (props.filter.filter_id == 1 || props.filter.filter_id == 2) filterData.value.frequency = 1;
 });
 
-watch(allFilters, () => {
-  const f = allFilters.value.filter(filter => filter.filter_id === filterData.value?.filter_id);
+watch(
+  allFilters,
+  () => {
+    const f = allFilters.value.filter((filter) => filter.filter_id === filterData.value?.filter_id);
 
-  if (f && f[0] && filterData.value) {
-    filterData.value.status = f[0].status;
-  }
-}, {  deep: true, immediate: true })
+    if (f && f[0] && filterData.value) {
+      filterData.value.status = f[0].status;
+    }
+  },
+  { deep: true, immediate: true },
+);
 </script>
 
 <template>
   <div
     v-if="filterData && filterData.filter_id != 0"
-    class="single-filter-container cursor-pointer"
+    class="cursor-pointer w-full"
     @click="select_filter()"
   >
-    <div class="single-filter flex font-size-little" :class="{ select: filterData.status }">
+    <div
+      class="flex justify-center rounded-xl w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-500 duration-75 hover:scale-102"
+      :class="{ select: filterData.status }"
+    >
       <h3>{{ filterData.filter_name }}</h3>
     </div>
   </div>
 
-  <div v-else class="single-filter-container">
+  <div v-else>
     <div
       v-if="filterData"
-      class="single-filter flex font-size-little"
+      class="flex justify-center rounded-xl w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-800"
       name="all"
       :class="{ select: filterData.status }"
-      style="background-color: grey"
     >
       <h3>{{ filterData.filter_name }}</h3>
     </div>
   </div>
 </template>
-
-<style scoped>
-.single-filter-container {
-  height: fit-content;
-}
-
-.single-filter {
-  width: 10vw;
-  height: 5vh;
-  border: solid 2px #4d4d4dd8;
-  border-radius: 15px;
-  gap: 1vw;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.single-filter:not([name='all']):hover {
-  transform: scale(1.02, 1.02);
-}
-.select {
-  background-color: #6d6d6d;
-}
-</style>
