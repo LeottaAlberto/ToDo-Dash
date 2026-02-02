@@ -60,45 +60,73 @@ function triggerSubmit() {
   submit();
 }
 </script>
+
 <template>
-  <div class="create-activity-container flex mx-2">
-    <form class="flex f-col w-100" ref="formRef" @submit.prevent="submit">
+  <div class="h-full flex mx-2">
+    <form
+      class="flex flex-col gap-5 w-full overflow-y-hidden"
+      ref="formRef"
+      @submit.prevent="submit"
+    >
       <!-- Riga 1 -->
-      <div class="flex f-row g-3 w-100 min-w-100">
+      <div class="flex flex-row gap-5 w-full min-w-full">
         <!-- Title -->
-        <div class="w-75 flex f-col just-content-end">
-          <label for="title-content" class="w-100">Title *</label>
-          <input name="title-content" type="text" v-model="title" maxlength="20" required />
-          <span for="title-content" class="w-100 text-align-end font-size-little"
+        <div class="w-75 flex flex-col justify-end">
+          <label for="title-content" class="w-full tracking-wide">Title *</label>
+          <input
+            class="rounded-md border-0 px-3 w-full outline-0 py-2 bg-neutral-800"
+            name="title-content"
+            type="text"
+            v-model="title"
+            maxlength="20"
+            required
+          />
+          <span for="title-content" class="w-full text-align-end text-[10px]"
             >{{ title.length }} / 20</span
           >
         </div>
         <!-- Time -->
-        <div class="w-25 flex f-col just-content-end">
-          <label for="duration" class="w-100">Time (h)</label>
-          <input name="duration" type="number" v-model="duration" maxlength="2" required />
-          <span for="duration" class="w-100 text-align-end font-size-little">Max 72 Hours</span>
+        <div class="w-25 flex flex-col justify-end">
+          <label for="duration" class="w-full tracking-wide">Time (h)</label>
+          <input
+            class="rounded-md border-0 px-3 w-full outline-0 py-2 bg-neutral-800"
+            name="duration"
+            type="number"
+            v-model="duration"
+            maxlength="2"
+            min="0"
+            max="72"
+            required
+          />
+          <span for="duration" class="w-full text-align-end text-[10px]">Max 72 Hours</span>
         </div>
       </div>
 
       <!-- Riga 2 -->
-      <div class="flex f-row g-3 w-100 min-w-100">
+      <div class="flex flex-row gap-5 w-full min-w-full">
         <!-- Category -->
-        <div class="w-75 flex f-col just-content-end">
-          <label for="category-content" class="w-100">Category *</label>
-          <input name="category-content" type="text" v-model="category" maxlength="20" required />
-          <span for="category-content" class="w-100 text-align-end font-size-little"
+        <div class="w-75 flex flex-col justify-end">
+          <label for="category-content" class="w-full tracking-wide">Category *</label>
+          <input
+            class="rounded-md border-0 px-3 w-full outline-0 py-2 bg-neutral-800"
+            name="category-content"
+            type="text"
+            v-model="category"
+            maxlength="20"
+            required
+          />
+          <span for="category-content" class="w-full text-align-end text-[10px]"
             >{{ category.length }} / 20</span
           >
         </div>
 
         <!-- Priority -->
-        <div class="w-25 flex f-col just-content-end">
-          <label for="note-content" class="w-100">Priority *</label>
+        <div class="w-25 flex flex-col justify-end">
+          <label for="note-content" class="w-full tracking-wide">Priority *</label>
           <select
             v-if="optionsArray.length > 0"
             name="note-content"
-            class="w-100 btn select radius-cummed"
+            class="w-full btn rounded-md py-2 bg-neutral-800 outline-0 px-1 focus:outline-0"
             v-model="priority"
             required
           >
@@ -106,10 +134,11 @@ function triggerSubmit() {
               {{ opt }}
             </option>
           </select>
+
           <select
             v-else
             name="note-content"
-            class="w-100 btn select radius-cummed"
+            class="w-full btn rounded-md py-2 bg-neutral-800 outline px-1 focus:outline-0"
             v-model="priority"
             required
           >
@@ -117,64 +146,26 @@ function triggerSubmit() {
             <option>Medium</option>
             <option>Higher</option>
           </select>
-          <label for="note" class="w-100 text-align-end font-size-little" style="color: transparent"
-            >a</label
-          >
+          <label for="note" class="text-transparent w-full text-align-end text-[10px]">a</label>
         </div>
       </div>
-      <div class="txt-area-container flex f-col w-100">
-        <h3 class="text-align-start w-100">Note</h3>
+      <div class="txt-area-container flex flex-col w-full">
+        <h3 class="text-align-start w-full tracking-wide">Note</h3>
+
         <textarea
           v-model="note"
           id="note-content"
           name="note-content"
-          class="txt-area"
+          class="min-x-90 h-50 resize-none rounded-md p-4 bg-neutral-800 focus:outline-0"
           maxlength="500"
         ></textarea>
-        <label for="note-content" class="w-100 text-align-end font-size-little"
+
+        <label for="note-content" class="w-full text-align-end text-[10px]"
           >{{ note.length }} / 500</label
         >
       </div>
-      <p class="font-size-little w-100">* campi obbligatori</p>
+      <p class="text-[10px] w-full tracking-wide">*Required fields</p>
       <input type="submit" id="submit-add-activity-btn" hidden />
     </form>
   </div>
 </template>
-<style scoped>
-input {
-  background-color: var(--input-background);
-}
-
-.create-activity-container {
-  height: 35vh;
-}
-
-.create-activity-container input {
-  border-radius: 7px;
-  border: none;
-  height: 2vw;
-  width: 100%;
-  color: var(--color-text);
-  padding-inline: 0.3vw;
-}
-
-.txt-area {
-  width: 100%;
-  height: 10vh;
-  resize: none;
-  border-radius: 8px;
-  color: var(--color-text);
-  padding: 0.4vw;
-}
-
-.txt-area-container {
-  width: 100%;
-}
-
-.select {
-  background-color: var(--input-background);
-  color: var(--color-text);
-  padding-inline: 0.5vw;
-  height: 2vw;
-}
-</style>
