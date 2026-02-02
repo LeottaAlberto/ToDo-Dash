@@ -14,73 +14,22 @@ const iconComponent = computed(() => {
 </script>
 
 <template>
-  <div class="stat-card">
-    <div class="icon-wrapper">
-      <component v-if="iconComponent" :is="iconComponent" class="stat-icon" />
-      <div v-else class="stat-icon">
+  <div class="flex items-center justify-between w-full rounded-md gap-2 px-2 py-4">
+    <div class="flex justify-center-safe items-center-safe w-50 max-w-15 h-15">
+      <component
+        v-if="iconComponent"
+        :is="iconComponent"
+        class="flex justify-center items-center w-full h-full min-y-10"
+      />
+      <div v-else class="flex justify-center items-center w-full h-full min-y-10">
         <slot></slot>
       </div>
     </div>
 
-    <div class="info-wrapper">
+    <div class="flex grow items-center">
       <h4>{{ statName }}</h4>
     </div>
 
-    <h1 class="stat-number">{{ statNum }}</h1>
+    <h1 class="font-extrabold text-2xl min-y-10 text-right m-0 text-stone-300">{{ statNum }}</h1>
   </div>
 </template>
-
-<style scoped>
-.stat-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  gap: 1rem;
-}
-
-.stat-icon {
-  width: 100%;
-  height: 100%;
-  min-width: 4rem;
-  fill: currentColor;
-}
-
-.icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 3rem;
-  height: 3rem;
-  min-width: 3rem;
-}
-
-.info-wrapper {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-}
-
-.stat-number {
-  font-weight: 800;
-  margin: 0;
-  min-width: 3rem;
-  text-align: right;
-
-  color: inherit;
-}
-
-.stat-icon,
-.icon-wrapper :deep(svg) {
-  width: 100%;
-  height: 100%;
-  max-width: 4rem;
-  max-height: 4rem;
-  /* fill: currentColor; */
-  display: block;
-}
-</style>

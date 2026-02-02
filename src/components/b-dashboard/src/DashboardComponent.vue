@@ -15,8 +15,7 @@ const stats = computed(() => {
 </script>
 
 <template>
-  <div class="dashboard-stats">
-    <!-- :iconName="'num_activity'" -->
+  <div class="flex flex-col gap-2 w-full p-2">
     <StatisticComponent :statName="'Total Activities'" :statNum="stats.all">
       <svg
         width="60px"
@@ -97,12 +96,3 @@ const stats = computed(() => {
     </StatisticComponent>
   </div>
 </template>
-
-<style scoped>
-.dashboard-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-}
-</style>
