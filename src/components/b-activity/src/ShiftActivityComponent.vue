@@ -8,39 +8,13 @@ const { nextPage, prevPage } = usePagination();
 </script>
 
 <template>
-  <div
-    class="flex justify-content-center scroll-buttons w-50"
-    v-if="allActivities.length > 5"
-    style="background-color: red"
-  >
-    <div class="flex border-standard w-25 radius-standard" style="background-color: blue">
+  <div class="absolute bottom-0 w-full flex justify-center py-4" v-if="allActivities.length > 5">
+    <div class="bg-neutral-800 flex justify-between px-2 w-2/12 rounded-xl">
       <ButtonComponent :icon="'leftArrow'" @click="prevPage()" />
 
-      <h2 class="text-bolder text-align-center">Activity</h2>
+      <h2 class="text-center flex items-center font-bold text-3xl">Activity</h2>
 
       <ButtonComponent :icon="'rightArrow'" @click="nextPage()" />
     </div>
   </div>
 </template>
-
-<style scoped>
-.scroll-buttons {
-  position: absolute;
-  bottom: 1vh;
-}
-
-.scroll-buttons > div {
-  background-color: var(--vt-c-divider-dark-1);
-  justify-content: space-between;
-}
-
-button {
-  transition: all 0.05s;
-  background-color: transparent;
-  border: transparent;
-}
-
-button:hover {
-  transform: scale(1.08, 1.08);
-}
-</style>
