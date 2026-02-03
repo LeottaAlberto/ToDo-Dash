@@ -7,19 +7,23 @@ const { activeToast } = useToast();
 const getBorderColor = (type: ToastType) => {
   switch (type) {
     case ToastType.SUCCESS:
-      return 'border-success';
+      return 'border-l-5 border-lime-500';
     case ToastType.ERROR:
-      return 'border-error';
+      return 'border-l-5 border-red-700';
     case ToastType.WARNING:
-      return 'border-warning';
+      return 'border-l-5 border-amber-400';
   }
 };
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="activeToast" :class="['toast-container', getBorderColor(activeToast.type)]">
-      <div class="toast-card">
+    <div
+      v-if="activeToast"
+      class="flex justify-end w-74 fixed top-3 right-5 z-50 bg-neutral-700"
+      :class="[getBorderColor(activeToast.type)]"
+    >
+      <div class="px-3 py-3 w-full">
         <div class="toast-content">
           <p>{{ activeToast.text }}</p>
         </div>
@@ -29,34 +33,6 @@ const getBorderColor = (type: ToastType) => {
 </template>
 
 <style scoped>
-.border-success {
-  border-left: solid 5px #4caf50;
-}
-.border-error {
-  border-left: solid 5px #f44336;
-}
-.border-warning {
-  border-left: solid 5px #ff9800;
-}
-
-.toast-container {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  justify-content: flex-end;
-  background-color: var(--vt-c-black-soft);
-  width: 300px;
-}
-
-.toast-card {
-  padding: 12px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 100%;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition:
@@ -66,6 +42,6 @@ const getBorderColor = (type: ToastType) => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(40rem);
 }
 </style>
