@@ -4,19 +4,27 @@ import type ActivityInterface from '@/core/interface/ActivityInterface';
 const props = defineProps<{
   activity: ActivityInterface;
 }>();
+
+const getPriorityColor = (type: string) => {
+  switch (type) {
+    case 'H':
+      return 'border-2 border-red-500 text-red-400';
+    case 'M':
+      return 'border-2 border-amber-500 text-amber-400';
+    case 'L':
+      return 'border-2 border-sky-600 text-sky-500';
+  }
+};
 </script>
 
 <template>
-  <div class="w-100 pop-up-body flex f-col just-content-start pt-1">
-    <span
-      class="w-100"
-      style="height: 1px; background-color: var(--popup-divider); margin-bottom: 0.5vh"
-    ></span>
+  <div class="flex flex-col justify-between items-start pt-4 w-full h-full max-h-2/3">
+    <span class="w-full h-px bg-gray-400/20"></span>
 
-    <div class="flex flex-col w-100 px-2 g-3 just-content-start align-items-center">
+    <div class="flex flex-row w-full h-20 px-10 gap-15 justify-start items-center">
       <!-- Duration Div -->
-      <div class="flex f-row just-content-start align-items-center g-1">
-        <h1 class="text-bolder">
+      <div class="flex flex-row justify-center items-center gap-1">
+        <h1 class="flex justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -32,61 +40,27 @@ const props = defineProps<{
             <polyline points="12 6 12 12 16 14" />
           </svg>
         </h1>
-        <h3 class="w-100 flex align-items-center text-align-center single-line">
+        <h3 class="w-full flex items-center text-xl font-bold text-center pl-1">
           {{ props.activity.duration }} h
         </h3>
       </div>
 
       <!-- Priority Div -->
-      <div class="flex text-align-center">
+      <div class="flex text-center">
         <!-- Priority Value -->
-        <h2 class="w-100 text-align-center">
+        <h2 class="w-full text-center">
           <span
-            v-if="props.activity.priority.charAt(0).toUpperCase() === 'H'"
-            class="text-bold"
-            style="
-              border: #4a1818 solid 2px;
-              background-color: transparent;
-              color: #ff6b6b;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
-            >{{ props.activity.priority }}</span
-          >
-          <span
-            v-else-if="props.activity.priority.charAt(0).toUpperCase() === 'M'"
-            class="text-bold"
-            style="
-              border: #fbbf24 solid 2px;
-              background-color: transparent;
-              color: #fbbf24;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
-            >{{ props.activity.priority }}</span
-          >
-          <span
-            v-else
-            class="text-bold"
-            style="
-              border: #60a5fa solid 1px;
-              background-color: transparent;
-              color: #60a5fa;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
+            class="px-6 py-1 rounded-md text-md font-extrabold bg-transparent"
+            :class="[getPriorityColor(props.activity.priority.charAt(0).toUpperCase())]"
             >{{ props.activity.priority }}</span
           >
         </h2>
       </div>
 
       <!-- Category Div -->
-      <div class="flex f-row just-content-start g-1">
+      <div class="flex flex-row justify-center gap-1">
         <!-- SVG -->
-        <h1 class="flex text-bolder text-align-center">
+        <h1 class="flex text-center">
           <svg
             fill="#ebebeba3"
             width="30"
@@ -176,53 +150,23 @@ const props = defineProps<{
           </svg>
         </h1>
         <!-- Category Value -->
-        <h2 class="w-25 text-align-center" v-if="props.activity.type.length < 10">
+        <h2 class="w-full text-center font-bold">
           {{ props.activity.type }}
-        </h2>
-        <h2 class="w-25 text-align-center" v-else>
-          {{ props.activity.type.substring(0, 12) }}
         </h2>
       </div>
     </div>
 
-    <span
-      class="w-100"
-      style="height: 1px; background-color: var(--popup-divider); margin-top: 0.5vh"
-    ></span>
+    <span class="w-full h-px bg-gray-400/20"></span>
 
-    <div class="flex w-100 text-align-start my-1 px-2">
-      <div v-if="props.activity.note && props.activity.note.length < 400" class="w-100">
-        <h2 class="text-align-start text-bolder w-100">Note</h2>
-        <h2 class="text-align-start w-100 font-size-medium">
+    <div class="flex w-full text-start px-3 pt-4">
+      <div v-if="props.activity.note" class="w-full">
+        <h2 class="text-start font-bold text-xl w-full">Note</h2>
+        <h2 class="text-start w-full font-size-medium">
           {{ props.activity.note }}
         </h2>
       </div>
 
-      <div v-else-if="props.activity.note">
-        <h2 class="text-align-start text-bolder w-100">Note</h2>
-        <h2 class="text-align-start w-100 font-size-medium">
-          {{ props.activity.note.substring(0, 500) }}
-        </h2>
-      </div>
-
-      <h2 v-else class="font-size-medium">Non ci sono note per questa Activity</h2>
+      <h2 v-else class="font-size-medium">There are no notes for this activity</h2>
     </div>
   </div>
 </template>
-
-<style scoped>
-button {
-  color: var(--color-text);
-  font-size: large;
-}
-
-button:hover {
-  transform: scale(1.05, 1.05) !important;
-  font-size: initial;
-}
-
-.pop-up-body {
-  min-height: 30vh;
-  max-height: 30vh;
-}
-</style>
