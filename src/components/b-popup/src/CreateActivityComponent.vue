@@ -138,7 +138,7 @@ function triggerSubmit() {
           <select
             v-else
             name="note-content"
-            class="w-full btn rounded-md py-2 bg-neutral-800 outline px-1 focus:outline-0"
+            class="w-full btn rounded-md py-2 bg-neutral-800 outline-0 px-1 focus:outline-0"
             v-model="priority"
             required
           >
@@ -150,7 +150,7 @@ function triggerSubmit() {
         </div>
       </div>
       <div class="txt-area-container flex flex-col w-full">
-        <h3 class="text-align-start w-full tracking-wide">Note</h3>
+        <h3 class="text-start w-full tracking-wide">Note</h3>
 
         <textarea
           v-model="note"

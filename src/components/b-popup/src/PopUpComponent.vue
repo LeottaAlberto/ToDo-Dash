@@ -40,12 +40,13 @@ function complete() {
     class="flex justify-center items-center top-0 left-0 p-0 m-0 z-9999 absolute w-full h-full bg-black/20"
   >
     <div
-      class="flex flex-col px-5 py-3 max-h-4/6 max-w-2/5 absolute rounded-xl w-full h-full bg-zinc-900"
+      class="flex flex-col px-5 py-3 max-h-4/6 max-w-2/5 absolute rounded-xl w-full h-fit min-h-1/2 bg-zinc-900"
     >
+      <!-- Header -->
       <div class="flex just-content-space-between w-full">
         <div class="flex flex-row basis-2/3">
           <h1
-            class="flex justify-start items-center text-align-center px-2 pt-1 text-5xl font-bold w-full"
+            class="flex justify-start items-center text-center px-2 pt-1 text-5xl font-bold w-full"
           >
             {{ props.title }}
           </h1>
@@ -63,10 +64,12 @@ function complete() {
         </div>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-5 w-full">
+      <!-- Body -->
+      <div class="flex-1 overflow-y-hidden w-full min-h-1/2 max-h-8/12">
         <slot />
       </div>
 
+      <!-- Footer -->
       <div class="w-full p-4">
         <slot name="footer" v-if="$slots.footer" />
         <div class="flex justify-end w-full" v-else>
