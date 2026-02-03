@@ -3,7 +3,7 @@
     <div
       class="flex flex-row justify-between items-center rounded-md w-full h-max py-2 px-4 outline-2 outline-neutral-700 bg-transparent"
     >
-      <h1 class="text-bolder text-4xl font-bold">My ToDo-Dash</h1>
+      <h1 class="font-bold text-4xl font-bold">My ToDo-Dash</h1>
       <ButtonComponent @click="emit('clicked')"> Add Activity </ButtonComponent>
     </div>
   </div>
