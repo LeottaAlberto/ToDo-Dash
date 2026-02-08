@@ -1,5 +1,5 @@
 export enum Position {
-  LEFT,
-  CENTER,
-  RIGHT,
+  LEFT = 'justify-start',
+  CENTER = 'justify-center',
+  RIGHT = 'justify-end',
 }
