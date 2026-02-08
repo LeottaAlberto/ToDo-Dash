@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useToast } from '@/composable/useToast';
-import { ToastType } from '@/core/enum/toast.enum';
+import { ToastType } from '@/enums/toast.enum';
 
 const { activeToast } = useToast();
 
