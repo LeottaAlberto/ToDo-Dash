@@ -41,15 +41,9 @@ function saveData() {
   -->
 
   <main>
-    <RouterView></RouterView>
-    <ToastComponent />
+    <div class="w-full h-screen justify-center items-center">
+      <RouterView></RouterView>
+      <ToastComponent />
+    </div>
   </main>
 </template>
-
-<style scoped>
-main {
-  max-width: 100vw;
-  max-height: 100vh;
-  overflow-x: hidden;
-}
-</style>
