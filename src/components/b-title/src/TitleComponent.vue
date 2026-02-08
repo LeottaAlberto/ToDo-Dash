@@ -3,14 +3,20 @@
     <div
       class="flex flex-row justify-between items-center rounded-md w-full h-max py-2 px-4 outline-2 outline-neutral-700 bg-transparent"
     >
-      <h1 class="font-bold text-4xl font-bold">My ToDo-Dash</h1>
-      <ButtonComponent @click="emit('clicked')"> Add Activity </ButtonComponent>
+      <h1 class="font-bold text-4xl w-100">My ToDo-Dash</h1>
+      <ButtonComponent
+        :direction="Position.RIGHT"
+        :label="'Add Activity'"
+        :icon="'pi-plus'"
+        @click="emit('clicked')"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
+import { Position } from '@/enums';
 
 const emit = defineEmits(['clicked']);
 </script>
