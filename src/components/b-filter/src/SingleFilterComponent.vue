@@ -48,7 +48,7 @@ watch(
     @click="select_filter()"
   >
     <div
-      class="flex justify-center rounded-xl w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-500 duration-75 hover:scale-102"
+      class="flex justify-center rounded-md w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-500 duration-75 hover:scale-102"
       :class="{ select: filterData.status }"
     >
       <h3>{{ filterData.filter_name }}</h3>
@@ -58,7 +58,7 @@ watch(
   <div v-else>
     <div
       v-if="filterData"
-      class="flex justify-center rounded-xl w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-800"
+      class="flex justify-center rounded-md w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-800"
       name="all"
       :class="{ select: filterData.status }"
     >
