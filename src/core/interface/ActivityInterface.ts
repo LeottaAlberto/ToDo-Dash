@@ -1,13 +1,13 @@
+import type CategoryInterface from './CategoryInterface';
+import type FilterInterface from './FilterInterface';
+
 export default interface ActivityInterface {
-  id: string
-  priority: string
-  title: string
-  duration: number
-  type: string
-  note: string
-  status: boolean
-  filters: {
-    filter_id: number
-    filter_name: string
-  }[]
+  id: string;
+  categories: CategoryInterface[];
+  priority: string;
+  title: string;
+  duration: number;
+  note: string;
+  status: boolean;
+  filters: FilterInterface[];
 }
