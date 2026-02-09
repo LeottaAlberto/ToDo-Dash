@@ -1,148 +1,82 @@
 <script lang="ts" setup>
+import { getSafeEnum } from '@/enums/enumUtilis';
 import { Position } from '@/enums';
-import { ButtonType } from '@/enums/ButtonEnum';
-import { computed, useSlots } from 'vue';
+import { ButtonRadius, ButtonType } from '@/enums/ButtonEnum';
+import { computed } from 'vue';
 
-const slots = useSlots();
 const emits = defineEmits(['click']);
 
 interface Props {
   type?: ButtonType;
-  radius?: number;
+  radius?: string;
   disable?: boolean;
   direction?: Position;
   icon?: string;
+  label?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: ButtonType.NORMAL,
-  radius: 0.5,
+  radius: ButtonRadius.STANDARD,
   disable: false,
-  direction: Position.CENTER,
+  direction: undefined,
   icon: undefined,
+  label: undefined,
 });
 
-const getIconUrl = (name: string) => {
-  return new URL(`../../../assets/SVGs/button/${name}.svg`, import.meta.url).href;
+const isIconOnly = computed(() => props.icon && !props.label);
+
+const buttonBaseClass = computed(() => {
+  const base =
+    'flex items-center justify-center transition-all duration-200 border-0 cursor-pointer outline-none font-medium transition-all duration-200 p-0.5';
+
+  if (isIconOnly.value)
+    return `${base} p-3 rounded-full aspect-square bg-transparent text-gray-200`;
+  else {
+    const bg =
+      props.icon && iconColorMap[props.icon] && !props.disable
+        ? iconColorMap[props.icon]
+        : 'bg-purple-500 hover:bg-purple-600 text-gray-100';
+    return `${base} px-4 py-2 text-gray-100 uppercase tracking-wider text-sm ${getSafeEnum(ButtonRadius, props.radius, ButtonRadius.STANDARD)} ${bg}`;
+  }
+});
+
+const stateClasses = computed(() => {
+  const disabled = 'disabled:opacity-30 disabled:cursor-not-allowed disabled:filter-none';
+  const active = 'active:scale-95';
+
+  let hover = '';
+  if (isIconOnly.value) hover = 'hover:bg-gray-500/20 hover:text-white';
+  else hover = 'hover:brightness-110 hover:shadow-lg';
+
+  return `${hover} ${active} ${disabled}`;
+});
+
+const iconColorMap: Record<string, string> = {
+  'pi-trash': 'bg-red-500 hover:bg-red-600 text-white',
+  'pi-check': 'bg-green-500 hover:bg-green-800 text-white',
+  'pi-times': 'bg-slate-700 hover:bg-slate-600 text-gray-200',
 };
-
-const isIconOnly = computed(() => {
-  return !slots.default && props.icon;
-});
-
-const buttonClass = computed(() => {
-  return [
-    'btn-base',
-    isIconOnly.value ? 'btn-svg' : 'btn-text',
-    `btn-${props.type.toString().toLocaleLowerCase()}`,
-  ];
-});
-
-const containerClass = computed(() => {
-  return [`btn-${Position[props.direction].toLocaleLowerCase()}`];
-});
 </script>
 
 <template>
-  <div class="btn-container flex" :class="containerClass">
+  <div class="flex" :class="props.direction ? props.direction + 'w-full' : 'w-fit'">
     <button
-      :class="buttonClass"
+      :class="[buttonBaseClass, stateClasses]"
       :disabled="props.disable"
-      :aria-label="props.icon ? props.icon : undefined"
-      @click="emits('click')"
-      class="btn-base radius-cummed"
-      :style="{
-        borderRadius: `${props.radius}rem`,
-      }"
+      @click="emits('click', $event)"
     >
-      <img
+      <i
         v-if="props.icon"
-        :src="getIconUrl(props.icon)"
-        class="btn-icon-img"
-        aria-hidden="true"
-      />
-
-      <span v-if="$slots.default">
-        <slot></slot>
+        class="pi text-center text-2xl"
+        :class="[props.icon, { 'mr-2': props.label }]"
+      ></i>
+      <span
+        v-if="props.label"
+        class="flex justify-center items-center text-base text-center text-gray-200/90 px-2"
+      >
+        {{ props.label }}
       </span>
     </button>
   </div>
 </template>
-
-<style scoped>
-.btn-container {
-  border: 0;
-  outline: 0;
-}
-
-.btn-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: var(--radius);
-}
-
-.btn-svg {
-  padding: 0.5rem;
-  aspect-ratio: 1 / 1;
-  border-radius: 50% !important;
-  background-color: transparent;
-}
-
-.btn-text {
-  padding: 0.75rem 2rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  font-size: medium;
-  color: var(--color-text);
-}
-
-.btn-text.btn-normal:not(:disabled):hover {
-  filter: brightness(1.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-.btn-svg.btn-normal:not(:disabled):hover {
-  filter: brightness(1.2);
-}
-
-.btn-base:not(:disabled):active {
-  transform: scale(0.97, 0.97);
-  font-weight: bolder;
-}
-
-.btn-base:disabled {
-  background-color: #777777;
-  color: #9ca3af;
-  cursor: not-allowed;
-  filter: none;
-}
-
-.btn-text.btn-normal {
-  background-color: var(--btn-background-n);
-}
-
-.btn-cancel {
-  background-color: var(--btn-background-d);
-}
-
-.btn-right {
-  justify-content: right;
-}
-
-.btn-center {
-  justify-content: center;
-}
-
-.btn-left {
-  justify-content: left;
-}
-
-.btn-svg:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  /* transform: rotate(90deg); */
-}
-</style>
