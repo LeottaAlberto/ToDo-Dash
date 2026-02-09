@@ -1,24 +1,24 @@
-import type { ToastMessage } from '@/core/interface/toast.interface'
-import { ref } from 'vue'
+import type { ToastMessage } from '@/core/interface/ToastInterface';
+import { ref } from 'vue';
 
-const activeToast = ref<ToastMessage | null>(null)
+const activeToast = ref<ToastMessage | null>(null);
 
 export function useToast() {
   const showToast = (config: ToastMessage) => {
-    activeToast.value = config
+    activeToast.value = config;
 
     setTimeout(() => {
-      activeToast.value = null
-    }, config.duration || 3000)
-  }
+      activeToast.value = null;
+    }, config.duration || 3000);
+  };
 
   const hideToast = () => {
-    activeToast.value = null
-  }
+    activeToast.value = null;
+  };
 
   return {
     activeToast,
     showToast,
-    hideToast
-  }
+    hideToast,
+  };
 }
