@@ -26,7 +26,6 @@ onMounted(() => {
         <SingleFilterComponent
           :selected-id="selectedId"
           :filter="item"
-          :class="{}"
           @filter_selected="(filter: FilterInterface) => checkFilter(filter)"
         />
       </div>
