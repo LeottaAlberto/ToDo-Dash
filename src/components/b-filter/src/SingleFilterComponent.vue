@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { ref } from 'vue';
 
 import type FilterInterface from '@/core/interface/FilterInterface';
@@ -39,6 +39,14 @@ watch(
   },
   { deep: true, immediate: true },
 );
+
+const getFiltersClass = computed(() => {
+  return [
+    filterData.value?.status
+      ? 'bg-neutral-700 outline-1 outline-neutral-300'
+      : 'bg-neutral-500 outline-neutral-700 hover:scale-102',
+  ];
+});
 </script>
 
 <template>
@@ -48,8 +56,8 @@ watch(
     @click="select_filter()"
   >
     <div
-      class="flex justify-center rounded-md w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-500 duration-75 hover:scale-102"
-      :class="{ select: filterData.status }"
+      class="flex justify-center rounded-md w-full py-3 text-md font-semibold outline-2 duration-75"
+      :class="[getFiltersClass]"
     >
       <h3>{{ filterData.filter_name }}</h3>
     </div>
