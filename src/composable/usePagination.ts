@@ -11,7 +11,7 @@ export function usePagination(item: number = 5) {
   const endIndex = computed(() => startIndex.value + totalActivities.value);
 
   const nextPage = () => {
-    if (currentPage.value < totalPages.value) currentPage.value++;
+    if (currentPage.value < totalPages.value - 1) currentPage.value++;
   };
   const prevPage = () => {
     if (currentPage.value > 1) currentPage.value--;
