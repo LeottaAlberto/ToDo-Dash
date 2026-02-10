@@ -41,7 +41,7 @@ function saveData() {
   -->
 
   <main>
-    <div class="w-full h-screen justify-center items-center">
+    <div class="w-full h-screen justify-center items-center bg-zinc-900">
       <RouterView></RouterView>
       <ToastComponent />
     </div>

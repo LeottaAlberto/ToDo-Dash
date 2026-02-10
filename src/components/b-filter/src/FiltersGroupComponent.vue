@@ -20,15 +20,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div v-if="allFilters.length > 0" class="flex flex-col gap-2 w-full px-4 py-2">
-      <div v-for="item in allFilters" :key="item.filter_id">
-        <SingleFilterComponent
-          :selected-id="selectedId"
-          :filter="item"
-          @filter_selected="(filter: FilterInterface) => checkFilter(filter)"
-        />
-      </div>
+  <div v-if="allFilters.length > 0" class="grid grid-cols-2 gap-4 w-full px-10 py-2">
+    <p class="text-2xl font-semibold">Filters</p>
+    <div
+      v-for="item in allFilters"
+      :key="item.filter_id"
+      :class="item.filter_name === 'All' ? 'col-span-2' : 'col-span-1'"
+    >
+      <SingleFilterComponent
+        :selected-id="selectedId"
+        :filter="item"
+        class="w-full"
+        @filter_selected="(filter: FilterInterface) => checkFilter(filter)"
+      />
     </div>
   </div>
 </template>

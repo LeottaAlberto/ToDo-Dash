@@ -52,7 +52,7 @@ const getFiltersClass = computed(() => {
 <template>
   <div
     v-if="filterData && filterData.filter_id != 0"
-    class="cursor-pointer w-full"
+    class="cursor-pointer w-1/2"
     @click="select_filter()"
   >
     <div
@@ -63,7 +63,7 @@ const getFiltersClass = computed(() => {
     </div>
   </div>
 
-  <div v-else>
+  <div v-else class="w-full">
     <div
       v-if="filterData"
       class="flex justify-center rounded-md w-full py-3 text-md font-semibold outline-2 outline-neutral-700 bg-neutral-800"
