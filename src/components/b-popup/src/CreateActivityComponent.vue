@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import type ActivityInterface from '@/core/interface/ActivityInterface';
 
-const optionStored = ref();
+const emit = defineEmits(['submit', 'closed']);
+const formRef = ref<HTMLFormElement | null>(null);
+
+defineExpose({
+  triggerSubmit,
+});
 
 const title = ref('');
 const category = ref('');
@@ -10,61 +15,45 @@ const priority = ref('');
 const note = ref('');
 const duration = ref(0);
 
-const formRef = ref<HTMLFormElement | null>(null);
-
-defineExpose({
-  triggerSubmit,
-});
-
-const emit = defineEmits(['submit', 'closed']);
-const props = defineProps({
-  isSubmitClicked: Boolean,
-});
-
-watch(props, () => {
-  const btn = document.getElementById('submit-add-activity-btn');
-
-  if (btn) btn.click();
-});
-
-optionStored.value = JSON.parse(localStorage.getItem('priority-option') || '{}');
-
-const optionsArray = optionStored.value.option ? Object.values(optionStored.value.option) : [];
+const priorityOptionData = localStorage.getItem('priority-option');
+const optionStored = priorityOptionData ? JSON.parse(priorityOptionData) : {};
+const optionsArray = optionStored.option ? Object.values(optionStored.option) : [];
 
 function submit() {
-  // Verifica validità del form nativo
-  if (formRef.value && !formRef.value.checkValidity()) {
-    formRef.value.reportValidity();
-    return;
-  }
-
   const activity: ActivityInterface = {
     id: crypto.randomUUID(),
     title: title.value,
-    type: category.value,
-    priority: priority.value ? priority.value : 'Lower',
+    categories: [
+      {
+        id: Number.parseInt(crypto.randomUUID()),
+        label: category.value,
+        color: 'standard',
+        primary: true,
+      },
+    ],
+    priority: priority.value,
     duration: duration.value < 72 ? duration.value : 72,
     note: note.value,
     status: false,
     filters: [
-      { filter_name: category.value, filter_id: 3 },
-      { filter_name: priority.value, filter_id: 4 },
-      { filter_name: duration.value + '', filter_id: 5 },
+      { filter_name: category.value, filter_id: 3, status: false },
+      { filter_name: priority.value, filter_id: 4, status: false },
+      { filter_name: String(duration.value), filter_id: 5, status: false },
     ],
   };
-
   emit('submit', activity);
 }
 
 function triggerSubmit() {
-  submit();
+  if (formRef.value) formRef.value.requestSubmit();
+  return false;
 }
 </script>
 
 <template>
   <div class="h-full flex mx-2">
     <form
-      class="flex flex-col gap-5 w-full overflow-y-hidden"
+      class="flex flex-col justify-between gap-1 w-full overflow-y-hidden"
       ref="formRef"
       @submit.prevent="submit"
     >
@@ -149,6 +138,8 @@ function triggerSubmit() {
           <label for="note" class="text-transparent w-full text-align-end text-[10px]">a</label>
         </div>
       </div>
+
+      <!-- Riga 3 -->
       <div class="txt-area-container flex flex-col w-full">
         <h3 class="text-start w-full tracking-wide">Note</h3>
 
@@ -164,8 +155,8 @@ function triggerSubmit() {
           >{{ note.length }} / 500</label
         >
       </div>
+
       <p class="text-[10px] w-full tracking-wide">*Required fields</p>
-      <input type="submit" id="submit-add-activity-btn" hidden />
     </form>
   </div>
 </template>
