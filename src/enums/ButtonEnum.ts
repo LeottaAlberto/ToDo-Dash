@@ -16,3 +16,9 @@ export enum ButtonRadius {
   STANDARD = 'rounded-xl',
   BIG = 'rounded-2xl',
 }
+
+export enum ButtonDimension {
+  SMALL = 'text-xl',
+  STANDARD = 'text-2xl',
+  BIG = 'text-4xl',
+}
