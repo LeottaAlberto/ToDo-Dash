@@ -20,13 +20,14 @@ const { activeFilters } = useFilter();
 const { currentPage, itemPerPage } = usePagination();
 
 const hDiv = ref<HTMLElement | null>(null);
+const hHeader = ref<HTMLElement | null>(null);
 const firstActivity = ref<ComponentPublicInstance | HTMLElement | null>(null);
 
 const fixedHeight = ref<string>('auto');
 
 let observer: ResizeObserver | null = null;
 
-const emits = defineEmits(['open_pop_up', 'delete-activity']);
+const emits = defineEmits(['open_pop_up', 'delete-activity', 'create-activity']);
 
 const filteredActivities = computed(() => {
   const isAllSelected = activeFilters.value.some((f) => f.filter_id === 0);
@@ -72,9 +73,13 @@ const calculateHeight = () => {
 
     if (activityEl instanceof HTMLElement) {
       const parentEl = hDiv.value.parentElement;
+      const header = hHeader.value?.parentElement;
+
       if (!parentEl) return;
+      if (!header) return;
 
       const parentHeight = parentEl.clientHeight;
+      const headerHeight = header.clientHeight;
       const containerPadding = 48;
       const gap = 8;
 
@@ -82,7 +87,10 @@ const calculateHeight = () => {
       const singleItemHeight = activityEl.offsetHeight;
 
       if (singleItemHeight > 0) {
-        const capacity = Math.floor((availableHeight + gap) / (singleItemHeight + gap));
+        const capacity = Math.floor(
+          (availableHeight - (availableHeight - headerHeight)) / (singleItemHeight + gap - 5),
+        );
+
         itemPerPage.value = Math.max(1, capacity);
 
         const totalPixels = capacity * (singleItemHeight + gap) - gap + containerPadding;
@@ -109,18 +117,38 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center p-1 w-1/2 h-11/12">
-    <div ref="hDiv" class="m-3 py-4 px-8 w-3/4 h-full rounded-xl bg-zinc-900/50">
+  <div class="flex flex-col items-center w-2/3 h-full rounded-xl overflow-hidden bg-zinc-800/50">
+    <div class="flex flex-row justify-between w-full py-6 bg-zinc-900/50">
+      <div class="flex flex-row justify-between items-center w-full px-8">
+        <p class="font-bold text-4xl w-50">My Activities</p>
+
+        <ShiftActivityComponent class="flex justify-end" />
+      </div>
+    </div>
+
+    <div ref="hDiv" class="w-full h-full max-y-11/12 overflow-hidden">
       <TransitionGroup
         name="list"
         tag="div"
-        class="flex flex-col gap-5 h-full"
+        class="flex flex-col h-full bg-zinc-800/50"
         :class="[justifyClass()]"
         v-if="visibleActivities.length > 0"
       >
-        <ShiftActivityComponent />
-        <div v-for="(item, index) in visibleActivities" :key="item.id">
+        <div
+          ref="hHeader"
+          class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-3 border-b-gray-900 font-bold text-2xl text-white/50 tracking-wider2"
+        >
+          <p class="py-3 text-center border-r-2 border-gray-900">Title</p>
+          <p class="py-3 text-center border-r-2 border-gray-900">Category</p>
+          <p class="py-3 text-center">Given To</p>
+        </div>
+        <div
+          v-for="(item, index) in visibleActivities"
+          :key="index"
+          class="odd:bg-zinc-800 even:bg-neutral-700 transition-colors"
+        >
           <SingleActivityComponent
+            class="bg-transparent"
             @popup="(activity: ActivityInterface) => emits('open_pop_up', activity)"
             @delete-activity="(activity: ActivityInterface) => emits('delete-activity', activity)"
             :activity="item"
