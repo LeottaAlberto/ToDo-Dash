@@ -95,6 +95,11 @@ function completeActivityHandler(activity: ActivityInterface) {
   }
 }
 
+function setRemoveActivity(activity?: ActivityInterface) {
+  delete_activity_in_popup.value = activity;
+  isVisibleWarningPopup.value = true;
+}
+
 function rmActivity(activity?: ActivityInterface) {
   try {
     if (!activity) throw new Error('');
@@ -182,15 +187,10 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
       :activity="allActivities"
       :filters="active_filter"
       @open_pop_up="(obj: ActivityInterface) => (activity_in_pop_up = obj)"
-      @delete-activity="
-        (activity: ActivityInterface) => {
-          delete_activity_in_popup = activity;
-          isVisibleWarningPopup = true;
-        }
-      "
+      @delete-activity="(activity: ActivityInterface) => setRemoveActivity(activity)"
     />
 
-    <SideContainerComponent title="Dashboard">
+    <SideContainerComponent title="Overview">
       <template v-slot:header>
         <ButtonComponent
           :direction="Position.RIGHT"
@@ -211,6 +211,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     title="Create New Activity"
     footer_btn_title="Add"
     :disable_btn_footer="false"
+    :editable="false"
     icon_button_2="pi-plus"
     @closed="isVisibleAddActivity = false"
     @confirm="handleConfirmClick"
@@ -228,9 +229,11 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     :title="activity_in_pop_up.title"
     :disable_btn_footer="activity_in_pop_up.status"
     :icon_button_2="'pi-check'"
+    :editable="true"
     footer_btn_title="Complete Activity"
     @closed="() => (activity_in_pop_up = undefined)"
     @confirm="(a: ActivityInterface) => completeActivityHandler(a)"
+    @remove="(activity: ActivityInterface) => setRemoveActivity(activity)"
   >
     <PopUpActivityComponents :activity="activity_in_pop_up" />
   </PopUpComponent>
@@ -241,6 +244,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     :footer_btn_title="'Confirm'"
     :icon_button_2="'pi-trash'"
     :disable_btn_footer="false"
+    :editable="false"
     @closed="isVisibleWarningPopup = false"
     @confirm="rmActivity(delete_activity_in_popup)"
   >

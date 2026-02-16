@@ -7,13 +7,14 @@ const props = defineProps<{
   title: string;
   footer_btn_title: string;
   disable_btn_footer: boolean | true;
+  editable: boolean;
   activity?: ActivityInterface;
   icon_button_2?: string;
 }>();
 
 const slots = useSlots();
 
-const emits = defineEmits(['closed', 'confirm']);
+const emits = defineEmits(['closed', 'confirm', 'edit', 'remove']);
 
 function closePopUp() {
   emits('closed');
@@ -44,7 +45,10 @@ const slotType = computed(() => {
 });
 
 const bodyClass = computed(() => {
-  return [slotType.value ? 'h-20 max-h-1/12 text-2xl p-2' : 'min-h-1/2 max-h-8/12'];
+  return [
+    slotType.value ? 'h-20 max-h-1/12 text-2xl p-2' : 'min-h-1/2 max-h-8/12',
+    props.editable ? 'z-0' : 'z-50',
+  ];
 });
 
 onMounted(() => window.addEventListener('keydown', handleKeyDown));
@@ -54,32 +58,37 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
 <template>
   <div
     tabindex="1"
-    class="flex justify-center items-center top-0 left-0 p-0 m-0 z-40 absolute w-full h-full bg-black/20"
+    class="flex justify-center items-center top-0 left-0 p-0 m-0 z-50 absolute w-full h-full bg-black/20"
     @click.self="closePopUp()"
   >
     <div
-      class="flex flex-col px-10 py-7 z-50 max-h-4/6 max-w-2/5 inset-0 rounded-xl w-full h-fit bg-zinc-900"
+      class="flex flex-col z-50 max-h-4/6 max-w-2/5 inset-0 rounded-xl overflow-hidden w-fit h-fit bg-zinc-900"
       tabindex="0"
       @keypress.esc="closePopUp()"
     >
       <!-- Header -->
-      <div class="flex just-content-space-between w-full py-1">
-        <div class="flex flex-row w-full">
-          <h1
-            class="flex justify-start items-center text-center px-2 pt-1 text-5xl font-bold w-full"
-          >
+      <div class="flex just-content-space-between w-full">
+        <div class="flex flex-row w-full bg-neutral-600">
+          <h1 class="flex justify-start items-center text-center p-6 text-4xl font-bold w-full">
             {{ props.title }}
           </h1>
+          <div
+            v-if="props.editable"
+            class="flex flex-row justify-center items-center gap/1 text-3xl w-20 px-20"
+          >
+            <ButtonComponent icon="pi-pencil" @click="emits('edit')" />
+            <ButtonComponent icon="pi-trash" @click="emits('remove')" />
+          </div>
         </div>
       </div>
 
       <!-- Body -->
-      <div class="overflow-y-hidden w-full py-2" :class="[bodyClass]">
+      <div class="overflow-hidden w-full px-5" :class="[bodyClass]">
         <slot />
       </div>
 
       <!-- Footer -->
-      <div class="w-full p-4">
+      <div class="w-full py-6 px-10">
         <slot name="footer" v-if="$slots.footer" />
         <div class="flex flex-row justify-end gap-3" v-else>
           <ButtonComponent :icon="'pi-times'" :label="'Close'" @click="closePopUp()" />

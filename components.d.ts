@@ -35,5 +35,6 @@ declare module 'vue' {
     StatisticComponent: typeof import('./src/components/b-utility/src/StatisticComponent.vue')['default']
     TitleComponent: typeof import('./src/components/b-title/src/TitleComponent.vue')['default']
     ToastComponent: typeof import('./src/components/b-popup/src/ToastComponent.vue')['default']
+    UserComponent: typeof import('./src/components/b-user/src/UserComponent.vue')['default']
   }
 }
