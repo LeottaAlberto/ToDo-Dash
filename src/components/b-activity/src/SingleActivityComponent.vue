@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import type ActivityInterface from '@/core/interface/ActivityInterface';
-import { Position } from '@/enums';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   activity: ActivityInterface;
@@ -10,94 +9,60 @@ const props = defineProps<{
 
 const emits = defineEmits(['popup', 'delete-activity']);
 
-const priority = ref({
-  Priority: [
-    ['H', 'p-high'],
-    ['M', 'p-medium'],
-    ['L', 'p-low'],
-  ],
-});
+const activityClass = computed(() => {
+  const base =
+    'grid grid-cols-[2fr_1fr_1fr] items-center cursor-pointer w-full transition-all duration-75 relative';
+  const hover = 'hover:z-20 hover:ring-2 hover:ring-inset';
 
-function priorityClass(p: string) {
-  if (!p) return '';
-  const key = p.charAt(0).toUpperCase();
-  const found = priority.value['Priority'].find((f: string[]) => f[0] === key);
-  return found ? found[1] : '';
-}
+  const priorityMap: Record<string, string> = {
+    HIGHER: 'shadow-[inset_5px_0_0_0_#991b1b]',
+    MEDIUM: 'shadow-[inset_5px_0_0_0_#f59e0b]',
+    LOWER: 'shadow-[inset_5px_0_0_0_#1e40af]',
+  };
 
-const trashClass = computed(() => {
-  return ['bg-transparent'];
+  const completed = 'shadow-[inset_5px_0_0_0_#5ea500]';
+
+  const priority = props.activity.priority?.toUpperCase() || '';
+
+  const status = props.activity.status
+    ? 'hover:ring-lime-600/80 hover:bg-lime-600/5 brightness-110'
+    : 'hover:ring-violet-500/80 hover:bg-violet-600/5 brightness-100';
+
+  return `${!props.activity.status ? priorityMap[priority] : completed} ${status} ${base} ${hover}`;
 });
 </script>
 
 <template>
-  <div
-    v-if="props.activity"
-    class="group flex justify-between cursor-pointer px-4 py-2 w-full rounded-md transition-all duration-50 bg-neutral-600 hover:outline-2"
-    :class="[
-      props.activity.status
-        ? 'hover:outline-lime-600 brightness-50 hover:brightness-75'
-        : 'outline-violet-500 hover:brightness-125',
-    ]"
-    @click="emits('popup', props.activity)"
-  >
-    <div class="flex flex-col pt-1 gap-2 w-full">
-      <!-- Priority -->
-      <div class="flex content-start w-full max-h-6 cursor-default relative">
-        <span
-          class="flex justify-center items-center rounded-md text-xs text-bold py-1 px-5 absolute -top-6"
-          :class="[priorityClass(props.activity.priority), { grayscale: props.activity.status }]"
-          >{{ props.activity.priority.toUpperCase() }}</span
-        >
-      </div>
+  <div v-if="props.activity" @click="emits('popup', props.activity)" :class="[activityClass]">
+    <div class="border-r-2 border-gray-900 p-3 h-full flex items-center">
+      <h2 class="font-normal truncate text-xl">
+        {{ props.activity.title }}
+      </h2>
+    </div>
 
-      <!-- Title -->
-      <div class="flex content-between w-full text-4xl relative">
-        <h2 class="font-bold w-full whitespace-nowrap">
-          {{ props.activity.title }}
-        </h2>
-        <ButtonComponent
-          :direction="Position.RIGHT"
-          :icon="'pi-trash'"
-          :class="trashClass"
-          class="absolute right-0 -top-4 invisible opacity-0 -translate-y-2 duration-75 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-hover:duration-200 transition-all ease-out"
-          @click.stop="emits('delete-activity', props.activity)"
-        />
-      </div>
-
-      <div class="flex flex-row justify-between items-center w-full relative">
-        <!-- Todo: aggiungere for per visualizzare le categorie -->
-        <!-- Category -->
-        <div class="flex flex-row justify-start gap-2 w-full">
-          <span v-for="category in props.activity.categories" :key="category.id">
-            <div
-              v-if="category.primary"
-              class="flex items-center bg-neutral-500/70 w-20 rounded-md max-h-5"
-            >
-              <h2 class="flex justify-center w-full text-md font-bold">
-                {{ category.label }}
-              </h2>
-            </div>
-
-            <div v-else class="flex items-center bg-neutral-400 w-30 rounded-md max-h-5">
-              <h2 class="flex justify-center w-full text-md font-bold">{{ category.label }}</h2>
-            </div>
-          </span>
-
-          <div class="flex items-center bg-neutral-400 w-10 rounded-md max-h-5">
-            <h2 class="flex justify-center w-full text-center text-md font-bold">
-              +{{ Math.round(Math.random() * 10) + 1 }}
-            </h2>
-          </div>
-        </div>
-        <!-- Duration -->
+    <div class="border-r-2 border-gray-900 p-3 h-full flex flex-row flex-wrap gap-2 items-center">
+      <div v-for="category in props.activity.categories" :key="category.id">
         <div
-          class="flex flex-row items-center justify-end gap-1 font-mono text-center font-bold absolute -top-2 right-0 w-2"
+          :class="[
+            'flex items-center rounded-md px-2 py-0',
+            category.primary ? 'bg-neutral-500/70' : 'bg-neutral-400',
+          ]"
         >
-          <i class="pi pi-clock text-2xl"></i>
-          <h5 class="text-3xl">{{ props.activity.duration }}h</h5>
+          <span class="text-sm font-bold">{{ category.label }}</span>
         </div>
       </div>
+      <div class="flex items-center bg-neutral-400 px-2 py-0.5 rounded-md">
+        <span class="text-sm font-bold">+{{ Math.floor(Math.random() * 10) + 1 }}</span>
+      </div>
+    </div>
+
+    <div class="p-3 h-full flex flex-row justify-between items-center relative">
+      <div class="flex flex-row items-center gap-1 font-mono font-bold">
+        <i class="pi pi-clock text-xl"></i>
+        <h5 class="text-2xl">{{ props.activity.duration }}h</h5>
+      </div>
+
+      <ButtonComponent icon="pi-trash" @click.stop="emits('delete-activity', props.activity)" />
     </div>
   </div>
 </template>
