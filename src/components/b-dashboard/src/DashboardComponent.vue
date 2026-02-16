@@ -15,11 +15,13 @@ const stats = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 w-full p-2">
+  <div class="grid grid-cols-2 gap-4 w-full p-5">
+    <p class="col-span-2 text-2xl font-semibold">Overview</p>
     <StatisticComponent
       :statName="'Total Activities'"
       :statNum="stats.all"
       :iconName="'pi-clipboard'"
+      class="col-span-2"
     />
 
     <StatisticComponent
