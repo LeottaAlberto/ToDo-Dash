@@ -18,6 +18,9 @@ import PopUpActivityComponents from '@/components/b-popup/src/ActivityDetailsCom
 import DashboardComponent from '@/components/b-dashboard/src/DashboardComponent.vue';
 import PopUpComponent from '@/components/b-popup/src/PopUpComponent.vue';
 import MenuButtonComponent from '@/components/b-utility/src/MenuButtonComponent.vue';
+import { Position } from '@/enums';
+import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
+import { ButtonRadius } from '@/enums/ButtonEnum';
 
 const { addActivity, removeActivity, allActivities, completeActivity } = useActivity();
 const { showToast } = useToast();
@@ -121,10 +124,10 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
 </script>
 
 <template>
-  <div class="flex flex-row justify-start w-full h-full py-6">
+  <div class="flex flex-row gap-10 justify-start w-full h-full py-6">
     <SideContainerComponent>
       <template v-slot:header>
-        <div class="flex justify-center items-center w-full h-fit p-5">
+        <div class="flex justify-center items-center w-full h-fit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 64 64"
@@ -179,7 +182,6 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
       :activity="allActivities"
       :filters="active_filter"
       @open_pop_up="(obj: ActivityInterface) => (activity_in_pop_up = obj)"
-      @create-activity="isVisibleAddActivity = true"
       @delete-activity="
         (activity: ActivityInterface) => {
           delete_activity_in_popup = activity;
@@ -189,6 +191,15 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     />
 
     <SideContainerComponent title="Dashboard">
+      <template v-slot:header>
+        <ButtonComponent
+          :direction="Position.RIGHT"
+          :icon="'pi-plus'"
+          :label="'New Activity'"
+          :radius="ButtonRadius.SMALL"
+          @click="isVisibleAddActivity = true"
+        />
+      </template>
       <template v-slot:body>
         <DashboardComponent :activities="allActivities" />
       </template>
