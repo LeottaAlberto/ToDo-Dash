@@ -136,28 +136,32 @@ onBeforeUnmount(() => {
       >
         <div
           ref="hHeader"
-          class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-3 border-b-gray-900 font-bold text-2xl text-white/50 tracking-wider2"
+          class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-2 border-b-neutral-900 font-bold text-2xl text-white/50 tracking-wider max-h-24 h-full"
         >
-          <p class="py-3 text-center border-r-2 border-gray-900">Title</p>
-          <p class="py-3 text-center border-r-2 border-gray-900">Category</p>
-          <p class="py-3 text-center">Given To</p>
+          <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">Title</p>
+          <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">
+            Category
+          </p>
+          <p class="flex justify-center items-center h-full">Given To</p>
         </div>
-        <div
-          v-for="(item, index) in visibleActivities"
-          :key="index"
-          class="odd:bg-zinc-800 even:bg-neutral-700 transition-colors"
-        >
-          <SingleActivityComponent
-            class="bg-transparent"
-            @popup="(activity: ActivityInterface) => emits('open_pop_up', activity)"
-            @delete-activity="(activity: ActivityInterface) => emits('delete-activity', activity)"
-            :activity="item"
-            :ref="
-              (el) => {
-                if (index === 0) firstActivity = el as any;
-              }
-            "
-          />
+        <div class="h-full">
+          <div
+            v-for="(item, index) in visibleActivities"
+            :key="index"
+            class="odd:bg-zinc-800 even:bg-neutral-700 transition-colors"
+          >
+            <SingleActivityComponent
+              class="bg-transparent"
+              @popup="(activity: ActivityInterface) => emits('open_pop_up', activity)"
+              @delete-activity="(activity: ActivityInterface) => emits('delete-activity', activity)"
+              :activity="item"
+              :ref="
+                (el) => {
+                  if (index === 0) firstActivity = el as any;
+                }
+              "
+            />
+          </div>
         </div>
       </TransitionGroup>
 

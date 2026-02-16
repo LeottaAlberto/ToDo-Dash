@@ -34,13 +34,15 @@ const activityClass = computed(() => {
 
 <template>
   <div v-if="props.activity" @click="emits('popup', props.activity)" :class="[activityClass]">
-    <div class="border-r-2 border-gray-900 p-3 h-full flex items-center">
+    <div class="border-r-2 border-neutral-900 p-3 h-full flex items-center">
       <h2 class="font-normal truncate text-xl">
         {{ props.activity.title }}
       </h2>
     </div>
 
-    <div class="border-r-2 border-gray-900 p-3 h-full flex flex-row flex-wrap gap-2 items-center">
+    <div
+      class="border-r-2 border-neutral-900 p-3 h-full flex flex-row flex-wrap gap-2 items-center"
+    >
       <div v-for="category in props.activity.categories" :key="category.id">
         <div
           :class="[
