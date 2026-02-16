@@ -1,228 +1,87 @@
 <script setup lang="ts">
 import type ActivityInterface from '@/core/interface/ActivityInterface';
+import { computed } from 'vue';
 
 const props = defineProps<{
   activity: ActivityInterface;
 }>();
+
+const principal = computed(() => props.activity.categories.find((f) => f && f.primary));
+const secondary = computed(() => props.activity.categories.filter((f) => f && !f.primary));
+
+const getPriorityColor = (type: string) => {
+  switch (type) {
+    case 'H':
+      return 'border-2 border-red-500 text-red-400';
+    case 'M':
+      return 'border-2 border-amber-500 text-amber-400';
+    case 'L':
+      return 'border-2 border-sky-600 text-sky-500';
+  }
+};
 </script>
 
 <template>
-  <div class="w-100 pop-up-body flex f-col just-content-start pt-1">
-    <span
-      class="w-100"
-      style="height: 1px; background-color: var(--popup-divider); margin-bottom: 0.5vh"
-    ></span>
+  <div class="flex flex-col justify-between items-start pt-4 w-full h-full max-h-2/3">
+    <span class="w-full h-px bg-gray-400/20"></span>
 
-    <div class="flex flex-col w-100 px-2 g-3 just-content-start align-items-center">
+    <div class="flex flex-row w-full h-20 px-10 gap-15 justify-start items-center">
       <!-- Duration Div -->
-      <div class="flex f-row just-content-start align-items-center g-1">
-        <h1 class="text-bolder">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12 6 12 12 16 14" />
-          </svg>
-        </h1>
-        <h3 class="w-100 flex align-items-center text-align-center single-line">
+      <div class="flex flex-row justify-center items-center gap-2">
+        <!-- Icon -->
+        <h1 class="text-2xl! pi pi-clock"></h1>
+        <!-- Duration Value -->
+        <h3 class="w-full flex items-center text-xl font-bold text-center1">
           {{ props.activity.duration }} h
         </h3>
       </div>
 
       <!-- Priority Div -->
-      <div class="flex text-align-center">
+      <div class="flex text-center">
         <!-- Priority Value -->
-        <h2 class="w-100 text-align-center">
+        <h2 class="w-full text-center">
           <span
-            v-if="props.activity.priority.charAt(0).toUpperCase() === 'H'"
-            class="text-bold"
-            style="
-              border: #4a1818 solid 2px;
-              background-color: transparent;
-              color: #ff6b6b;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
-            >{{ props.activity.priority }}</span
-          >
-          <span
-            v-else-if="props.activity.priority.charAt(0).toUpperCase() === 'M'"
-            class="text-bold"
-            style="
-              border: #fbbf24 solid 2px;
-              background-color: transparent;
-              color: #fbbf24;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
-            >{{ props.activity.priority }}</span
-          >
-          <span
-            v-else
-            class="text-bold"
-            style="
-              border: #60a5fa solid 1px;
-              background-color: transparent;
-              color: #60a5fa;
-              padding: 2px 8px;
-              border-radius: 4px;
-              font-size: 0.8em;
-            "
+            class="px-6 py-1 rounded-md text-md font-extrabold bg-transparent"
+            :class="[getPriorityColor(props.activity.priority.charAt(0).toUpperCase())]"
             >{{ props.activity.priority }}</span
           >
         </h2>
       </div>
 
       <!-- Category Div -->
-      <div class="flex f-row just-content-start g-1">
-        <!-- SVG -->
-        <h1 class="flex text-bolder text-align-center">
-          <svg
-            fill="#ebebeba3"
-            width="30"
-            height="30"
-            viewBox="0 0 64 64"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xml:space="preserve"
-            xmlns:serif="http://www.serif.com/"
-            style="
-              fill-rule: evenodd;
-              clip-rule: evenodd;
-              stroke-linejoin: round;
-              stroke-miterlimit: 2;
-              --darkreader-inline-fill: var(--darkreader-background-000000, #000000);
-            "
-            data-darkreader-inline-fill=""
-          >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <rect
-                id="Icons"
-                x="-384"
-                y="-320"
-                width="1280"
-                height="800"
-                style="fill: none; --darkreader-inline-fill: none"
-                data-darkreader-inline-fill=""
-              />
-              <g id="Icons1" serif:id="Icons">
-                <g id="Strike"></g>
-                <g id="H1"></g>
-                <g id="H2"></g>
-                <g id="H3"></g>
-                <g id="list-ul"></g>
-                <g id="hamburger-1"></g>
-                <g id="hamburger-2"></g>
-                <g id="list-ol"></g>
-                <g id="list-task"></g>
-                <g id="trash"></g>
-                <g id="vertical-menu"></g>
-                <g id="horizontal-menu"></g>
-                <g id="sidebar-2"></g>
-                <g id="Pen"></g>
-                <g id="Pen1" serif:id="Pen"></g>
-                <g id="clock"></g>
-                <g id="external-link"></g>
-                <g id="hr"></g>
-                <g id="info"></g>
-                <g id="warning"></g>
-                <g id="plus-circle"></g>
-                <g id="minus-circle"></g>
-                <g id="vue"></g>
-                <g id="cog"></g>
-                <g id="logo"></g>
-                <g id="radio-check"></g>
-                <g id="eye-slash"></g>
-                <g id="eye"></g>
-                <g id="toggle-off"></g>
-                <g id="shredder"></g>
-                <g>
-                  <path
-                    d="M9.89,30.496c-1.14,1.122 -1.784,2.653 -1.791,4.252c-0.006,1.599 0.627,3.135 1.758,4.266c3.028,3.028 7.071,7.071 10.081,10.082c2.327,2.326 6.093,2.349 8.448,0.051c5.91,-5.768 16.235,-15.846 19.334,-18.871c0.578,-0.564 0.905,-1.338 0.905,-2.146c0,-4.228 0,-17.607 0,-17.607l-17.22,0c-0.788,0 -1.544,0.309 -2.105,0.862c-3.065,3.018 -13.447,13.239 -19.41,19.111Zm34.735,-15.973l0,11.945c0,0.811 -0.329,1.587 -0.91,2.152c-3.069,2.981 -13.093,12.718 -17.485,16.984c-1.161,1.127 -3.012,1.114 -4.157,-0.031c-2.387,-2.386 -6.296,-6.296 -8.709,-8.709c-0.562,-0.562 -0.876,-1.325 -0.872,-2.12c0.003,-0.795 0.324,-1.555 0.892,-2.112c4.455,-4.373 14.545,-14.278 17.573,-17.25c0.561,-0.551 1.316,-0.859 2.102,-0.859c3.202,0 11.566,0 11.566,0Zm-7.907,2.462c-1.751,0.015 -3.45,1.017 -4.266,2.553c-0.708,1.331 -0.75,2.987 -0.118,4.356c0.836,1.812 2.851,3.021 4.882,2.809c2.042,-0.212 3.899,-1.835 4.304,-3.896c0.296,-1.503 -0.162,-3.136 -1.213,-4.251c-0.899,-0.953 -2.18,-1.548 -3.495,-1.57c-0.031,-0.001 -0.062,-0.001 -0.094,-0.001Zm0.008,2.519c1.105,0.007 2.142,0.849 2.343,1.961c0.069,0.384 0.043,0.786 -0.09,1.154c-0.393,1.079 -1.62,1.811 -2.764,1.536c-1.139,-0.274 -1.997,-1.489 -1.802,-2.67c0.177,-1.069 1.146,-1.963 2.27,-1.981c0.014,0 0.029,0 0.043,0Z"
-                  />
-                  <path
-                    d="M48.625,13.137l0,4.001l3.362,0l0,11.945c0,0.811 -0.328,1.587 -0.909,2.152c-3.069,2.981 -13.093,12.717 -17.485,16.983c-1.161,1.128 -3.013,1.114 -4.157,-0.03l-0.034,-0.034l-1.016,0.993c-0.663,0.646 -1.437,1.109 -2.259,1.389l1.174,1.174c2.327,2.327 6.093,2.35 8.447,0.051c5.91,-5.768 16.235,-15.845 19.335,-18.87c0.578,-0.565 0.904,-1.339 0.904,-2.147c0,-4.227 0,-17.607 0,-17.607l-7.362,0Z"
-                  />
-                </g>
-                <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"></g>
-                <g id="react"></g>
-                <g id="check-selected"></g>
-                <g id="turn-off"></g>
-                <g id="code-block"></g>
-                <g id="user"></g>
-                <g id="coffee-bean"></g>
-                <g id="coffee-beans"><g id="coffee-bean1" serif:id="coffee-bean"></g></g>
-                <g id="coffee-bean-filled"></g>
-                <g id="coffee-beans-filled"><g id="coffee-bean2" serif:id="coffee-bean"></g></g>
-                <g id="clipboard"></g>
-                <g id="clipboard-paste"></g>
-                <g id="clipboard-copy"></g>
-                <g id="Layer1"></g>
-              </g>
-            </g>
-          </svg>
-        </h1>
+      <div class="flex flex-row justify-center items-center gap-2">
+        <!-- Icon -->
+        <h1 class="text-2xl! pi pi-tag rotate-90"></h1>
         <!-- Category Value -->
-        <h2 class="w-25 text-align-center" v-if="props.activity.type.length < 10">
-          {{ props.activity.type }}
-        </h2>
-        <h2 class="w-25 text-align-center" v-else>
-          {{ props.activity.type.substring(0, 12) }}
+        <h2 class="w-full text-center font-bold">
+          {{ principal?.label }}
         </h2>
       </div>
     </div>
+    <div>
+      <div v-for="categories in secondary" :key="categories.id">
+        <span class="flex items-center bg-neutral-400 w-30 rounded-md max-h-5">
+          <h2
+            :id="'secondary-category-' + categories.id"
+            class="flex justify-center w-full text-md font-bold"
+          >
+            {{ categories.label }}
+          </h2>
+        </span>
+      </div>
+    </div>
 
-    <span
-      class="w-100"
-      style="height: 1px; background-color: var(--popup-divider); margin-top: 0.5vh"
-    ></span>
+    <span class="w-full h-px bg-gray-400/20"></span>
 
-    <div class="flex w-100 text-align-start my-1 px-2">
-      <div v-if="props.activity.note && props.activity.note.length < 400" class="w-100">
-        <h2 class="text-align-start text-bolder w-100">Note</h2>
-        <h2 class="text-align-start w-100 font-size-medium">
+    <div class="flex w-full text-start px-3 pt-4">
+      <div v-if="props.activity.note" class="w-full">
+        <h2 class="text-start font-bold text-xl w-full">Note</h2>
+        <h2 class="text-start w-full font-size-medium">
           {{ props.activity.note }}
         </h2>
       </div>
 
-      <div v-else-if="props.activity.note">
-        <h2 class="text-align-start text-bolder w-100">Note</h2>
-        <h2 class="text-align-start w-100 font-size-medium">
-          {{ props.activity.note.substring(0, 500) }}
-        </h2>
-      </div>
-
-      <h2 v-else class="font-size-medium">Non ci sono note per questa Activity</h2>
+      <h2 v-else class="font-size-medium">There are no notes for this activity</h2>
     </div>
   </div>
 </template>
-
-<style scoped>
-button {
-  color: var(--color-text);
-  font-size: large;
-}
-
-button:hover {
-  transform: scale(1.05, 1.05) !important;
-  font-size: initial;
-}
-
-.pop-up-body {
-  min-height: 30vh;
-  max-height: 30vh;
-}
-</style>

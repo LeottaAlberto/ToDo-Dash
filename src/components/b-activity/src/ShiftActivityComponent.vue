@@ -2,41 +2,20 @@
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { useActivity } from '@/composable/useActivity';
 import { usePagination } from '@/composable/usePagination';
+import { ButtonDimension } from '@/enums/ButtonEnum';
 
 const { allActivities } = useActivity();
-const { nextPage, prevPage } = usePagination();
+const { nextPage, prevPage, currentPage } = usePagination();
 </script>
 
 <template>
-  <div class="flex scroll-buttons w-50" v-if="allActivities.length > 5">
-    <div class="flex border-standard w-25 radius-standard">
-      <ButtonComponent :icon="'leftArrow'" @click="prevPage()" />
+  <div class="w-1/2 flex justify-center" v-if="allActivities.length > 5">
+    <div class="flex justify-between px-2 w-1/2 rounded-xl">
+      <ButtonComponent icon="pi-angle-left" :dimension="ButtonDimension.BIG" @click="prevPage()" />
 
-      <h2 class="text-bolder text-align-center">Activity</h2>
+      <h2 class="text-center flex items-center font-semibold text-2xl">Page {{ currentPage }}</h2>
 
-      <ButtonComponent :icon="'rightArrow'" @click="nextPage()" />
+      <ButtonComponent icon="pi-angle-right" :dimension="ButtonDimension.BIG" @click="nextPage()" />
     </div>
   </div>
 </template>
-
-<style scoped>
-.scroll-buttons {
-  position: absolute;
-  bottom: 1vh;
-}
-
-.scroll-buttons > div {
-  background-color: var(--vt-c-divider-dark-1);
-  justify-content: space-between;
-}
-
-button {
-  transition: all 0.05s;
-  background-color: transparent;
-  border: transparent;
-}
-
-button:hover {
-  transform: scale(1.08, 1.08);
-}
-</style>

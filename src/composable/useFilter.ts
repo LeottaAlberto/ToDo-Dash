@@ -1,5 +1,8 @@
 import type FilterInterface from '@/core/interface/FilterInterface';
 import { ref, watch } from 'vue';
+import { usePagination } from './usePagination';
+
+const { currentPage } = usePagination();
 
 /**
  * Progressive numeric identifier used to assign
@@ -91,6 +94,7 @@ export function useFilter() {
    * @param id Filter identifier
    */
   const activateFilter = (id: number | string): void => {
+    currentPage.value = 1;
     const filter = allFilters.value.find((f) => f.filter_id == id);
     if (!filter) return;
 

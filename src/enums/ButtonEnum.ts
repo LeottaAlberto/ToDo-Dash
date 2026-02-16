@@ -10,3 +10,15 @@ export enum ButtonWidth {
   MEDIUM_LONG = 12.5,
   LONG = 15,
 }
+
+export enum ButtonRadius {
+  SMALL = 'rounded-md',
+  STANDARD = 'rounded-xl',
+  BIG = 'rounded-2xl',
+}
+
+export enum ButtonDimension {
+  SMALL = 'text-xl',
+  STANDARD = 'text-2xl',
+  BIG = 'text-4xl',
+}

@@ -1,42 +1,19 @@
-<script setup lang="ts">
-// import { ref } from 'vue'
-// import FilterGroupComponent from './FilterGroupComponent.vue'
-
-const props = defineProps<{
-  title: string;
-}>();
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="flex f-col side-container">
-    <h1 class="w-100 text-align-center text-bolder font-size-little-big">{{ props.title }}</h1>
-    <div class="side-sub-container py-2 px-1 box-shadow">
-      <slot />
+  <div
+    class="flex flex-col justify-between items-center gap-2 w-1/5 h-full my-10 rounded-2xl bg-zinc-800/50"
+  >
+    <header class="flex flex-col justify-center items-center w-full p-5">
+      <slot name="header" />
+    </header>
+
+    <div class="flex flex-col justify-baseline items-center w-full h-3/4">
+      <slot name="body" />
     </div>
+
+    <footer class="flex flex-col justify-center items-center w-full">
+      <slot name="footer" />
+    </footer>
   </div>
 </template>
-
-<style scoped>
-.side-container {
-  flex-direction: column;
-  width: fit-content;
-  max-width: 15%;
-  min-width: 15%;
-}
-.side-sub-container {
-  width: 100%;
-  height: 65vh;
-  border: solid 2px #4d4d4dd8;
-  border-radius: 15px;
-  gap: 1vw;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.side-sub-container div {
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.3vw;
-}
-</style>
