@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { getSafeEnum } from '@/enums/enumUtilis';
+import { getSafeEnum } from '@/enums/enumUtils';
 import { Position } from '@/enums';
-import { ButtonRadius, ButtonType } from '@/enums/ButtonEnum';
+import { ButtonDimension, ButtonRadius, ButtonType } from '@/enums/ButtonEnum';
 import { computed } from 'vue';
 
 const emits = defineEmits(['click']);
@@ -13,6 +13,8 @@ interface Props {
   direction?: Position;
   icon?: string;
   label?: string;
+  dimension?: string;
+  border?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,13 +24,17 @@ const props = withDefaults(defineProps<Props>(), {
   direction: undefined,
   icon: undefined,
   label: undefined,
+  dimension: ButtonDimension.STANDARD,
+  border: false,
 });
 
 const isIconOnly = computed(() => props.icon && !props.label);
 
 const buttonBaseClass = computed(() => {
   const base =
-    'flex items-center justify-center transition-all duration-200 border-0 cursor-pointer outline-none font-medium transition-all duration-200 p-0.5';
+    'flex items-center justify-center transition-all duration-200 border-0 cursor-pointer font-medium transition-all duration-200 p-0.5';
+
+  const border = !props.border ? 'outline-0' : 'outline-1 outline-neutral-600';
 
   if (isIconOnly.value)
     return `${base} p-3 rounded-full aspect-square bg-transparent text-gray-200`;
@@ -37,7 +43,7 @@ const buttonBaseClass = computed(() => {
       props.icon && iconColorMap[props.icon] && !props.disable
         ? iconColorMap[props.icon]
         : 'bg-purple-500 hover:bg-purple-600 text-gray-100';
-    return `${base} px-4 py-2 text-gray-100 uppercase tracking-wider text-sm ${getSafeEnum(ButtonRadius, props.radius, ButtonRadius.STANDARD)} ${bg}`;
+    return `${base} px-4 py-2 text-gray-100 uppercase tracking-wider text-sm ${getSafeEnum(ButtonRadius, props.radius, ButtonRadius.STANDARD)} ${bg} ${border}`;
   }
 });
 
@@ -68,8 +74,13 @@ const iconColorMap: Record<string, string> = {
     >
       <i
         v-if="props.icon"
-        class="pi text-center text-2xl"
-        :class="[props.icon, { 'mr-2': props.label }]"
+        class="pi text-center"
+        :class="[
+          props.icon,
+          { 'mr-2': props.label },
+          props.dimension,
+          { 'p-3': !props.label && props.dimension == ButtonDimension.BIG },
+        ]"
       ></i>
       <span
         v-if="props.label"
