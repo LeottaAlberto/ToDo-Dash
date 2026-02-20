@@ -127,24 +127,24 @@ onBeforeUnmount(() => {
     </div>
 
     <div ref="hDiv" class="w-full h-full max-y-11/12 overflow-hidden">
-      <TransitionGroup
-        name="list"
-        tag="div"
-        class="flex flex-col h-full bg-zinc-800/50"
-        :class="[justifyClass()]"
-        v-if="visibleActivities.length > 0"
+      <div
+        ref="hHeader"
+        class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-2 border-b-neutral-900 font-bold text-2xl text-white/50 tracking-wider max-h-24 h-full"
       >
-        <div
-          ref="hHeader"
-          class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-2 border-b-neutral-900 font-bold text-2xl text-white/50 tracking-wider max-h-24 h-full"
+        <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">Title</p>
+        <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">
+          Category
+        </p>
+        <p class="flex justify-center items-center h-full">Given To</p>
+      </div>
+      <div class="h-full">
+        <TransitionGroup
+          name="list"
+          tag="div"
+          class="flex flex-col h-full bg-zinc-800/50"
+          :class="[justifyClass()]"
+          v-if="visibleActivities.length > 0"
         >
-          <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">Title</p>
-          <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">
-            Category
-          </p>
-          <p class="flex justify-center items-center h-full">Given To</p>
-        </div>
-        <div class="h-full">
           <div
             v-for="(item, index) in visibleActivities"
             :key="index"
@@ -162,11 +162,10 @@ onBeforeUnmount(() => {
               "
             />
           </div>
+        </TransitionGroup>
+        <div v-else class="flex items-center justify-center h-full">
+          <p class="text-gray-300 italic">There are no activities</p>
         </div>
-      </TransitionGroup>
-
-      <div v-else class="flex items-center justify-center h-full">
-        <p class="text-gray-300 italic">There are no activities</p>
       </div>
     </div>
   </div>

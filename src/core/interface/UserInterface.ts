@@ -1,4 +1,4 @@
-export default interface User {
+export interface UserInterface {
   id: number | string;
   name: string;
   surname: string;

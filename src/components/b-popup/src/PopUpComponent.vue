@@ -6,7 +6,7 @@ import { computed, onMounted, onUnmounted, useSlots } from 'vue';
 const props = defineProps<{
   title: string;
   footer_btn_title: string;
-  disable_btn_footer: boolean | true;
+  disable_btn_footer?: boolean | true;
   editable: boolean;
   activity?: ActivityInterface;
   icon_button_2?: string;
@@ -83,7 +83,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
       </div>
 
       <!-- Body -->
-      <div class="overflow-hidden w-full px-5" :class="[bodyClass]">
+      <div class="w-full px-5" :class="[bodyClass]">
         <slot />
       </div>
 

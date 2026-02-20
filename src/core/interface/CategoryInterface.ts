@@ -1,5 +1,5 @@
 export default interface CategoryInterface {
-  id: number;
+  id: number | string;
   primary: boolean;
   label: string;
   color: string;
