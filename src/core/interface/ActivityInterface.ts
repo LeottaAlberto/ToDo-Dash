@@ -6,7 +6,6 @@ export default interface ActivityInterface {
   categories: CategoryInterface[];
   priority: string;
   title: string;
-  duration: number;
   note: string;
   status: boolean;
   filters: FilterInterface[];

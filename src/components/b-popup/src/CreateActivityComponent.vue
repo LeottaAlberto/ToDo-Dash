@@ -49,10 +49,8 @@ const categoryOption = computed(() => {
 });
 
 const title = ref('');
-const category = ref('');
 const priority = ref('');
 const note = ref('');
-const duration = ref(0);
 
 const selectedUserIds = ref([]);
 
@@ -82,14 +80,9 @@ function submit() {
     title: title.value,
     categories: selectedCategories.value,
     priority: priority.value,
-    duration: duration.value < 72 ? duration.value : 72,
     note: note.value,
     status: false,
-    filters: [
-      { filter_name: category.value, filter_id: 3, status: false },
-      { filter_name: priority.value, filter_id: 4, status: false },
-      { filter_name: String(duration.value), filter_id: 5, status: false },
-    ],
+    filters: [{ filter_name: priority.value, filter_id: 4, status: false }],
   };
   emit('submit', activity);
 }

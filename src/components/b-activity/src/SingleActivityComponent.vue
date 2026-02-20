@@ -60,8 +60,7 @@ const activityClass = computed(() => {
 
     <div class="p-3 h-full flex flex-row justify-between items-center relative">
       <div class="flex flex-row items-center gap-1 font-mono font-bold">
-        <i class="pi pi-clock text-xl"></i>
-        <h5 class="text-2xl">{{ props.activity.duration }}h</h5>
+        <!-- <h5 class="text-2xl">{{ props.activity.duration }}h</h5> -->
       </div>
 
       <ButtonComponent icon="pi-trash" @click.stop="emits('delete-activity', props.activity)" />
