@@ -66,7 +66,7 @@ const iconColorMap: Record<string, string> = {
 </script>
 
 <template>
-  <div class="flex" :class="props.direction ? props.direction + 'w-full' : 'w-fit'">
+  <div class="flex" :class="props.direction ? props.direction + ' w-full' : ' w-fit'">
     <button
       :class="[buttonBaseClass, stateClasses]"
       :disabled="props.disable"
