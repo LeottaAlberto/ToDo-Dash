@@ -117,8 +117,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-2/3 h-full rounded-xl overflow-hidden bg-zinc-800/50">
-    <div class="flex flex-row justify-between w-full py-6 bg-zinc-900/50">
+  <div class="flex flex-col items-center w-2/3 h-full overflow-hidden /*bg-zinc-800/50*/ py-4">
+    <div class="flex flex-row justify-between w-full py-6 rounded-t-xl bg-zinc-800/50">
       <div class="flex flex-row justify-between items-center w-full px-8">
         <p class="font-bold text-4xl w-50">My Activities</p>
 
@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
     <div ref="hDiv" class="w-full h-full max-y-11/12 overflow-hidden">
       <div
         ref="hHeader"
-        class="grid grid-cols-[2fr_1fr_1fr] items-center border-b-2 border-b-neutral-900 font-bold text-2xl text-white/50 tracking-wider max-h-24 h-full"
+        class="grid grid-cols-[2fr_1fr_1fr] items-center bg-zinc-800/50 border-b-2 border-t-2 border-neutral-900 font-bold text-2xl text-white/50 tracking-wider h-13"
       >
         <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">Title</p>
         <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">

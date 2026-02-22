@@ -14,6 +14,11 @@ export function useCategory() {
     return true;
   };
 
+  const removeCategory = (ids: (number | string)[]) => {
+    const t = globalCategory.value.filter((cat) => !ids.includes(cat.id));
+    globalCategory.value = t;
+  };
+
   onMounted(() => {
     try {
       const storedCategory = localStorage.getItem('global-category');
@@ -29,11 +34,13 @@ export function useCategory() {
   });
 
   onUnmounted(() => {
+    localStorage.setItem('global-category', '');
     localStorage.setItem('global-category', JSON.stringify(globalCategory.value));
   });
 
   return {
     globalCategory,
     addCategory,
+    removeCategory,
   };
 }

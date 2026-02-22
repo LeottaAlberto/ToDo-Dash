@@ -9,18 +9,12 @@ import { useActivity } from '@/composable/useActivity';
 import { useToast } from '@/composable/useToast';
 import { APP_MESSAGE } from '@/core/constants/messages';
 
-import UserComponent from '@/components/b-user/src/UserComponent.vue';
 import ActivityComponent from '@/components/b-activity/src/ActivityComponent.vue';
 import CreateActivityComponent from '@/components/b-popup/src/CreateActivityComponent.vue';
-import SideContainerComponent from '@/components/b-side-viewer/src/SideContainerComponent.vue';
-import FiltersGroupComponent from '@/components/b-filter/src/FiltersGroupComponent.vue';
 import PopUpActivityComponents from '@/components/b-popup/src/ActivityDetailsComponents.vue';
-import DashboardComponent from '@/components/b-dashboard/src/DashboardComponent.vue';
 import PopUpComponent from '@/components/b-popup/src/PopUpComponent.vue';
-import MenuButtonComponent from '@/components/b-utility/src/MenuButtonComponent.vue';
-import { Position } from '@/enums';
-import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
-import { ButtonRadius } from '@/enums/ButtonEnum';
+import RightContainerComponent from '@/components/b-side-viewer/src/RightContainerComponent.vue';
+import LeftContainerComponent from '@/components/b-side-viewer/src/LeftContainerComponent.vue';
 
 const { addActivity, removeActivity, allActivities, completeActivity } = useActivity();
 const { showToast } = useToast();
@@ -66,20 +60,6 @@ function loadFilters() {
     console.error('Error loading activities:', error);
     filters.value = [];
   }
-}
-
-function filters_manage(filters: FilterInterface) {
-  if (!filters.status) {
-    if (!active_filter.value.some((f) => f.filter_name === filters.filter_name)) {
-      active_filter.value.push(filters);
-    }
-  } else {
-    active_filter.value = removeFilter(filters);
-  }
-}
-
-function removeFilter(filter: FilterInterface) {
-  return active_filter.value.filter((f) => f.filter_name !== filter.filter_name);
 }
 
 function completeActivityHandler(activity: ActivityInterface) {
@@ -129,59 +109,8 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
 </script>
 
 <template>
-  <div class="flex flex-row gap-10 justify-start w-full h-full py-6">
-    <SideContainerComponent>
-      <template v-slot:header>
-        <div class="flex justify-center items-center w-full h-fit">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 64 64"
-            width="64"
-            height="64"
-            role="img"
-            aria-label="Task Manager Logo"
-          >
-            <title>Task Manager Minimal Logo</title>
-            <desc>
-              Un'icona minimalista che mostra una spunta sopra due linee orizzontali impilate,
-              rappresentando una lista di compiti.
-            </desc>
-            <g
-              fill="none"
-              stroke="#1a1a1a"
-              stroke-width="8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="14 22 26 34 50 10" />
-
-              <line x1="14" y1="46" x2="50" y2="46" />
-
-              <line x1="14" y1="58" x2="50" y2="58" />
-            </g>
-          </svg>
-          <p class="text-4xl font-black">TodoDash</p>
-        </div>
-      </template>
-
-      <template v-slot:body>
-        <div class="flex flex-col justify-baseline w-full h-full">
-          <div class="flex flex-col justify-start w-full h-fit py-10">
-            <MenuButtonComponent icon="pi-home" label="Dashboard" :isSelected="true" />
-            <MenuButtonComponent icon="pi-tags" label="Categories" />
-            <MenuButtonComponent icon="pi-cog" label="Settings" />
-          </div>
-
-          <FiltersGroupComponent
-            @filter_selected="(filter: FilterInterface) => filters_manage(filter)"
-          />
-        </div>
-      </template>
-
-      <template v-slot:footer>
-        <UserComponent />
-      </template>
-    </SideContainerComponent>
+  <div class="flex flex-row gap-10 justify-start w-full h-full">
+    <LeftContainerComponent />
 
     <ActivityComponent
       :activity="allActivities"
@@ -190,20 +119,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
       @delete-activity="(activity: ActivityInterface) => setRemoveActivity(activity)"
     />
 
-    <SideContainerComponent title="Overview">
-      <template v-slot:header>
-        <ButtonComponent
-          :direction="Position.RIGHT"
-          :icon="'pi-plus'"
-          :label="'New Activity'"
-          :radius="ButtonRadius.SMALL"
-          @click="isVisibleAddActivity = true"
-        />
-      </template>
-      <template v-slot:body>
-        <DashboardComponent :activities="allActivities" />
-      </template>
-    </SideContainerComponent>
+    <RightContainerComponent @is-visible="isVisibleAddActivity = true" />
   </div>
 
   <PopUpComponent

@@ -2,7 +2,7 @@
 
 <template>
   <div
-    class="flex flex-col justify-between items-center gap-2 w-1/5 h-full my-10 rounded-2xl bg-zinc-800/50"
+    class="flex flex-col justify-between items-center gap-2 w-full h-full my-10 rounded-2xl bg-zinc-800/50"
   >
     <header class="flex flex-col justify-center items-center w-full p-5">
       <slot name="header" />
