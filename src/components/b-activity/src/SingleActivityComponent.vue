@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import type ActivityInterface from '@/core/interface/ActivityInterface';
-import { computed } from 'vue';
+import { ButtonDimension } from '@/enums/ButtonEnum';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   activity: ActivityInterface;
 }>();
+
+const isHover = ref(false);
 
 const emits = defineEmits(['popup', 'delete-activity']);
 
@@ -33,7 +36,13 @@ const activityClass = computed(() => {
 </script>
 
 <template>
-  <div v-if="props.activity" @click="emits('popup', props.activity)" :class="[activityClass]">
+  <div
+    v-if="props.activity"
+    @mouseenter="isHover = true"
+    @mouseleave="isHover = false"
+    @click="emits('popup', props.activity)"
+    :class="[activityClass]"
+  >
     <div class="border-r-2 border-neutral-900 px-3 h-full flex items-center">
       <h2 class="font-normal truncate text-xl">
         {{ props.activity.title }}
@@ -63,7 +72,14 @@ const activityClass = computed(() => {
         <!-- <h5 class="text-2xl">{{ props.activity.duration }}h</h5> -->
       </div>
 
-      <ButtonComponent icon="pi-trash" @click.stop="emits('delete-activity', props.activity)" />
+      <Transition name="fade">
+        <ButtonComponent
+          v-if="isHover"
+          icon="pi-trash"
+          :dimension="ButtonDimension.SMALL"
+          @click.stop="emits('delete-activity', props.activity)"
+        />
+      </Transition>
     </div>
   </div>
 </template>
