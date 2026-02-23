@@ -11,7 +11,7 @@ const emits = defineEmits(['popup', 'delete-activity']);
 
 const activityClass = computed(() => {
   const base =
-    'grid grid-cols-[2fr_1fr_1fr] items-center cursor-pointer w-full transition-all duration-75 relative';
+    'grid grid-cols-[2fr_1fr_1fr] cursor-pointer w-full h-12! transition-all duration-75 relative';
   const hover = 'hover:z-20 hover:ring-2 hover:ring-inset';
 
   const priorityMap: Record<string, string> = {
@@ -34,14 +34,14 @@ const activityClass = computed(() => {
 
 <template>
   <div v-if="props.activity" @click="emits('popup', props.activity)" :class="[activityClass]">
-    <div class="border-r-2 border-neutral-900 p-3 h-full flex items-center">
+    <div class="border-r-2 border-neutral-900 px-3 h-full flex items-center">
       <h2 class="font-normal truncate text-xl">
         {{ props.activity.title }}
       </h2>
     </div>
 
     <div
-      class="border-r-2 border-neutral-900 p-3 h-full flex flex-row flex-wrap gap-2 items-center"
+      class="border-r-2 border-neutral-900 px-3 h-full flex flex-row flex-wrap gap-2 items-center"
     >
       <div v-for="category in props.activity.categories" :key="category.id">
         <div
@@ -58,7 +58,7 @@ const activityClass = computed(() => {
       </div>
     </div>
 
-    <div class="p-3 h-full flex flex-row justify-between items-center relative">
+    <div class="px-3 h-full flex flex-row justify-between items-center relative">
       <div class="flex flex-row items-center gap-1 font-mono font-bold">
         <!-- <h5 class="text-2xl">{{ props.activity.duration }}h</h5> -->
       </div>
