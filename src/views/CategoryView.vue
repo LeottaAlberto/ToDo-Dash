@@ -36,7 +36,7 @@ const isSelected = (catID: string | number) => {
 </script>
 <template>
   <div class="flex flex-row w-full h-full">
-    <LeftContainerComponent />
+    <LeftContainerComponent :filters="false" />
     <div class="flex justify-center w-full h-full py-5">
       <div class="flex flex-col items-center w-full max-w-11/12">
         <!-- Title -->

@@ -110,7 +110,7 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
 
 <template>
   <div class="flex flex-row gap-10 justify-start w-full h-full">
-    <LeftContainerComponent />
+    <LeftContainerComponent :filters="true" />
 
     <ActivityComponent
       :activity="allActivities"

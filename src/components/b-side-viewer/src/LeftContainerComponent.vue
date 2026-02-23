@@ -2,6 +2,8 @@
 import type FilterInterface from '@/core/interface/FilterInterface';
 import { ref } from 'vue';
 
+const props = defineProps({ filters: Boolean });
+
 const active_filter = ref<FilterInterface[]>([]);
 
 function filters_manage(filters: FilterInterface) {
@@ -65,6 +67,7 @@ function removeFilter(filter: FilterInterface) {
           </div>
 
           <FiltersGroupComponent
+            v-if="props.filters"
             @filter_selected="(filter: FilterInterface) => filters_manage(filter)"
           />
         </div>
