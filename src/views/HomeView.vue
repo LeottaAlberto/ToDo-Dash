@@ -106,6 +106,17 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     console.error(error);
   }
 };
+
+const getPriorityColor = (type: string) => {
+  switch (type) {
+    case 'H':
+      return 'border-2 border-red-500 text-red-400';
+    case 'M':
+      return 'border-2 border-amber-500 text-amber-400';
+    case 'L':
+      return 'border-2 border-sky-600 text-sky-500';
+  }
+};
 </script>
 
 <template>
@@ -146,11 +157,18 @@ const handleSave = async (message: ToastMessage, activity?: ActivityInterface) =
     :disable_btn_footer="activity_in_pop_up.status"
     :icon_button_2="'pi-check'"
     :editable="true"
-    footer_btn_title="Complete Activity"
+    footer_btn_title="Complete"
     @closed="() => (activity_in_pop_up = undefined)"
     @confirm="(a: ActivityInterface) => completeActivityHandler(a)"
     @remove="(activity: ActivityInterface) => setRemoveActivity(activity)"
   >
+    <template v-slot:title-element>
+      <span
+        class="px-6 py-1 rounded-md text-xs font-extrabold bg-transparent"
+        :class="[getPriorityColor(activity_in_pop_up.priority.charAt(0).toUpperCase())]"
+        >{{ activity_in_pop_up.priority.toUpperCase() }}</span
+      >
+    </template>
     <PopUpActivityComponents :activity="activity_in_pop_up" />
   </PopUpComponent>
 

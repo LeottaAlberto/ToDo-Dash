@@ -8,74 +8,53 @@ const props = defineProps<{
 
 const principal = computed(() => props.activity.categories.find((f) => f && f.primary));
 const secondary = computed(() => props.activity.categories.filter((f) => f && !f.primary));
-
-const getPriorityColor = (type: string) => {
-  switch (type) {
-    case 'H':
-      return 'border-2 border-red-500 text-red-400';
-    case 'M':
-      return 'border-2 border-amber-500 text-amber-400';
-    case 'L':
-      return 'border-2 border-sky-600 text-sky-500';
-  }
-};
 </script>
 
 <template>
-  <div class="flex flex-row justify-between items-start w-full h-full max-h-2/3">
-    <div class="flex w-2/5 min-w-2/5 text-start px-3 pt-4">
-      <div v-if="props.activity.note" class="w-full">
-        <h2 class="text-start font-bold text-xl w-full">Note</h2>
-        <h2 class="text-start w-full font-size-medium">
+  <div class="grid grid-cols-[2fr_1.5fr] pt-5 min-w-130 max-w-150">
+    <!-- Note Zone -->
+    <div class="flex flex-col justify-between gap-4 w-full text-start px-5">
+      <div
+        v-if="props.activity.note"
+        class="rounded-md gap-2 px-3 py-2 bg-zinc-800/50 min-w-61 w-full max-w-11/12"
+      >
+        <h2 class="text-start font-bold text-xl text-nowrap w-full uppercase">
+          Description & Notes
+        </h2>
+        <h2 class="text-start w-full text-xs leading-4">
           {{ props.activity.note }}
         </h2>
       </div>
 
       <h2 v-else class="font-size-medium">There are no notes for this activity</h2>
     </div>
-
-    <span class="w-1 h-96 bg-neutral-600 text-transparent">.</span>
-
-    <div
-      class="flex flex-col justify-start items-center gap-15 py-4 px-16 w-full h-full min-h-full"
-    >
+    <!-- Other Data Zone -->
+    <div class="flex flex-col gap-2 px-5">
       <!-- Category Div -->
-      <div class="h-1/3">
-        <h3>Primary Context</h3>
-        <div
-          class="flex flex-row justify-center items-center gap-3 p-5 rounded-md w-[20rem] h-full bg-neutral-800 text-violet-500"
-        >
-          <!-- Icon -->
-          <h1 class="text-4xl! pi pi-tag rotate-90"></h1>
-          <!-- Category Value -->
-          <h2 class="w-fit text-4xl text-center font-bold">
-            {{ principal?.label }}
-          </h2>
-        </div>
+      <div class="flex flex-row justify-start items-center gap-3 py-2 rounded-md text-violet-500">
+        <!-- Icon -->
+        <i class="text-2xl pi pi-tag rotate-90"></i>
+        <!-- Category Value -->
+        <h1 class="w-fit text-2xl text-center font-bold">
+          {{ principal?.label }}
+        </h1>
       </div>
       <!-- Tags -->
-      <div class="w-full h-1/3 text-start">
-        <h3>Tags</h3>
-        <div v-for="categories in secondary" :key="categories.id">
-          <span class="flex items-center bg-neutral-400 w-30 rounded-md max-h-5">
+      <div class="flex flex-row flex-wrap gap-2 max-h-15 overflow-y-auto">
+        <div v-for="category in secondary" :key="category.id">
+          <span
+            class="flex items-center px-4 w-fit rounded-md max-h-10"
+            :style="{ backgroundColor: category.color }"
+          >
             <h2
-              :id="'secondary-category-' + categories.id"
-              class="flex justify-center w-full text-md font-bold"
+              :id="'secondary-category-' + category.id"
+              class="flex justify-center w-full text-xs font-bold py-0.5"
             >
-              {{ categories.label }}
+              {{ category.label }}
             </h2>
           </span>
         </div>
-      </div>
-      <!-- Priority Value -->
-      <div class="flex justify-end items-end w-full h-full">
-        <h2 class="w-full h-1/3 text-start">
-          <span
-            class="px-6 py-1 rounded-md text-md font-extrabold bg-transparent h-full"
-            :class="[getPriorityColor(props.activity.priority.charAt(0).toUpperCase())]"
-            >{{ props.activity.priority }}</span
-          >
-        </h2>
+        <div v-if="secondary.length === 0">No more tags</div>
       </div>
     </div>
   </div>

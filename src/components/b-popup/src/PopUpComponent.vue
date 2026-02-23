@@ -2,6 +2,7 @@
 import type ActivityInterface from '@/core/interface/ActivityInterface';
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { computed, onMounted, onUnmounted, useSlots } from 'vue';
+import { ButtonDimension } from '@/enums/ButtonEnum';
 
 const props = defineProps<{
   title: string;
@@ -67,17 +68,20 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
       @keypress.esc="closePopUp()"
     >
       <!-- Header -->
-      <div class="flex just-content-space-between w-full">
-        <div class="flex flex-row w-full bg-neutral-600">
-          <h1 class="flex justify-start items-center text-center p-6 text-4xl font-bold w-full">
+      <div class="flex flex-col justify-between w-full bg-neutral-600 relative">
+        <div
+          v-if="props.editable"
+          class="flex flex-row justify-end gap-1 text-3xl absolute right-1 top-1"
+        >
+          <ButtonComponent icon="pi-pencil" @click="emits('edit')" />
+          <ButtonComponent icon="pi-trash" @click="emits('remove')" />
+        </div>
+        <div class="flex flex-row">
+          <h1 class="text-start p-6 text-4xl font-bold w-fit text-nowrap">
             {{ props.title }}
           </h1>
-          <div
-            v-if="props.editable"
-            class="flex flex-row justify-center items-center gap/1 text-3xl w-20 px-20"
-          >
-            <ButtonComponent icon="pi-pencil" @click="emits('edit')" />
-            <ButtonComponent icon="pi-trash" @click="emits('remove')" />
+          <div class="flex justify-start items-center w-full">
+            <slot name="title-element"></slot>
           </div>
         </div>
       </div>
@@ -91,10 +95,16 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
       <div class="w-full py-6 px-10">
         <slot name="footer" v-if="$slots.footer" />
         <div class="flex flex-row justify-end gap-3" v-else>
-          <ButtonComponent :icon="'pi-times'" :label="'Close'" @click="closePopUp()" />
+          <ButtonComponent
+            :icon="'pi-times'"
+            :dimension="ButtonDimension.SMALL"
+            :label="'Close'"
+            @click="closePopUp()"
+          />
           <ButtonComponent
             :disable="props.disable_btn_footer"
             :label="props.footer_btn_title"
+            :dimension="ButtonDimension.SMALL"
             :icon="props.icon_button_2 ? props.icon_button_2 : undefined"
             @click="clickBtn2()"
           />
