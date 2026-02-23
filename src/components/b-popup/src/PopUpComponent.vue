@@ -2,7 +2,7 @@
 import type ActivityInterface from '@/core/interface/ActivityInterface';
 import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
 import { computed, onMounted, onUnmounted, useSlots } from 'vue';
-import { ButtonDimension } from '@/enums/ButtonEnum';
+import { ButtonDimension, ButtonRadius } from '@/enums/ButtonEnum';
 
 const props = defineProps<{
   title: string;
@@ -73,8 +73,8 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
           v-if="props.editable"
           class="flex flex-row justify-end gap-1 text-3xl absolute right-1 top-1"
         >
-          <ButtonComponent icon="pi-pencil" @click="emits('edit')" />
-          <ButtonComponent icon="pi-trash" @click="emits('remove')" />
+          <ButtonComponent :background="true" icon="pi-pencil" @click="emits('edit')" />
+          <ButtonComponent :background="true" icon="pi-trash" @click="emits('remove')" />
         </div>
         <div class="flex flex-row">
           <h1 class="text-start p-6 text-4xl font-bold w-fit text-nowrap">
@@ -87,7 +87,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
       </div>
 
       <!-- Body -->
-      <div class="w-full px-5" :class="[bodyClass]">
+      <div class="w-full px-5 py-5" :class="[bodyClass]">
         <slot />
       </div>
 
@@ -99,6 +99,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
             :icon="'pi-times'"
             :dimension="ButtonDimension.SMALL"
             :label="'Close'"
+            :radius="ButtonRadius.SMALL"
             @click="closePopUp()"
           />
           <ButtonComponent
@@ -106,6 +107,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown));
             :label="props.footer_btn_title"
             :dimension="ButtonDimension.SMALL"
             :icon="props.icon_button_2 ? props.icon_button_2 : undefined"
+            :radius="ButtonRadius.SMALL"
             @click="clickBtn2()"
           />
         </div>

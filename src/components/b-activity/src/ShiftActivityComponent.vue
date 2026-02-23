@@ -11,13 +11,21 @@ const { nextPage, prevPage, currentPage } = usePagination();
 <template>
   <div class="w-1/2 flex justify-center" v-if="allActivities.length > 5">
     <div class="flex justify-between px-2 w-1/2 rounded-xl">
-      <ButtonComponent icon="pi-angle-left" :dimension="ButtonDimension.BIG" @click="prevPage()" />
+      <ButtonComponent
+        icon="pi-angle-left"
+        :dimension="ButtonDimension.STANDARD"
+        @click="prevPage()"
+      />
 
       <h2 class="text-center text-nowrap flex items-center font-semibold text-2xl">
         Page {{ currentPage }}
       </h2>
 
-      <ButtonComponent icon="pi-angle-right" :dimension="ButtonDimension.BIG" @click="nextPage()" />
+      <ButtonComponent
+        icon="pi-angle-right"
+        :dimension="ButtonDimension.STANDARD"
+        @click="nextPage()"
+      />
     </div>
   </div>
 </template>
