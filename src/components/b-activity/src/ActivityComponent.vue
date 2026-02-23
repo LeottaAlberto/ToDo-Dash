@@ -118,26 +118,28 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col items-center w-2/3 h-full overflow-hidden /*bg-zinc-800/50*/ py-4">
-    <div class="flex flex-row justify-between w-full py-6 rounded-t-xl bg-zinc-800/50">
+    <div
+      class="flex flex-row justify-between w-full h-full min-h-10 max-h-30 rounded-t-xl bg-zinc-800/50"
+    >
       <div class="flex flex-row justify-between items-center w-full px-8">
-        <p class="font-bold text-4xl w-50">My Activities</p>
+        <h1 class="font-bold text-4xl w-50">My Activities</h1>
 
         <ShiftActivityComponent class="flex justify-end w-1/2" />
       </div>
     </div>
 
     <div ref="hDiv" class="w-full h-full max-y-11/12 overflow-hidden">
+      <!-- Header -->
       <div
         ref="hHeader"
-        class="grid grid-cols-[2fr_1fr_1fr] items-center bg-zinc-800/50 border-b-2 border-t-2 border-neutral-900 font-bold text-2xl text-white/50 tracking-wider h-13"
+        class="grid grid-cols-[2fr_1fr_1fr] h-full min-h-10 max-h-1/12 bg-zinc-800/50 border-b-2 border-t-2 border-neutral-900 font-bold text-2xl text-white/50 tracking-wider"
       >
-        <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">Title</p>
-        <p class="flex justify-center items-center h-full border-r-2 border-neutral-900">
-          Category
-        </p>
-        <p class="flex justify-center items-center h-full">Given To</p>
+        <p class="flex justify-center items-center border-r-2 border-neutral-900">Title</p>
+        <p class="flex justify-center items-center border-r-2 border-neutral-900">Category</p>
+        <p class="flex justify-center items-center">Given To</p>
       </div>
-      <div class="h-full">
+      <!-- Table Body -->
+      <div class="h-fit rounded-b-xl overflow-hidden">
         <TransitionGroup
           name="list"
           tag="div"
