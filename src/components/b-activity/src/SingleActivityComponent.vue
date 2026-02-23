@@ -4,9 +4,15 @@ import type ActivityInterface from '@/core/interface/ActivityInterface';
 import { ButtonDimension } from '@/enums/ButtonEnum';
 import { computed, ref } from 'vue';
 
+const NUM_ACTIVITY_SHOW = 2;
+
 const props = defineProps<{
   activity: ActivityInterface;
 }>();
+
+const categories = computed(() => {
+  return props.activity.categories.slice(0, NUM_ACTIVITY_SHOW);
+});
 
 const isHover = ref(false);
 
@@ -52,7 +58,7 @@ const activityClass = computed(() => {
     <div
       class="border-r-2 border-neutral-900 px-3 h-full flex flex-row flex-wrap gap-2 items-center"
     >
-      <div v-for="category in props.activity.categories" :key="category.id">
+      <div v-for="category in categories" :key="category.id">
         <div
           :class="[
             'flex items-center rounded-md px-2 py-0',
@@ -62,8 +68,13 @@ const activityClass = computed(() => {
           <span class="text-sm font-bold">{{ category.label }}</span>
         </div>
       </div>
-      <div class="flex items-center bg-neutral-400 px-2 py-0.5 rounded-md">
-        <span class="text-sm font-bold">+{{ Math.floor(Math.random() * 10) + 1 }}</span>
+      <div
+        v-if="props.activity.categories.length > 2"
+        class="flex items-center bg-neutral-400 px-2 py-0.5 rounded-md"
+      >
+        <span class="text-sm font-bold"
+          >+{{ props.activity.categories.length - NUM_ACTIVITY_SHOW }}</span
+        >
       </div>
     </div>
 
