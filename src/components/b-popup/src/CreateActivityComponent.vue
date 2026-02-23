@@ -195,7 +195,7 @@ const handleAddActivity = (category: CategoryInterface) => {
   </div>
 
   <PopUpComponent
-    v-if="createCategory"
+    :show="createCategory"
     title="Create New Category"
     footer_btn_title="Create"
     icon_button_2="pi-plus"

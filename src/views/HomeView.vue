@@ -134,7 +134,7 @@ const getPriorityColor = (type: string) => {
   </div>
 
   <PopUpComponent
-    v-if="isVisibleAddActivity"
+    :show="isVisibleAddActivity"
     title="Create New Activity"
     footer_btn_title="Add"
     :disable_btn_footer="false"
@@ -152,6 +152,7 @@ const getPriorityColor = (type: string) => {
 
   <PopUpComponent
     v-if="activity_in_pop_up"
+    :show="activity_in_pop_up !== undefined"
     :activity="activity_in_pop_up"
     :title="activity_in_pop_up.title"
     :disable_btn_footer="activity_in_pop_up.status"
@@ -173,7 +174,7 @@ const getPriorityColor = (type: string) => {
   </PopUpComponent>
 
   <PopUpComponent
-    v-if="isVisibleWarningPopup == true"
+    :show="isVisibleWarningPopup == true"
     :title="'Warning'"
     :footer_btn_title="'Confirm'"
     :icon_button_2="'pi-trash'"
