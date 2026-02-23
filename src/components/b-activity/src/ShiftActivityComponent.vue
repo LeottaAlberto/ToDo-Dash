@@ -13,7 +13,9 @@ const { nextPage, prevPage, currentPage } = usePagination();
     <div class="flex justify-between px-2 w-1/2 rounded-xl">
       <ButtonComponent icon="pi-angle-left" :dimension="ButtonDimension.BIG" @click="prevPage()" />
 
-      <h2 class="text-center flex items-center font-semibold text-2xl">Page {{ currentPage }}</h2>
+      <h2 class="text-center text-nowrap flex items-center font-semibold text-2xl">
+        Page {{ currentPage }}
+      </h2>
 
       <ButtonComponent icon="pi-angle-right" :dimension="ButtonDimension.BIG" @click="nextPage()" />
     </div>

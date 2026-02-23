@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-row justify-between items-center w-full px-8">
         <p class="font-bold text-4xl w-50">My Activities</p>
 
-        <ShiftActivityComponent class="flex justify-end" />
+        <ShiftActivityComponent class="flex justify-end w-1/2" />
       </div>
     </div>
 
