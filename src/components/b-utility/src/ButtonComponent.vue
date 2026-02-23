@@ -11,16 +11,19 @@ interface Props {
   radius?: string;
   disable?: boolean;
   direction?: Position;
+  background?: boolean;
   icon?: string;
   label?: string;
   dimension?: string;
   border?: boolean;
+  toolTip?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: ButtonType.NORMAL,
   radius: ButtonRadius.STANDARD,
   disable: false,
+  background: false,
   direction: undefined,
   icon: undefined,
   label: undefined,
@@ -32,19 +35,21 @@ const isIconOnly = computed(() => props.icon && !props.label);
 
 const buttonBaseClass = computed(() => {
   const base =
-    'flex items-center justify-center transition-all duration-200 border-0 cursor-pointer font-medium transition-all duration-200 p-0.5';
+    'flex items-center justify-center transition-all duration-200 cursor-pointer font-medium transition-all duration-200';
 
-  const border = !props.border ? 'outline-0' : 'outline-1 outline-neutral-600';
+  const border = props.border && !props.background ? 'outline-0' : 'outline-1 outline-neutral-600';
+  const background = props.background
+    ? 'bg-violet-600! rounded-[0.35vw]! w-10 h-10 p-2!'
+    : iconColorMap[props.icon + ''];
 
-  if (isIconOnly.value)
-    return `${base} p-3 rounded-full aspect-square bg-transparent text-gray-200`;
-  else {
-    const bg =
-      props.icon && iconColorMap[props.icon] && !props.disable
-        ? iconColorMap[props.icon]
-        : 'bg-purple-500 hover:bg-purple-600 text-gray-100';
-    return `${base} px-4 py-2 text-gray-100 uppercase tracking-wider text-sm ${getSafeEnum(ButtonRadius, props.radius, ButtonRadius.STANDARD)} ${bg} ${border}`;
-  }
+  if (isIconOnly.value && !props.background)
+    return `${base} p-3 rounded-full aspect-square text-gray-200`;
+
+  const bg =
+    props.icon && iconColorMap[props.icon] && !props.disable
+      ? iconColorMap[props.icon]
+      : 'bg-purple-500 hover:bg-purple-600 text-gray-100';
+  return `${base} ${background} px-4 py-2 text-gray-100 uppercase tracking-wider text-sm ${getSafeEnum(ButtonRadius, props.radius, ButtonRadius.STANDARD)} ${bg} ${border}`;
 });
 
 const stateClasses = computed(() => {
@@ -60,8 +65,9 @@ const stateClasses = computed(() => {
 
 const iconColorMap: Record<string, string> = {
   'pi-trash': 'bg-red-500 hover:bg-red-600 text-white',
-  'pi-check': 'bg-green-500 hover:bg-green-800 text-white',
-  'pi-times': 'bg-slate-700 hover:bg-slate-600 text-gray-200',
+  'pi-check': 'bg-green-700 hover:bg-green-800 text-white',
+  'pi-times': 'bg-slate-700 hover:bg-slate-800 text-gray-200',
+  '': 'bg-transparent',
 };
 </script>
 
@@ -70,6 +76,7 @@ const iconColorMap: Record<string, string> = {
     <button
       :class="[buttonBaseClass, stateClasses]"
       :disabled="props.disable"
+      :title="props.toolTip"
       @click="emits('click', $event)"
     >
       <i
@@ -83,7 +90,7 @@ const iconColorMap: Record<string, string> = {
         ]"
       ></i>
       <span
-        v-if="props.label"
+        v-if="props.label && !props.toolTip"
         class="flex justify-center items-center text-base text-center text-gray-200/90 px-2"
       >
         {{ props.label }}
