@@ -1,21 +1,32 @@
 <script lang="ts" setup>
-// import ButtonComponent from '@/components/b-utility/src/ButtonComponent.vue';
+import { useUser } from '@/composable/useUser';
+import { computed } from 'vue';
+
+const emits = defineEmits(['openUserSettings']);
+
+const { activeUser } = useUser();
+const imgUrl = computed(() => {
+  return activeUser.value?.srcImg
+    ? activeUser.value?.srcImg
+    : 'https://primefaces.org/cdn/primevue/images/organization/walter.jpg';
+});
+
+const userButtonState = computed(() => {
+  return 'hover:outline-1 hover:outline-white active:scale-95';
+});
 </script>
 
 <template>
-  <div class="flex flex-col justify-between items-center w-full h-fit py-7">
-    <!-- Footer -->
-    <div class="flex flex-row items-center justify-center gap-10 w-full">
-      <OverlayBadge value="10" severity="danger" class="inline-flex">
-        <Avatar
-          image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg"
-          shape="circle"
-          class="w-15! h-15!"
-        />
-      </OverlayBadge>
+  <div class="flex flex-col w-full h-fit py-7">
+    <div class="flex flex-row justify-start items-center gap-10 w-full px-10">
+      <div class="w-fit h-fit" @click="emits('openUserSettings')">
+        <OverlayBadge value="10" severity="warn" class="inline-flex">
+          <Avatar :image="imgUrl" shape="circle" class="w-15! h-15!" :class="userButtonState" />
+        </OverlayBadge>
 
-      <div class="flex flex-col items-center justify-center text-xl font-semibold">
-        Leotta Alberto
+        <p class="flex flex-col items-center justify-center text-xl font-semibold">
+          {{ activeUser?.username }}
+        </p>
       </div>
     </div>
   </div>
