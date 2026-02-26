@@ -6,7 +6,8 @@ import { onMounted, onUnmounted } from 'vue';
 
 const { allActivities } = useActivity();
 
-const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+const handleBeforeUnload = () => {
+  // event: BeforeUnloadEvent
   saveData();
   // event.preventDefault();
 };

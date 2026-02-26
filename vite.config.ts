@@ -24,4 +24,19 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
+    watch: {
+      // usePolling: true,
+      // interval: 10,
+      ignored: ['**/node_modules/**', '**/dist/**'],
+    },
+    hmr: {
+      protocol: 'ws',
+      host: '127.0.0.1',
+      overlay: true,
+    },
+  },
 });
