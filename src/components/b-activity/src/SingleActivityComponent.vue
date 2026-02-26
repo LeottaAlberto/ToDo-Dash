@@ -60,10 +60,8 @@ const activityClass = computed(() => {
     >
       <div v-for="category in categories" :key="category.id">
         <div
-          :class="[
-            'flex items-center rounded-md px-2 py-0',
-            category.primary ? 'bg-neutral-500/70' : 'bg-neutral-400',
-          ]"
+          :class="['flex items-center rounded-md px-2 py-0']"
+          :style="{ backgroundColor: category.color }"
         >
           <span class="text-sm font-bold">{{ category.label }}</span>
         </div>
