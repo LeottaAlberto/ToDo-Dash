@@ -121,7 +121,7 @@ const getPriorityColor = (type: string) => {
 
 <template>
   <div class="flex flex-row gap-10 justify-start w-full h-full">
-    <LeftContainerComponent :filters="true" />
+    <LeftContainerComponent :filters="true" :settings="false" />
 
     <ActivityComponent
       :activity="allActivities"

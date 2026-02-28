@@ -3,8 +3,10 @@ import ToastComponent from './components/b-popup/src/ToastComponent.vue';
 import { useActivity } from '@/composable/useActivity';
 
 import { onMounted, onUnmounted } from 'vue';
+import { useUser } from './composable/useUser';
 
 const { allActivities } = useActivity();
+const { login } = useUser();
 
 const handleBeforeUnload = () => {
   // event: BeforeUnloadEvent
@@ -21,6 +23,7 @@ onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
   window.addEventListener('blur', handleBlur);
   window.addEventListener('focus', handleFocus);
+  login();
 });
 
 onUnmounted(() => {

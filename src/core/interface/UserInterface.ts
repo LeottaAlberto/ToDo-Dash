@@ -3,5 +3,9 @@ export interface UserInterface {
   name: string;
   surname: string;
   username: string;
-  srcImg: string;
+  email: string;
+  password: string;
+  memInfo: Date;
+  srcImg?: string;
+  description?: string;
 }

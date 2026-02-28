@@ -2,8 +2,6 @@
 import { useUser } from '@/composable/useUser';
 import { computed } from 'vue';
 
-const emits = defineEmits(['openUserSettings']);
-
 const { activeUser } = useUser();
 const imgUrl = computed(() => {
   return activeUser.value?.srcImg
@@ -19,12 +17,15 @@ const userButtonState = computed(() => {
 <template>
   <div class="flex flex-col w-full h-fit py-7">
     <div class="flex flex-row justify-start items-center gap-10 w-full px-10">
-      <div class="w-fit h-fit" @click="emits('openUserSettings')">
+      <div
+        class="flex flex-row justify-start items-center gap-5 w-fit h-fit"
+        @click="$router.push({ name: 'accountProfile' })"
+      >
         <OverlayBadge value="10" severity="warn" class="inline-flex">
           <Avatar :image="imgUrl" shape="circle" class="w-15! h-15!" :class="userButtonState" />
         </OverlayBadge>
 
-        <p class="flex flex-col items-center justify-center text-xl font-semibold">
+        <p class="text-center text-2xl font-semibold">
           {{ activeUser?.username }}
         </p>
       </div>
