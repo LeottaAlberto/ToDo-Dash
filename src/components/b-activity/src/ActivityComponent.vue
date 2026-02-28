@@ -123,9 +123,11 @@ onBeforeUnmount(() => {
     >
       <div class="flex flex-row justify-between items-center w-full px-8">
         <h1 class="font-bold text-4xl w-50">My Activities</h1>
-
         <ShiftActivityComponent class="flex justify-end w-1/2" />
       </div>
+    </div>
+    <div class="flex justify-center items-center py-5 px-10 bg-zinc-800/50 w-full">
+      <SearchbarComponent :fullSize="true" />
     </div>
 
     <div ref="hDiv" class="w-full h-full max-y-11/12 overflow-hidden">

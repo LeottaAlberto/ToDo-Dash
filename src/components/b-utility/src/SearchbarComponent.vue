@@ -3,13 +3,16 @@ import { ref } from 'vue';
 
 const input = ref('');
 
-// const props = defineProps();
+const props = defineProps<{
+  fullSize?: boolean | false;
+}>();
 </script>
 
 <template>
   <div class="flex justify-left items-center w-full h-10">
     <div
-      class="relative flex flex-row gap-5 justify-between items-center rounded-2xl w-9/12 h-full px-15 bg-neutral-700 hover:outline-1 hover:outline-neutral-600 selected:outline-1 selected:outline-neutral-600"
+      :class="props.fullSize ? 'w-full' : 'w-9/12'"
+      class="relative flex flex-row gap-5 justify-between items-center rounded-2xl h-full px-15 bg-neutral-700 hover:outline-1 hover:outline-neutral-600 selected:outline-1 selected:outline-neutral-600"
     >
       <i class="max-h-fit pi pi-search text-xl!"></i>
       <input
