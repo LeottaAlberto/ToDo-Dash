@@ -1,8 +1,42 @@
 <script lang="ts" setup>
 import type FilterInterface from '@/core/interface/FilterInterface';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import MenuButtonComponent from '@/components/b-utility/src/MenuButtonComponent.vue';
 
-const props = defineProps({ filters: Boolean });
+const props = defineProps<{ filters: boolean; settings: boolean | false }>();
+
+const menuVoices = ref({
+  normal: [
+    { id: crypto.randomUUID(), label: 'Dashboard', path: 'home', icon: 'pi-home' },
+    { id: crypto.randomUUID(), label: 'Categories', path: 'category', icon: 'pi-tags' },
+    { id: crypto.randomUUID(), label: 'Team', path: 'home', icon: 'pi-users' },
+  ],
+  settings: [
+    { id: crypto.randomUUID(), label: 'Account Profile', path: 'accountProfile', icon: 'pi-user' },
+    {
+      id: crypto.randomUUID(),
+      label: 'Security & Password',
+      path: 'securityPassword',
+      icon: 'pi-lock',
+    },
+    {
+      id: crypto.randomUUID(),
+      label: 'Notifications',
+      path: 'notifications',
+      icon: 'pi-bell',
+    },
+    {
+      id: crypto.randomUUID(),
+      label: 'Preferences',
+      path: 'preferences',
+      icon: 'pi-sliders-h',
+    },
+  ],
+});
+
+const activeMenu = computed(() => {
+  return props.settings ? menuVoices.value.settings : menuVoices.value.normal;
+});
 
 const active_filter = ref<FilterInterface[]>([]);
 
@@ -25,7 +59,7 @@ function removeFilter(filter: FilterInterface) {
   <div class="w-fit min-w-1/5 h-full p-4">
     <SideContainerComponent>
       <template v-slot:header>
-        <div class="flex justify-center items-center w-full h-fit">
+        <div v-if="!props.settings" class="flex justify-center items-center w-full h-fit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 64 64"
@@ -51,19 +85,22 @@ function removeFilter(filter: FilterInterface) {
           </svg>
           <p class="text-4xl font-black">TodoDash</p>
         </div>
+        <div
+          v-else
+          @click="$router.push({ name: 'home' })"
+          class="cursor-pointer flex items-center gap-1"
+        >
+          <i class="pi pi-arrow-left text-2xl"></i>
+          <span class="text-xl">Back to Dashboard</span>
+        </div>
       </template>
 
       <template v-slot:body>
         <div class="flex flex-col justify-baseline w-full h-full">
           <div class="flex flex-col justify-start w-full h-fit py-10">
-            <MenuButtonComponent icon="pi-home" label="Dashboard" :isSelected="false" path="home" />
-            <MenuButtonComponent
-              icon="pi-tags"
-              label="Categories"
-              :isSelected="true"
-              path="category"
-            />
-            <MenuButtonComponent icon="pi-cog" label="Settings" path="home" />
+            <div v-for="men in activeMenu" :key="men.id">
+              <MenuButtonComponent :menu="men" />
+            </div>
           </div>
 
           <FiltersGroupComponent
@@ -74,7 +111,7 @@ function removeFilter(filter: FilterInterface) {
       </template>
 
       <template v-slot:footer>
-        <UserComponent />
+        <UserComponent v-if="!props.settings" />
       </template>
     </SideContainerComponent>
   </div>
